@@ -26,7 +26,7 @@ public class ClientService {
             BankAlreadyLinkedException {
         if(!clientRepository.existsByUsername(client.getUsername()))
             if(!clientRepository.existsByMail(client.getMail()))
-                if(!clientRepository.existsByCellNumber(client.getCell_number()))
+                if(!clientRepository.existsByCellNumber(client.getCellNumber()))
                     if(!clientRepository.existsByBank(client.getBank()))
                         return clientRepository.save(client);
                     else

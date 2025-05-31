@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -19,9 +22,15 @@ public class Owner {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = true,unique = true)
     private String mail;
 
-    @Column(nullable = false,unique = true)
-    private String cell_number;
+    @Column(nullable = true,unique = true)
+    private String cellNumber;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "owner_roles",
+            joinColumns = @JoinColumn(name = "owner_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }

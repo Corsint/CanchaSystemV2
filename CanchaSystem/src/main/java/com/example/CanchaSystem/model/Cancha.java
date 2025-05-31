@@ -15,10 +15,10 @@ public class Cancha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String address;
 
     @Column(nullable = false)
@@ -43,13 +43,10 @@ public class Cancha {
     //private double birthday_price;
 
     @ManyToOne
-    @JoinColumn(name = "id",nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)  // Cambié aquí el nombre de la columna FK
     private Owner owner;
 
     @Column(nullable = false)
     private CanchaType canchaType;
-
-
-
 
 }

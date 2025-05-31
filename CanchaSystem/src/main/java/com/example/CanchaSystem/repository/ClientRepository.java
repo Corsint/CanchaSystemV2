@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Optional;
+
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
@@ -16,5 +18,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
    boolean existsByBank(String bank);
 
-   boolean existsByCellNumber(String cell_number);
+   boolean existsByCellNumber(String cellNumber);
+
+   Optional<Client> findByUsername(String username);
+
 }

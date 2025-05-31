@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.lang.NonNullFields;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -19,5 +22,9 @@ public class Admin {
     @Column(nullable = false)
     private String password;
 
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "admin_roles",
+            joinColumns = @JoinColumn(name = "admin_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }
