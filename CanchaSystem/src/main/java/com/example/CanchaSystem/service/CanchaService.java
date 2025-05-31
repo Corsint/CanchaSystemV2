@@ -2,7 +2,7 @@ package com.example.CanchaSystem.service;
 import com.example.CanchaSystem.exception.cancha.CanchaNameAlreadyExistsException;
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
-import com.example.CanchaSystem.exception.cancha.NoCanchasExceptions;
+import com.example.CanchaSystem.exception.cancha.NoCanchasException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,11 @@ public class CanchaService {
         else throw new CanchaNameAlreadyExistsException("El nombre de la cancha ya existe");
     }
 
-    public List<Cancha> getAllCanchas() throws NoCanchasExceptions {
+    public List<Cancha> getAllCanchas() throws NoCanchasException {
         if(!canchaRepository.findAll().isEmpty()){
             return canchaRepository.findAll();
         }else
-            throw new NoCanchasExceptions("Todavia no hay Canchas registradas");
+            throw new NoCanchasException("Todavia no hay Canchas registradas");
 
 
     }
