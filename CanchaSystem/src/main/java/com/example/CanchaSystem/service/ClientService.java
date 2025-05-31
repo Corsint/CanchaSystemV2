@@ -1,6 +1,9 @@
 package com.example.CanchaSystem.service;
 
-import com.example.CanchaSystem.exception.UsernameAlreadyExistsException;
+import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
+import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
+import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
+import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
@@ -16,10 +19,24 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Client insertClient(Client client) throws UsernameAlreadyExistsException {
+    public Client insertClient(Client client)
+            throws UsernameAlreadyExistsException,
+            MailAlreadyRegisteredException,
+            CellNumberAlreadyAddedException,
+            BankAlreadyLinkedException {
         if(!clientRepository.existsByUsername(client.getUsername()))
-            return clientRepository.save(client);
-        else throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+            if(!clientRepository.existsByMail(client.getMail()))
+                if(!clientRepository.existsByCellNumber(client.getCell_number()))
+                    if(!clientRepository.existsByBank(client.getBank()))
+                        return clientRepository.save(client);
+                    else
+                        throw new BankAlreadyLinkedException("La cuenta ya esta vinculada");
+                else
+                    throw new CellNumberAlreadyAddedException("El numero ya esta añadido");
+            else
+                throw new MailAlreadyRegisteredException("El correo ya esta registrado");
+        else
+            throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
     }
 
     public List<Client> getAllClients() throws NoClientsException {

@@ -1,6 +1,6 @@
 package com.example.CanchaSystem.controller;
 
-import com.example.CanchaSystem.exception.UsernameAlreadyExistsException;
+import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.admin.AdminNotFoundException;
 import com.example.CanchaSystem.exception.admin.NoAdminsException;
 import com.example.CanchaSystem.model.Admin;

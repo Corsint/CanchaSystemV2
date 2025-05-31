@@ -1,6 +1,6 @@
 package com.example.CanchaSystem.service;
 
-import com.example.CanchaSystem.exception.UsernameAlreadyExistsException;
+import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.model.Owner;

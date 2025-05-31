@@ -1,4 +1,4 @@
-package com.example.CanchaSystem.exception;
+package com.example.CanchaSystem.exception.misc;
 
 public class UsernameAlreadyExistsException extends Exception {
     public UsernameAlreadyExistsException(String message) {
