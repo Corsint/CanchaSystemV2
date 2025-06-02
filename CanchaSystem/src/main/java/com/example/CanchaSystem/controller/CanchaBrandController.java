@@ -16,6 +16,7 @@ import com.example.CanchaSystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/canchaBrand")
+@PreAuthorize("hasRole('ADMIN')")
 public class CanchaBrandController {
 
     @Autowired
@@ -52,7 +54,7 @@ public class CanchaBrandController {
     }
 
     @GetMapping("/findall")
-    public List<CanchaBrand> getCanchaBrands() {
+    public List<CanchaBrand> getCanchaAllBrands() {
         try {
             return canchaBrandService.getAllCanchaBrands();
         } catch (NoCanchaBrandsException e) {
@@ -80,6 +82,7 @@ public class CanchaBrandController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Optional<CanchaBrand> findCanchaBrandById(@PathVariable Long id) {
         try {
             return Optional.ofNullable(canchaBrandService.findCanchaBrandById(id));

@@ -13,11 +13,13 @@ public interface CanchaRepository extends JpaRepository<Cancha,Long> {
     boolean existsById(Long id);
     boolean existsByAddress(String address);
     boolean existsByName(String name);
+    boolean existsByIdAndBrandOwnerUsername(Long id, String username);
 
-    Optional<List<Cancha>> findByActive(boolean active);
-    Optional<List<Cancha>> findByCanchaType(CanchaType canchaType);
-    Optional<List<Cancha>> findByHasRoof(boolean roof);
-    Optional<List<Cancha>> findByCanShower(boolean shower);
-    Optional<List<Cancha>> findByOrderByTotalAmountAsc();
-    Optional<List<Cancha>> findByOrderByTotalAmountDesc();
+    List<Cancha> findByBrandOwnerUsername(String username);
+    List<Cancha> findByActive(boolean active);
+    List<Cancha> findByCanchaType(CanchaType canchaType);
+    List<Cancha> findByHasRoof(boolean roof);
+    List<Cancha> findByCanShower(boolean shower);
+    List<Cancha> findByOrderByTotalAmountAsc();
+    List<Cancha> findByOrderByTotalAmountDesc();
 }

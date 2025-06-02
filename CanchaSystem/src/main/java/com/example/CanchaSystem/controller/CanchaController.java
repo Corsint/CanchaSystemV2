@@ -9,6 +9,8 @@ import com.example.CanchaSystem.service.CanchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -37,36 +39,84 @@ public class CanchaController {
     }
 
     @GetMapping("/findall")
-    public List<Cancha> getCanchas() {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllCanchas() {
         try {
-            return canchaService.getAllCanchas();
+            List<Cancha> canchas = canchaService.getAllCanchas();
+            return ResponseEntity.ok(canchas);
         } catch (NoCanchasException e) {
-            System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
-
+    }
+    @GetMapping("findMyCanchas")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<?> getAllMyCanchas(Authentication auth) {
+        String username = auth.getName();
+        try {
+            List<Cancha> canchas = canchaService.getCanchasByOwner(username);
+            return ResponseEntity.ok(canchas);
+        } catch (NoCanchasException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 
-    @PutMapping("/update")
-    public void updateCancha(@RequestBody Cancha cancha) {
+    @PutMapping("/updateAny")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateAnyCancha(@RequestBody Cancha cancha) {
         try {
             canchaService.updateCancha(cancha);
+            return ResponseEntity.ok(Map.of("message", "Cancha actualizada correctamente"));
         } catch (CanchaNotFoundException e) {
-            System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCancha(@PathVariable Long id) {
+    @PutMapping("/updateMyCancha")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<?> updateMyCancha(@RequestBody Cancha cancha, Authentication auth) {
+        String username = auth.getName();
+
+        try {
+            canchaService.updateOwnerCancha(cancha, username);
+            return ResponseEntity.ok(Map.of("message", "Cancha actualizada correctamente"));
+        } catch (CanchaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/dropCanchaById/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteAnyCancha(@PathVariable Long id) {
         try {
             canchaService.deleteCancha(id);
+            return ResponseEntity.ok(Map.of("message", "Cancha eliminada correctamente"));
         } catch (CanchaNotFoundException e) {
-            System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
-    @GetMapping("/{id}")
-    public Optional<Cancha> findCanchaById(@PathVariable Long id) {
+    @DeleteMapping("/dropMyCanchaById/{id}")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<?> deleteMyCancha(@PathVariable Long id, Authentication auth) {
+        String username = auth.getName();
+
+        try {
+            canchaService.deleteOwnerCancha(id, username);
+            return ResponseEntity.ok(Map.of("message", "Cancha eliminada correctamente"));
+        } catch (CanchaNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/findCanchaById/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Optional<Cancha> findAnyCanchaById(@PathVariable Long id) {
         try {
             return Optional.ofNullable(canchaService.findCanchaById(id));
         } catch (CanchaNotFoundException e) {
