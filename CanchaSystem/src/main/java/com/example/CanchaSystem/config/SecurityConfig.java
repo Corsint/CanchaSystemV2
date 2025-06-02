@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
-                        .requestMatchers("/api/public", "/client", "/client/findall", "/insert").permitAll()
+                        .requestMatchers("/api/public", "/client", "/client/findall", "/insert","/swagger-ui/**","/v3/api-docs/**").permitAll()
                         // El resto requiere autenticación
                         .anyRequest().authenticated()
                 )

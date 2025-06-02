@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -24,10 +25,10 @@ public class Reservation {
     private Cancha cancha;
 
     @Column(nullable = false)
-    private Date reservationDate;
+    private LocalDateTime reservationDate;
 
     @Column(nullable = false,unique = true)
-    private Date matchDate;
+    private LocalDateTime matchDate;
 
     @Column(nullable = false)
     private Double deposit;

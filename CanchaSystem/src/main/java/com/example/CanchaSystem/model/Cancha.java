@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -21,22 +23,22 @@ public class Cancha {
     private String address;
 
     @Column(nullable = false)
-    private int capacity;
+    private Double totalAmount;
 
     @Column(nullable = false)
-    private Double total_amount;
+    private LocalTime openingHour;
 
     @Column(nullable = false)
-    private boolean is_reserved;
+    private LocalTime closingHour;
 
     @Column(nullable = false)
     private boolean active;
 
     @Column(nullable = false)
-    private boolean has_roof;
+    private boolean hasRoof;
 
     @Column(nullable = false)
-    private boolean can_shower;
+    private boolean canShower;
 
     //private boolean birthday;
     //private double birthday_price;

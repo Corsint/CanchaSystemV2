@@ -11,13 +11,9 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
    boolean existsById(Long id);
-
    boolean existsByUsername(String username);
-
    boolean existsByMail(String mail);
-
    boolean existsByBank(String bank);
-
    boolean existsByCellNumber(String cellNumber);
 
    Optional<Client> findByUsername(String username);
