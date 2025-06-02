@@ -35,7 +35,7 @@ public class ReservationService {
 
     public Reservation insertReservation(Reservation reservation)
             throws IllegalReservationDateException {
-        if(!reservationRespository.existsBymatchDate(reservation.getMatchDate()))
+        if(!reservationRespository.existsBymatchDate(reservation.getMatchDate())) // pensar cancha_id
             return reservationRespository.save(reservation);
         else
             throw new IllegalReservationDateException("La fecha ya esta reservada");
