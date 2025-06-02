@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Cancha {
 
     @Id

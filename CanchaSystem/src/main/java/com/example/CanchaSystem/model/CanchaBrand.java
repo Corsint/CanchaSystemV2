@@ -19,6 +19,6 @@ public class CanchaBrand {
     private String brandName;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)  // Cambié aquí el nombre de la columna FK
+    @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 }
