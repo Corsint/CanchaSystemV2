@@ -1,6 +1,8 @@
 package com.example.CanchaSystem.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +20,18 @@ public class Cancha {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Size(
+            min = 3,
+            max = 15,
+            message = "Name only accepts values between 3 and 15"
+    )
     private String name;
 
     @Column(nullable = false, unique = true)
     private String address;
 
     @Column(nullable = false)
+    @Min(1)
     private Double totalAmount;
 
     @Column(nullable = false)

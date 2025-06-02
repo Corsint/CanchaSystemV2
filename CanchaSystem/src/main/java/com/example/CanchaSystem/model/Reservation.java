@@ -1,6 +1,8 @@
 package com.example.CanchaSystem.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,11 +27,14 @@ public class Reservation {
     private Cancha cancha;
 
     @Column(nullable = false)
+    @Future
     private LocalDateTime reservationDate;
 
     @Column(nullable = false,unique = true)
+    @Future
     private LocalDateTime matchDate;
 
     @Column(nullable = false)
+    @Min(1)
     private Double deposit;
 }

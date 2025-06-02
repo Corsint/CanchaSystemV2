@@ -36,7 +36,7 @@ public class DataInitializer {
                     .orElseGet(() -> roleRepo.save(new Role("OWNER")));
 
             // Crear un cliente si no existe
-            if (clientRepo.findByUsername("cliente").isEmpty()) {
+       /*     if (clientRepo.findByUsername("cliente").isEmpty()) {
                 Client client = new Client();
                 client.setUsername("cliente");
                 client.setPassword(encoder.encode("1234"));
@@ -68,6 +68,7 @@ public class DataInitializer {
             }
 
             System.out.println("✔ Datos iniciales cargados");
+        */
         };
     }
 }
