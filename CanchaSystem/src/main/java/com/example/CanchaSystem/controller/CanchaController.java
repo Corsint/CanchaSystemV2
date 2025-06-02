@@ -116,12 +116,37 @@ public class CanchaController {
 
     @GetMapping("/findCanchaById/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Optional<Cancha> findAnyCanchaById(@PathVariable Long id) {
+    public ResponseEntity<?> findAnyCanchaById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(canchaService.findCanchaById(id));
+            Cancha cancha = canchaService.findCanchaById(id);
+            return ResponseEntity.ok(cancha);
         } catch (CanchaNotFoundException e) {
-            System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
-        return Optional.empty();
+    }
+
+    @GetMapping("/getCanchasByOwnerId/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getCanchasByOwnerId(@PathVariable Long id) {
+        try {
+            List<Cancha> canchas = canchaService.getCanchasByOwnerId(id);
+            return ResponseEntity.ok(canchas);
+        } catch (NoCanchasException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/getCanchasByBrandId/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getCanchasByBrandId(@PathVariable Long id) {
+        try {
+            List<Cancha> canchas = canchaService.getCanchasByBrandId(id);
+            return ResponseEntity.ok(canchas);
+        } catch (NoCanchasException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 }

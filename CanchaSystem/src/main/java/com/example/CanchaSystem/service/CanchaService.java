@@ -3,6 +3,7 @@ import com.example.CanchaSystem.exception.cancha.CanchaNameAlreadyExistsExceptio
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.cancha.NoCanchasException;
+import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,24 @@ public class CanchaService {
         return canchas;
     }
 
+    public List<Cancha> getCanchasByOwnerId(Long id) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByBrandOwnerId(id);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("El dueño no tiene canchas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> getCanchasByBrandId(Long id) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByBrandId(id);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("La marca no tiene canchas");
+        }
+
+        return canchas;
+    }
+
     public void updateCancha(Cancha cancha) throws CanchaNotFoundException {
         if(canchaRepository.existsById(cancha.getId())){
             canchaRepository.save(cancha);
@@ -69,4 +88,6 @@ public class CanchaService {
     public Cancha findCanchaById(Long id) throws CanchaNotFoundException {
         return canchaRepository.findById(id).orElseThrow(()-> new CanchaNotFoundException("Cancha no encontrada"));
     }
+
+
 }

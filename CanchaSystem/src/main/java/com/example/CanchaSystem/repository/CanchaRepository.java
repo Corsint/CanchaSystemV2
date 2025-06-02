@@ -16,6 +16,8 @@ public interface CanchaRepository extends JpaRepository<Cancha,Long> {
     boolean existsByIdAndBrandOwnerUsername(Long id, String username);
 
     List<Cancha> findByBrandOwnerUsername(String username);
+    List<Cancha> findByBrandOwnerId(Long id);
+    List<Cancha> findByBrandId(Long id);
     List<Cancha> findByActive(boolean active);
     List<Cancha> findByCanchaType(CanchaType canchaType);
     List<Cancha> findByHasRoof(boolean roof);
