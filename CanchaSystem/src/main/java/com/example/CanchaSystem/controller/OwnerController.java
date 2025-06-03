@@ -6,10 +6,13 @@ import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.model.Owner;
 import com.example.CanchaSystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,51 +23,54 @@ public class OwnerController {
     OwnerService ownerService;
 
     @PostMapping("/insert")
-    public ResponseEntity<Owner> insertOwner(@Validated @RequestBody Owner owner) {
+    public ResponseEntity<?> insertOwner(@Validated @RequestBody Owner owner) {
         try {
             return ResponseEntity.ok(ownerService.insertOwner(owner));
         } catch (UsernameAlreadyExistsException e) {
             System.err.println(e.getMessage());
-            return ResponseEntity.ok(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/findall")
-    public List<Owner> getOwners() {
+    public ResponseEntity<?> getOwners() {
         try {
-            return ownerService.getAllOwners();
+            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.getAllOwners());
         } catch (NoOwnersException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
 
     }
 
     @PutMapping("/update")
-    public void updateOwner(@RequestBody Owner owner) {
+    public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
         try {
-            ownerService.updateOwner(owner);
+            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.updateOwner(owner));
         } catch (OwnerNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOwner(@PathVariable Long id) {
+    public ResponseEntity<?> deleteOwner(@PathVariable Long id) {
         try {
             ownerService.deleteOwner(id);
+            return ResponseEntity.ok(Map.of("message","Dueño eliminado"));
         } catch (OwnerNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<Owner> findOwnerById(@PathVariable Long id) {
+    public ResponseEntity<?> findOwnerById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(ownerService.findOwnerById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.findOwnerById(id));
         } catch (OwnerNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }

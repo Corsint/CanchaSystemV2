@@ -31,9 +31,9 @@ public class CanchaBrandService {
         } else throw new NoCanchaBrandsException("Todavia no hay Marcas registradas");
     }
 
-    public void updateCanchaBrand(CanchaBrand canchaBrand) throws CanchaBrandNotFoundException {
+    public CanchaBrand updateCanchaBrand(CanchaBrand canchaBrand) throws CanchaBrandNotFoundException {
         if (canchaBrandRepository.existsById(canchaBrand.getId())){
-            canchaBrandRepository.save(canchaBrand);
+            return canchaBrandRepository.save(canchaBrand);
 
         } else throw new CanchaBrandNotFoundException("Marca no encontrada");
     }

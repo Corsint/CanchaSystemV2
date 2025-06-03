@@ -34,41 +34,44 @@ public class ReviewController {
     }
 
     @GetMapping("/findall")
-    public List<Review> getReviews() {
+    public ResponseEntity<?> getReviews() {
         try {
-            return reviewService.getAllReviews();
+            return ResponseEntity.status(HttpStatus.FOUND).body(reviewService.getAllReviews());
         } catch (NoReviewsException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
 
     }
 
     @PutMapping("/update")
-    public void updateReview(@RequestBody Review review) {
+    public ResponseEntity<?> updateReview(@RequestBody Review review) {
         try {
-            reviewService.updateReview(review);
+            return ResponseEntity.ok(reviewService.updateReview(review));
         } catch (ReviewNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable Long id) {
+    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
         try {
             reviewService.deleteReview(id);
+            return ResponseEntity.ok(Map.of("message","Reseña eliminada"));
         } catch (ReviewNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<Review> findReviewById(@PathVariable Long id) {
+    public ResponseEntity<?> findReviewById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(reviewService.findReviewById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(reviewService.findReviewById(id));
         } catch (ReviewNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }

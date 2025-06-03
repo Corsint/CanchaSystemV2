@@ -30,14 +30,12 @@ public class OwnerService {
 
     }
 
-    public void updateOwner(Owner owner) throws OwnerNotFoundException {
+    public Owner updateOwner(Owner owner) throws OwnerNotFoundException {
         if(ownerRepository.existsById(owner.getId())){
-            ownerRepository.save(owner);
+           return ownerRepository.save(owner);
 
         }else
             throw new OwnerNotFoundException("Dueño no encontrado");
-
-
     }
 
     public void deleteOwner(Long id) throws OwnerNotFoundException{

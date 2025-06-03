@@ -41,41 +41,44 @@ public class ReservationController {
     }
 
     @GetMapping("/findall")
-    public List<Reservation> getReservations() {
+    public ResponseEntity<?> getReservations() {
         try {
-            return reservationService.getAllReservations();
+            return ResponseEntity.ok(reservationService.getAllReservations());
         } catch (NoReservationsException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
 
     }
 
     @PutMapping("/update")
-    public void updateReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<?> updateReservation(@RequestBody Reservation reservation) {
         try {
-            reservationService.updateReservation(reservation);
+            return ResponseEntity.ok(reservationService.updateReservation(reservation));
         } catch (ReservationNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReservation(@PathVariable Long id) {
+    public ResponseEntity<?> deleteReservation(@PathVariable Long id) {
         try {
             reservationService.deleteReservation(id);
+            return ResponseEntity.ok(Map.of("message","Reserva eliminada"));
         } catch (ReservationNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<Reservation> findReservationById(@PathVariable Long id) {
+    public ResponseEntity<?> findReservationById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(reservationService.findReservationById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(reservationService.findReservationById(id));
         } catch (ReservationNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }

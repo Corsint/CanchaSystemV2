@@ -31,14 +31,11 @@ public class AdminService {
 
     }
 
-    public void updateAdmin(Admin admin) throws AdminNotFoundException {
+    public Admin updateAdmin(Admin admin) throws AdminNotFoundException {
         if(adminRepository.existsById(admin.getId())){
-            adminRepository.save(admin);
-
+            return adminRepository.save(admin);
         }else
             throw new AdminNotFoundException("Administrador no encontrado");
-
-
     }
 
     public void deleteAdmin(Long id) throws AdminNotFoundException{

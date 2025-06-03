@@ -50,14 +50,11 @@ public class ReservationService {
 
     }
 
-    public void updateReservation(Reservation reservation) throws ReservationNotFoundException {
+    public Reservation updateReservation(Reservation reservation) throws ReservationNotFoundException {
         if(reservationRespository.existsById(reservation.getId())){
-            reservationRespository.save(reservation);
-
+           return reservationRespository.save(reservation);
         }else
             throw new ReservationNotFoundException("Reserva no encontrada");
-
-
     }
 
     public void deleteReservation(Long id) throws ReservationNotFoundException{

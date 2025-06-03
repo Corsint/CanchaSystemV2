@@ -48,14 +48,11 @@ public class ClientService {
 
     }
 
-    public void updateClient(Client client) throws ClientNotFoundException {
+    public Client updateClient(Client client) throws ClientNotFoundException {
         if(clientRepository.existsById(client.getId())){
-            clientRepository.save(client);
-
+            return clientRepository.save(client);
         }else
             throw new ClientNotFoundException("Cliente no encontrado");
-
-
     }
 
     public void deleteClient(Long id) throws ClientNotFoundException{

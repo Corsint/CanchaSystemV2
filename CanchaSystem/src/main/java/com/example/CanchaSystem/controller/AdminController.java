@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,51 +24,54 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/insert")
-    public ResponseEntity<Admin> insertAdmin(@Validated @RequestBody Admin admin) {
+    public ResponseEntity<?> insertAdmin(@Validated @RequestBody Admin admin) {
         try {
             return ResponseEntity.ok(adminService.insertAdmin(admin));
         } catch (UsernameAlreadyExistsException e) {
             System.err.println(e.getMessage());
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/findall")
-    public List<Admin> getAdmins() {
+    public ResponseEntity<?> getAdmins() {
         try {
-            return adminService.getAllAdmins();
+            return ResponseEntity.ok(adminService.getAllAdmins());
         } catch (NoAdminsException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
 
     }
 
     @PutMapping("/update")
-    public void updateAdmin(@RequestBody Admin admin) {
+    public ResponseEntity<?> updateAdmin(@RequestBody Admin admin) {
         try {
-            adminService.updateAdmin(admin);
+            return ResponseEntity.ok(adminService.updateAdmin(admin));
         } catch (AdminNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAdmin(@PathVariable Long id) {
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
         try {
             adminService.deleteAdmin(id);
+            return ResponseEntity.ok(Map.of("message","Administrador eliminado"));
         } catch (AdminNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<Admin> findAdminById(@PathVariable Long id) {
+    public ResponseEntity<?> findAdminById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(adminService.findAdminById(id));
+            return ResponseEntity.ok(adminService.findAdminById(id));
         } catch (AdminNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }

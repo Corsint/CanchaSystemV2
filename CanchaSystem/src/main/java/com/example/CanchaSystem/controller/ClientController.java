@@ -29,57 +29,54 @@ public class ClientController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
 
-        } catch (UsernameAlreadyExistsException e) {
+        } catch (UsernameAlreadyExistsException |
+                 MailAlreadyRegisteredException |
+                 BankAlreadyLinkedException |
+                 CellNumberAlreadyAddedException e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        } catch (MailAlreadyRegisteredException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(null);
-        }catch (CellNumberAlreadyAddedException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(null);
-        }catch (BankAlreadyLinkedException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(null);
         }
     }
 
     @GetMapping("/findall")
-    public List<Client> getClients() {
+    public ResponseEntity<?> getClients() {
         try {
-            return clientService.getAllClients();
+            return ResponseEntity.status(HttpStatus.FOUND).body(clientService.getAllClients());
         } catch (NoClientsException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
 
     }
 
     @PutMapping("/update")
-    public void updateClient(@RequestBody Client client) {
+    public ResponseEntity<?> updateClient(@RequestBody Client client) {
         try {
-            clientService.updateClient(client);
+            return ResponseEntity.ok(clientService.updateClient(client));
         } catch (ClientNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClient(@PathVariable Long id) {
+    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         try {
             clientService.deleteClient(id);
+            return ResponseEntity.ok(Map.of("message","Cliente eliminado"));
         } catch (ClientNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public Optional<Client> findClientById(@PathVariable Long id) {
+    public ResponseEntity<?> findClientById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(clientService.findClientById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(clientService.findClientById(id));
         } catch (ClientNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }

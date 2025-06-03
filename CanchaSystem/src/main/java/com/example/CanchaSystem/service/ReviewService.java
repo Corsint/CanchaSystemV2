@@ -35,14 +35,12 @@ public class ReviewService {
 
     }
 
-    public void updateReview(Review review) throws ReviewNotFoundException {
+    public Review updateReview(Review review) throws ReviewNotFoundException {
         if(reviewRepository.existsById(review.getId())){
-            reviewRepository.save(review);
+            return reviewRepository.save(review);
 
         }else
             throw new ReviewNotFoundException("Reseña no encontrada");
-
-
     }
 
     public void deleteReview(Long id) throws ReviewNotFoundException{

@@ -54,41 +54,44 @@ public class CanchaBrandController {
     }
 
     @GetMapping("/findall")
-    public List<CanchaBrand> getCanchaAllBrands() {
+    public ResponseEntity<?> getCanchaAllBrands() {
         try {
-            return canchaBrandService.getAllCanchaBrands();
+            return ResponseEntity.ok(canchaBrandService.getAllCanchaBrands());
         } catch (NoCanchaBrandsException e) {
             System.err.println(e.getMessage());
-            return null;
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @PutMapping("/update")
-    public void updateCanchaBrand(@RequestBody CanchaBrand canchaBrand) {
+    public ResponseEntity<?> updateCanchaBrand(@RequestBody CanchaBrand canchaBrand) {
         try {
-            canchaBrandService.updateCanchaBrand(canchaBrand);
+            return ResponseEntity.ok(canchaBrandService.updateCanchaBrand(canchaBrand));
         } catch (CanchaBrandNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCanchaBrand(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCanchaBrand(@PathVariable Long id) {
         try {
             canchaBrandService.deleteCanchaBrand(id);
+            return ResponseEntity.ok(Map.of("message","Marca eliminada"));
         } catch (CanchaNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Optional<CanchaBrand> findCanchaBrandById(@PathVariable Long id) {
+    public ResponseEntity<?> findCanchaBrandById(@PathVariable Long id) {
         try {
-            return Optional.ofNullable(canchaBrandService.findCanchaBrandById(id));
+            return ResponseEntity.ok(canchaBrandService.findCanchaBrandById(id));
         } catch (CanchaBrandNotFoundException e) {
             System.err.println(e.getMessage());
+            return ResponseEntity.ok(Map.of("error",e.getMessage()));
         }
-        return Optional.empty();
     }
 }
