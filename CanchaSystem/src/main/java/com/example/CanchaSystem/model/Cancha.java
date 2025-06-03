@@ -53,7 +53,7 @@ public class Cancha {
     //private double birthday_price;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)  // Cambié aquí el nombre de la columna FK
+    @JoinColumn(name = "brand_id", nullable = false)
     private CanchaBrand brand;
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.example.CanchaSystem.controller;
 
+import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
@@ -13,12 +14,15 @@ import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,4 +86,22 @@ public class ReservationController {
         }
         return Optional.empty();
     }
+
+    @GetMapping("/getAvailableHours/{canchaId}/{day}") // ejemplo: http://localhost:8080/api/reservations/getAvailableHours/1/2025-06-10
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN') or hasRole('CLIENT')")
+    public ResponseEntity<List<LocalTime>> obtainAvailableHours(
+            @PathVariable Long canchaId,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
+        try {
+            List<LocalTime> hours = reservationService.getAvailableHours(canchaId, day);
+            if (hours == null || hours.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(hours);
+        } catch (CanchaNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

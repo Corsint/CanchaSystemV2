@@ -17,11 +17,11 @@ public class Review {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)  // Cambié aquí el nombre de la columna FK
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "cancha_id", nullable = false)  // Cambié aquí el nombre de la columna FK
+    @JoinColumn(name = "cancha_id", nullable = false)
     private Cancha cancha;
 
     @Column(nullable = false)
