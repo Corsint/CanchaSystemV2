@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/canchaBrand")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
 public class CanchaBrandController {
 
     @Autowired

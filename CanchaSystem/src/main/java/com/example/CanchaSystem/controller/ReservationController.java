@@ -15,6 +15,7 @@ import com.example.CanchaSystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservation")
+@PreAuthorize("hasRole('CLIENT')")
+
 public class ReservationController {
 
     @Autowired
@@ -70,6 +73,7 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Optional<Reservation> findReservationById(@PathVariable Long id) {
         try {
             return Optional.ofNullable(reservationService.findReservationById(id));

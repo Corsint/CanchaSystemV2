@@ -11,6 +11,7 @@ import com.example.CanchaSystem.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -19,12 +20,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
+@PreAuthorize("hasRole('CLIENT')")
+
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
 
     @PostMapping("/insert")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
     public ResponseEntity<?> insertClient(@Validated @RequestBody Client client) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
@@ -43,7 +47,7 @@ public class ClientController {
             return ResponseEntity.ok(null);
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/findall")
     public List<Client> getClients() {
         try {
@@ -54,7 +58,7 @@ public class ClientController {
         }
 
     }
-
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update")
     public void updateClient(@RequestBody Client client) {
         try {
@@ -63,7 +67,7 @@ public class ClientController {
             System.err.println(e.getMessage());
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable Long id) {
         try {
@@ -72,7 +76,7 @@ public class ClientController {
             System.err.println(e.getMessage());
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<Client> findClientById(@PathVariable Long id) {
         try {

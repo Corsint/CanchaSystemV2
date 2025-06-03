@@ -14,6 +14,7 @@ import com.example.CanchaSystem.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/review")
+@PreAuthorize("hasRole('CLIENT')")
+
 public class ReviewController {
 
     @Autowired
@@ -33,7 +36,9 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.insertReview(review));
     }
 
+
     @GetMapping("/findall")
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN') or hasRole('CLIENT')")
     public List<Review> getReviews() {
         try {
             return reviewService.getAllReviews();
@@ -54,6 +59,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteReview(@PathVariable Long id) {
         try {
             reviewService.deleteReview(id);
@@ -63,6 +69,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN') or hasRole('CLIENT')")
     public Optional<Review> findReviewById(@PathVariable Long id) {
         try {
             return Optional.ofNullable(reviewService.findReviewById(id));
