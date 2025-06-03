@@ -19,6 +19,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cancha")
+@PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
+
 public class CanchaController {
 
     @Autowired
@@ -63,7 +65,6 @@ public class CanchaController {
     }
 
     @PutMapping("/updateAny")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateAnyCancha(@RequestBody Cancha cancha) {
         try {
             canchaService.updateCancha(cancha);
