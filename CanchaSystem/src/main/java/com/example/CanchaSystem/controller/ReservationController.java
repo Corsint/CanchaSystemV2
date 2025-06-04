@@ -13,6 +13,7 @@ import com.example.CanchaSystem.exception.reservation.ReservationNotFoundExcepti
 import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.service.ReservationService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,11 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findReservationById(@PathVariable Long id) {
             return ResponseEntity.ok(reservationService.findReservationById(id));
+    }
+
+    @GetMapping("/getMyReservations")
+    public ResponseEntity<?> getAllMyReservations( Long clientid){
+        return ResponseEntity.ok(reservationService.findReservationsByClientId(clientid));
     }
 
     @GetMapping("/getAvailableHours/{canchaId}/{day}") // ejemplo: http://localhost:8080/api/reservations/getAvailableHours/1/2025-06-10

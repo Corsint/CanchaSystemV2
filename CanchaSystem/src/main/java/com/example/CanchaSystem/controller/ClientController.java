@@ -28,7 +28,7 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping("/insert")
-    @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> insertClient(@Validated @RequestBody Client client) {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
     }

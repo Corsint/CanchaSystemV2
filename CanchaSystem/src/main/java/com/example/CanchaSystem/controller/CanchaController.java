@@ -37,7 +37,7 @@ public class CanchaController {
             return ResponseEntity.ok(canchaService.getAllCanchas());
     }
 
-    @GetMapping("findMyCanchas")
+    @GetMapping("/findMyCanchas")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> getAllMyCanchas(Authentication auth) {
         String username = auth.getName();

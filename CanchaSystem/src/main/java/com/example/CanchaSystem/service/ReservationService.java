@@ -69,6 +69,10 @@ public class ReservationService {
         return reservationRespository.findById(id).orElseThrow(()-> new ReservationNotFoundException("Reserva no encontrada"));
     }
 
+    public List<Reservation> findReservationsByClientId(Long clientId){
+        return reservationRespository.findByClientId(clientId).get();
+    }
+
     public List<LocalTime> getAvailableHours(Long canchaId, LocalDate day)throws CanchaNotFoundException{
         Cancha canchaAux = canchaRepository.findById(canchaId)
                 .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));

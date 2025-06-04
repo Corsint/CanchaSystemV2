@@ -47,7 +47,7 @@ public class Client {
     @Column(nullable = true,unique = true)
     @Size(
             min = 5,
-            max = 10,
+            max = 80,
             message = "The bank number must have between 5 and 10 caracters"
     )
     private String bank;
