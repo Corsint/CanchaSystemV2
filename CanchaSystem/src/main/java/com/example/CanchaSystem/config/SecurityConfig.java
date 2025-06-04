@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,13 +24,24 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
-                        .requestMatchers("/api/public", "/client", "/client/findall", "/insert","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/public",
+                                "/client",
+                                "/client/findall",
+                                "/insert",
+                                "/home.html",  // allow static HTML
+                                "/",            // allow root path
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
                         // El resto requiere autenticación
                         .anyRequest().authenticated()
                 )
                 // Formulario de login por defecto
-                .formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults());
+                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .logout(LogoutConfigurer::permitAll);
 
         return http.build();
     }
