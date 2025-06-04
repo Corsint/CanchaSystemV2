@@ -19,8 +19,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cancha")
-@PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
-
 public class CanchaController {
 
     @Autowired
@@ -32,7 +30,6 @@ public class CanchaController {
     }
 
     @GetMapping("/findall")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllCanchas() {
             return ResponseEntity.ok(canchaService.getAllCanchas());
     }

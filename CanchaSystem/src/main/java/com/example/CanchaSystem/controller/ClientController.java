@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
-@PreAuthorize("hasRole('CLIENT')")
 
 public class ClientController {
 
@@ -33,7 +32,6 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/findall")
     public ResponseEntity<?> getClients() {
             return ResponseEntity.ok(clientService.getAllClients());

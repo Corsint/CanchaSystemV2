@@ -95,6 +95,7 @@ public class ExceptionController {
 
     @ExceptionHandler(NoClientsException.class)
     public ResponseEntity<Map<String, Object>> handleNoClients(NoClientsException ex) {
+        System.out.println("Entro al handler");
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
     }

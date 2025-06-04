@@ -29,12 +29,13 @@ public class SecurityConfig {
                                 "/client/findall",
                                 "/insert",
                                 "/home.html",  // allow static HTML
-                                "/",            // allow root path
+                                "/**",            // allow root path
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/ejemplo.html"
                         ).permitAll()
                         // El resto requiere autenticación
                         .anyRequest().authenticated()

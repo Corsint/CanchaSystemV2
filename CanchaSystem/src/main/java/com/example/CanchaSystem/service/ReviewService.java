@@ -27,12 +27,11 @@ public class ReviewService {
     }
 
     public List<Review> getAllReviews() throws NoReviewsException {
-        if(!reviewRepository.findAll().isEmpty()){
-            return reviewRepository.findAll();
+        List<Review> reviews = reviewRepository.findAll();
+        if(!reviews.isEmpty()){
+            return reviews;
         }else
             throw new NoReviewsException("Todavia no hay reseñas hechas");
-
-
     }
 
     public Review updateReview(Review review) throws ReviewNotFoundException {

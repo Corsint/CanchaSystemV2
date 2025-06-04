@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizador TP Canchas</title>
+</head>
+<body>
+<h1>Visualizador de Datos</h1>
+
+<button onclick="cargar('canchas', '/cancha/findall')">Ver Canchas</button>
+<button onclick="cargar('reservas', '/reservation/findall')">Ver Reservas</button>
+<button onclick="cargar('reseñas', '/review/findall')">Ver Reseñas</button>
+<button onclick="cargar('dueños', '/owner/findall')">Ver Dueños</button>
+<button onclick="cargar('clientes', '/client/findall')">Ver Clientes</button>
+<button onclick="cargar('marcas', '/canchaBrand/findall')">Ver Marcas</button>
+
+<h2>Resultado</h2>
+<ul id="resultado"></ul>
+
+<script>
+  async function cargar(tipo, endpoint) {
+    const lista = document.getElementById('resultado');
+    lista.innerHTML = `<li>Cargando ${tipo}...</li>`;
+
+    try {
+      const res = await fetch('http://localhost:8080' + endpoint);
+      const contentType = res.headers.get('content-type');
+
+      let data = null;
+
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error("Respuesta inesperada del servidor:", text);
+        throw new Error("Respuesta inesperada del servidor (no es JSON)");
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || `Error al obtener ${tipo}`);
+      }
+
+      lista.innerHTML = '';
+
+      if (!Array.isArray(data) || data.length === 0) {
+        lista.innerHTML = `<li>No hay ${tipo} para mostrar.</li>`;
+        return;
+      }
+
+      data.forEach(obj => {
+        const li = document.createElement('li');
+        li.textContent = formatear(obj);
+        lista.appendChild(li);
+      });
+
+    } catch (err) {
+      lista.innerHTML = `<li style="color: red;">${err.message}</li>`;
+    }
+  }
+
+  function formatear(obj) {
+    return Object.entries(obj).map(([k, v]) => {
+      if (typeof v === 'object' && v !== null) {
+        return `${k}: { ${formatear(v)} }`;
+      }
+      return `${k}: ${v}`;
+    }).join(' | ');
+  }
+</script>
+</body>
+</html>
