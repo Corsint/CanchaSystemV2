@@ -24,53 +24,27 @@ public class OwnerController {
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertOwner(@Validated @RequestBody Owner owner) {
-        try {
-            return ResponseEntity.ok(ownerService.insertOwner(owner));
-        } catch (UsernameAlreadyExistsException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
+            return ResponseEntity.status(HttpStatus.CREATED).body(ownerService.insertOwner(owner));
     }
 
     @GetMapping("/findall")
     public ResponseEntity<?> getOwners() {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.getAllOwners());
-        } catch (NoOwnersException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
-
+            return ResponseEntity.ok(ownerService.getAllOwners());
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateOwner(@RequestBody Owner owner) {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.updateOwner(owner));
-        } catch (OwnerNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
+            return ResponseEntity.ok(ownerService.updateOwner(owner));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOwner(@PathVariable Long id) {
-        try {
             ownerService.deleteOwner(id);
             return ResponseEntity.ok(Map.of("message","Dueño eliminado"));
-        } catch (OwnerNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findOwnerById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(ownerService.findOwnerById(id));
-        } catch (OwnerNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
+            return ResponseEntity.ok(ownerService.findOwnerById(id));
     }
 }

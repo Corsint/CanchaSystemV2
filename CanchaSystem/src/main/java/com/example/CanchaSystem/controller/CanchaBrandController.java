@@ -38,7 +38,7 @@ public class CanchaBrandController {
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertCanchaBrand(@Validated @RequestBody CanchaBrand canchaBrand, Authentication auth) {
-        try {
+
             String username = auth.getName();
             Optional<Owner> ownerOpt = ownerRepository.findByUsername(username);
             Owner owner = ownerOpt.get();
@@ -47,51 +47,27 @@ public class CanchaBrandController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(canchaBrandService.insertCanchaBrand(canchaBrand));
 
-        } catch (CanchaBrandNameAlreadyExistsException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
-        }
     }
 
     @GetMapping("/findall")
     public ResponseEntity<?> getCanchaAllBrands() {
-        try {
             return ResponseEntity.ok(canchaBrandService.getAllCanchaBrands());
-        } catch (NoCanchaBrandsException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(Map.of("error",e.getMessage()));
-        }
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateCanchaBrand(@RequestBody CanchaBrand canchaBrand) {
-        try {
             return ResponseEntity.ok(canchaBrandService.updateCanchaBrand(canchaBrand));
-        } catch (CanchaBrandNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(Map.of("error",e.getMessage()));
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCanchaBrand(@PathVariable Long id) {
-        try {
             canchaBrandService.deleteCanchaBrand(id);
             return ResponseEntity.ok(Map.of("message","Marca eliminada"));
-        } catch (CanchaNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(Map.of("error",e.getMessage()));
-        }
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> findCanchaBrandById(@PathVariable Long id) {
-        try {
             return ResponseEntity.ok(canchaBrandService.findCanchaBrandById(id));
-        } catch (CanchaBrandNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.ok(Map.of("error",e.getMessage()));
-        }
     }
 }

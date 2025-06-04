@@ -30,57 +30,31 @@ public class ClientController {
     @PostMapping("/insert")
     @PreAuthorize("hasRole('CLIENT') or hasRole('ADMIN')")
     public ResponseEntity<?> insertClient(@Validated @RequestBody Client client) {
-        try {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
-
-        } catch (UsernameAlreadyExistsException |
-                 MailAlreadyRegisteredException |
-                 BankAlreadyLinkedException |
-                 CellNumberAlreadyAddedException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/findall")
     public ResponseEntity<?> getClients() {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(clientService.getAllClients());
-        } catch (NoClientsException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
-
+            return ResponseEntity.ok(clientService.getAllClients());
     }
+
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update")
     public ResponseEntity<?> updateClient(@RequestBody Client client) {
-        try {
-            return ResponseEntity.ok(clientService.updateClient(client));
-        } catch (ClientNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
+        return ResponseEntity.ok(clientService.updateClient(client));
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
-        try {
             clientService.deleteClient(id);
             return ResponseEntity.ok(Map.of("message","Cliente eliminado"));
-        } catch (ClientNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> findClientById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(clientService.findClientById(id));
-        } catch (ClientNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
+            return ResponseEntity.ok(clientService.findClientById(id));
     }
 }

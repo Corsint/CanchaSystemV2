@@ -36,55 +36,28 @@ public class ReservationController {
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertReservation(@Validated @RequestBody Reservation reservation) {
-        try {
             return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
-
-        } catch (IllegalReservationDateException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
     }
 
     @GetMapping("/findall")
     public ResponseEntity<?> getReservations() {
-        try {
             return ResponseEntity.ok(reservationService.getAllReservations());
-        } catch (NoReservationsException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
-
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateReservation(@RequestBody Reservation reservation) {
-        try {
             return ResponseEntity.ok(reservationService.updateReservation(reservation));
-        } catch (ReservationNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable Long id) {
-        try {
             reservationService.deleteReservation(id);
             return ResponseEntity.ok(Map.of("message","Reserva eliminada"));
-        } catch (ReservationNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
-        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findReservationById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.FOUND).body(reservationService.findReservationById(id));
-        } catch (ReservationNotFoundException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error",e.getMessage()));
-        }
+            return ResponseEntity.ok(reservationService.findReservationById(id));
     }
 
     @GetMapping("/getAvailableHours/{canchaId}/{day}") // ejemplo: http://localhost:8080/api/reservations/getAvailableHours/1/2025-06-10
@@ -92,15 +65,11 @@ public class ReservationController {
     public ResponseEntity<List<LocalTime>> obtainAvailableHours(
             @PathVariable Long canchaId,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
-        try {
             List<LocalTime> hours = reservationService.getAvailableHours(canchaId, day);
             if (hours == null || hours.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(hours);
-        } catch (CanchaNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
 
