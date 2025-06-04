@@ -7,28 +7,37 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
+import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.ClientRepository;
+import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+    RoleRepository roleRepo;
+
 
     public Client insertClient(Client client)
             throws UsernameAlreadyExistsException,
             MailAlreadyRegisteredException,
             CellNumberAlreadyAddedException,
             BankAlreadyLinkedException {
+        Role clientRole = roleRepo.findByName("CLIENT")
+                .orElseGet(() -> roleRepo.save(new Role("CLIENT")));
         if(!clientRepository.existsByUsername(client.getUsername()))
             if(!clientRepository.existsByMail(client.getMail()))
                 if(!clientRepository.existsByCellNumber(client.getCellNumber()))
-                    if(!clientRepository.existsByBank(client.getBank()))
+                    if(!clientRepository.existsByBank(client.getBank())) {
+                        client.setRole(clientRole);
                         return clientRepository.save(client);
+                    }
                     else
                         throw new BankAlreadyLinkedException("La cuenta ya esta vinculada");
                 else

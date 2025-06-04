@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Cliente</title>
+</head>
+<body>
+<h1>Formulario de Registro</h1>
+<form id="registerForm">
+    <label>Username:</label><br>
+    <input type="text" id="username" name="username" minlength="4" required><br><br>
+
+    <label>Password:</label><br>
+    <input type="password" id="password" name="password" minlength="4" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" id="mail" name="mail" required><br><br>
+
+    <label>Cell Number:</label><br>
+    <input type="text" id="cellNumber" name="cellNumber" minlength="8" maxlength="14"><br><br>
+
+    <label>Bank Number:</label><br>
+    <input type="text" id="bank" name="bank" minlength="5" maxlength="80"><br><br>
+
+    <button type="submit">Registrarse</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const client = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+            mail: document.getElementById("mail").value,
+            cellNumber: document.getElementById("cellNumber").value,
+            bank: document.getElementById("bank").value
+        };
+
+        fetch("/client/insert", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(client)
+        })
+        .then(async response => {
+            if (response.ok) {
+                document.getElementById("message").textContent = "¡Registro exitoso! Redirigiendo...";
+                setTimeout(() => {
+                    window.location.href = "/ejemplo.html"; // Asegúrate de tener /login configurado
+                }, 2000);
+            } else {
+                const data = await response.json();
+                document.getElementById("message").textContent = "Error: " + (data.message || JSON.stringify(data));
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("message").textContent = "Error de red o del servidor.";
+        });
+    });
+</script>
+</body>
+</html>

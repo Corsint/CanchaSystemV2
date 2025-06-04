@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,9 +35,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     client.getUsername(),
                     client.getPassword(),
-                    client.getRoles().stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                            .collect(Collectors.toSet())
+                    List.of(new SimpleGrantedAuthority(client.getRole().getName()))
             );
         }
 
@@ -46,9 +45,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     owner.getUsername(),
                     owner.getPassword(),
-                    owner.getRoles().stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                            .collect(Collectors.toSet())
+                    List.of(new SimpleGrantedAuthority(owner.getRole().getName()))
             );
         }
 
@@ -58,9 +55,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     admin.getUsername(),
                     admin.getPassword(),
-                    admin.getRoles().stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                            .collect(Collectors.toSet())
+                    List.of(new SimpleGrantedAuthority(admin.getRole().getName()))
             );
         }
 

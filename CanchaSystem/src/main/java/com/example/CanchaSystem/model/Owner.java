@@ -44,9 +44,7 @@ public class Owner {
     )
     private String cellNumber;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "owner_roles",
-            joinColumns = @JoinColumn(name = "owner_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 }

@@ -52,11 +52,9 @@ public class Client {
     )
     private String bank;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "client_roles",
-            joinColumns = @JoinColumn(name = "client_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 }
 
 
