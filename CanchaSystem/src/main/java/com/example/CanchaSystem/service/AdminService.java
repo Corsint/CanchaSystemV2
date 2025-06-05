@@ -33,12 +33,10 @@ public class AdminService {
         }
 
     public List<Admin> getAllAdmins() throws NoAdminsException {
-        if(!adminRepository.findAll().isEmpty()){
-            return adminRepository.findAll();
-        }else
+        List<Admin> admins = adminRepository.findAll();
+        if(admins.isEmpty())
             throw new NoAdminsException("Todavia no hay administradores registrados");
-
-
+        return admins;
     }
 
     public Admin updateAdmin(Admin admin) throws AdminNotFoundException {

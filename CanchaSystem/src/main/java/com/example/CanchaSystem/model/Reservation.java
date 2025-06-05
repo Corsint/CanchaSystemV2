@@ -3,6 +3,7 @@ package com.example.CanchaSystem.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"matchDate", "cancha_id"})
+)
 public class Reservation {
 
     @Id
@@ -27,14 +31,25 @@ public class Reservation {
     private Cancha cancha;
 
     @Column(nullable = false)
-    @Future
+    @PastOrPresent
     private LocalDateTime reservationDate;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     @Future
     private LocalDateTime matchDate;
 
     @Column(nullable = false)
     @Min(1)
     private Double deposit;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status = ReservationStatus.PENDING;
+
+    @PrePersist
+    public void prePersist() {
+        if (reservationDate == null) {
+            reservationDate = LocalDateTime.now();
+        }
+    }
 }

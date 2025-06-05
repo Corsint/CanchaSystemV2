@@ -34,12 +34,10 @@ public class OwnerService {
     }
 
     public List<Owner> getAllOwners() throws NoOwnersException {
-        if(!ownerRepository.findAll().isEmpty()){
-            return ownerRepository.findAll();
-        }else
+        List<Owner> owners = ownerRepository.findAll();
+        if(owners.isEmpty())
             throw new NoOwnersException("Todavia no hay dueños registrados");
-
-
+        return owners;
     }
 
     public Owner updateOwner(Owner owner) throws OwnerNotFoundException {

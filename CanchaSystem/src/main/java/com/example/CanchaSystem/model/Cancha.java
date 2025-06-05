@@ -57,6 +57,7 @@ public class Cancha {
     private CanchaBrand brand;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CanchaType canchaType;
 
 }

@@ -47,11 +47,11 @@ public class ClientService {
     }
 
     public List<Client> getAllClients() throws NoClientsException {
-        List<Client> clientes = clientRepository.findAll();
-        if(!clientes.isEmpty()){
-            return clientes;
-        }else
+        List<Client> clients = clientRepository.findAll();
+        if(clients.isEmpty())
             throw new NoClientsException("Todavia no hay clientes registrados");
+        return clients;
+
     }
 
     public Client updateClient(Client client) throws ClientNotFoundException {

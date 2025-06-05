@@ -7,6 +7,7 @@ import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.model.Reservation;
+import com.example.CanchaSystem.model.ReservationStatus;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.ReservationRespository;
@@ -102,6 +103,22 @@ public class ReservationService {
         return allHours.stream()
                 .filter(availableHour -> !reservedHours.contains(availableHour))
                 .collect(Collectors.toList());
+    }
+
+    public Reservation completeReservation(Reservation reservation){
+        if(reservationRespository.existsById(reservation.getId())){
+            reservation.setStatus(ReservationStatus.COMPLETED);
+            return reservationRespository.save(reservation);
+        }else
+            throw new ReservationNotFoundException("Reserva no encontrada");
+    }
+
+    public Reservation cancelReservation(Reservation reservation){
+        if(reservationRespository.existsById(reservation.getId())){
+            reservation.setStatus(ReservationStatus.CANCELED);
+            return reservationRespository.save(reservation);
+        }else
+            throw new ReservationNotFoundException("Reserva no encontrada");
     }
 
 }

@@ -26,9 +26,10 @@ public class CanchaBrandService {
     }
 
     public List<CanchaBrand> getAllCanchaBrands() throws NoCanchaBrandsException {
-        if (!canchaBrandRepository.findAll().isEmpty()) {
-            return canchaBrandRepository.findAll();
-        } else throw new NoCanchaBrandsException("Todavia no hay Marcas registradas");
+        List<CanchaBrand> brands = canchaBrandRepository.findAll();
+        if (brands.isEmpty())
+            throw new NoCanchaBrandsException("Todavia no hay Marcas registradas");
+        return brands;
     }
 
     public CanchaBrand updateCanchaBrand(CanchaBrand canchaBrand) throws CanchaBrandNotFoundException {
