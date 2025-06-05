@@ -11,6 +11,7 @@ import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class ClientService {
 
     @Autowired
     private RoleRepository roleRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public Client insertClient(Client client) {
@@ -42,6 +46,8 @@ public class ClientService {
         Role clientRole = roleRepo.findByName("CLIENT")
                 .orElseGet(() -> roleRepo.save(new Role("CLIENT")));
         client.setRole(clientRole);
+
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
 
         return clientRepository.save(client);
     }

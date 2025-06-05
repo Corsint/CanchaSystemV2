@@ -1,5 +1,7 @@
 package com.example.CanchaSystem.config;
 
+import com.example.CanchaSystem.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -18,32 +20,27 @@ import org.springframework.security.config.Customizer;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private AuthService authService;
+
     @Bean
     public SecurityFilterChain fc(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints públicos
-                        .requestMatchers("/api/public",
-                                "/client",
-                                "/client/findall",
-                                "/insert",
-                                "/home.html",  // allow static HTML
-                                "/**",            // allow root path
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**",
-                                "/ejemplo.html",
-                                "/register.html"
+                        .requestMatchers(
+                                "/register.html", "/client/insert",
+                                "/css/**", "/js/**", "/images/**",
+                                "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
-                        // El resto requiere autenticación
                         .anyRequest().authenticated()
                 )
-                // Formulario de login por defecto
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .logout(LogoutConfigurer::permitAll);
+                .formLogin(form -> form
+                        .defaultSuccessUrl("/ejemplo.html", true) // <- redirige SIEMPRE ahí
+                        .permitAll()
+                )
+                .userDetailsService(authService)
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }
@@ -52,4 +49,5 @@ public class SecurityConfig {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

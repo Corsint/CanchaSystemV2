@@ -10,17 +10,22 @@ import com.example.CanchaSystem.exception.review.NoReviewsException;
 import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Review;
+import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public Review insertReview(Review review) {
                         return reviewRepository.save(review);
@@ -63,8 +68,16 @@ public class ReviewService {
             throw new NoReviewsException("Todavia no hay reseñas hechas en la cancha");
     }
 
-    public List<Review> getAllReviewsByClientId(Long clientId) throws NoReviewsException {
-        List<Review> reviews = reviewRepository.findByClientId(clientId);
+    public List<Review> getAllReviewsByClient(String username) throws NoReviewsException, ClientNotFoundException {
+        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+
+        if (clientOpt.isEmpty()) {
+            throw new ClientNotFoundException("Cliente no encontrado");
+        }
+
+        Client client = clientOpt.get();
+
+        List<Review> reviews = reviewRepository.findByClientId(client.getId());
 
         if (!reviews.isEmpty()){
             return reviews;

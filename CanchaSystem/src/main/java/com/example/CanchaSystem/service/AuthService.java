@@ -28,6 +28,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Intentando loguear con username: " + username);
 
         // 1. Buscar en CLIENT
         Client client = clientRepository.findByUsername(username).orElse(null);
@@ -35,7 +36,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     client.getUsername(),
                     client.getPassword(),
-                    List.of(new SimpleGrantedAuthority(client.getRole().getName()))
+                    List.of(new SimpleGrantedAuthority("ROLE_" + client.getRole().getName()))
             );
         }
 
@@ -45,7 +46,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     owner.getUsername(),
                     owner.getPassword(),
-                    List.of(new SimpleGrantedAuthority(owner.getRole().getName()))
+                    List.of(new SimpleGrantedAuthority("ROLE_" + owner.getRole().getName()))
             );
         }
 
@@ -55,7 +56,7 @@ public class AuthService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                     admin.getUsername(),
                     admin.getPassword(),
-                    List.of(new SimpleGrantedAuthority(admin.getRole().getName()))
+                    List.of(new SimpleGrantedAuthority("ROLE_" + admin.getRole().getName()))
             );
         }
 

@@ -55,13 +55,13 @@ public class ReviewController {
             return ResponseEntity.ok(reviewService.findReviewById(id));
     }
 
-//    @GetMapping("/findReviewsByClient")
-//    public ResponseEntity<?> findReviewsByClientId(Authentication auth) {
-//        Client client = (Client) auth.getPrincipal();
-//        return ResponseEntity.ok(reviewService.getAllReviewsByClientId(client.getId()));
-//    }
+    @GetMapping("/findReviewsByClient")
+    public ResponseEntity<?> findReviewsByClientId(Authentication auth) {
+        String username = auth.getName();
 
-    //SIN VERIFICAR
+        return ResponseEntity.ok(reviewService.getAllReviewsByClient(username));
+    }
+
 
 
 }
