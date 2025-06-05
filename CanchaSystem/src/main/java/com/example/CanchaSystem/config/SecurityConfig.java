@@ -36,11 +36,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/ejemplo.html", true) // <- redirige SIEMPRE ahí
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
                 .userDetailsService(authService)
                 .logout(logout -> logout.permitAll());
+
 
         return http.build();
     }

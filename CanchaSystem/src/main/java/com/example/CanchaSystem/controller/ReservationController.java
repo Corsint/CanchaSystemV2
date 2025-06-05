@@ -62,7 +62,7 @@ public class ReservationController {
     }
 
     @GetMapping("/getMyReservations")
-    public ResponseEntity<?> getAllMyReservations( Long clientid){
+    public ResponseEntity<?> getAllMyReservations(Long clientid){
         return ResponseEntity.ok(reservationService.findReservationsByClientId(clientid));
     }
 
