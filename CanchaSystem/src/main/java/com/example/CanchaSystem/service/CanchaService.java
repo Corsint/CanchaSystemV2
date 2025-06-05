@@ -89,10 +89,30 @@ public class CanchaService {
         return canchaRepository.findById(id).orElseThrow(()-> new CanchaNotFoundException("Cancha no encontrada"));
     }
 
-    public List<Cancha> findCanchasByMarcaId(Long canchaBrandId) throws NoCanchasException{
-        List<Cancha> canchas = canchaRepository.findByBrandId(canchaBrandId);
-        if (canchas.isEmpty())
-            throw new NoCanchasException("No hay canchas");
+    public List<Cancha> getAllActiveCanchas() throws NoCanchasException {
+        List<Cancha> canchas =  canchaRepository.findByActive(true);
+        if(canchas.isEmpty()){
+            throw new NoCanchasException("Todavia no hay Canchas activas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> getActiveCanchasByOwnerId(Long ownerId) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByBrandOwnerIdAndActive(ownerId,true);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("El dueño no tiene canchas activas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> getActiveCanchasByBrandId(Long brandId) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByBrandIdAndActive(brandId,true);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("La marca no tiene canchas activas");
+        }
+
         return canchas;
     }
 }
