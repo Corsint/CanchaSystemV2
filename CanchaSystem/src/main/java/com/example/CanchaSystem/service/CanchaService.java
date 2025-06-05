@@ -89,5 +89,10 @@ public class CanchaService {
         return canchaRepository.findById(id).orElseThrow(()-> new CanchaNotFoundException("Cancha no encontrada"));
     }
 
-
+    public List<Cancha> findCanchasByMarcaId(Long canchaBrandId) throws NoCanchasException{
+        List<Cancha> canchas = canchaRepository.findByBrandId(canchaBrandId);
+        if (canchas.isEmpty())
+            throw new NoCanchasException("No hay canchas");
+        return canchas;
+    }
 }

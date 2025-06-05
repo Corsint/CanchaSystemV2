@@ -70,7 +70,11 @@ public class ReservationService {
     }
 
     public List<Reservation> findReservationsByClientId(Long clientId){
-        return reservationRespository.findByClientId(clientId).get();
+        return reservationRespository.findByClientId(clientId);
+    }
+
+    public List<Reservation> findReservationsByCanchaId(Long canchaId){
+        return reservationRespository.findByCanchaId(canchaId);
     }
 
     public List<LocalTime> getAvailableHours(Long canchaId, LocalDate day)throws CanchaNotFoundException{
@@ -89,8 +93,7 @@ public class ReservationService {
         LocalDateTime until = day.atTime(canchaAux.getClosingHour());
 
         List<Reservation> reservations = reservationRespository
-                .findByCanchaIdAndMatchDateBetween(canchaId,from,until)
-                .get();
+                .findByCanchaIdAndMatchDateBetween(canchaId,from,until);
 
         Set<LocalTime> reservedHours = reservations.stream()
                 .map(reservation -> reservation.getMatchDate().toLocalTime())

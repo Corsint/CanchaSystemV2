@@ -14,7 +14,7 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
     boolean existsById(Long id);
     boolean existsBymatchDate(LocalDateTime date);
 
-    Optional<List<Reservation>> findByCanchaId(Long canchaId);
-    Optional<List<Reservation>> findByClientId(Long clientId);
-    Optional<List<Reservation>> findByCanchaIdAndMatchDateBetween(Long canchaId, LocalDateTime from, LocalDateTime until);
+    List<Reservation> findByCanchaId(Long canchaId);
+    List<Reservation> findByClientId(Long clientId);
+    List<Reservation> findByCanchaIdAndMatchDateBetween(Long canchaId, LocalDateTime from, LocalDateTime until);
 }

@@ -55,7 +55,6 @@ public class OwnerService {
             ownerRepository.deleteById(id);
         }else
             throw new OwnerNotFoundException("Dueño no encontrado");
-
     }
 
     public Owner findOwnerById(Long id) throws OwnerNotFoundException {
