@@ -21,31 +21,29 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
-    RoleRepository roleRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
 
 
-    public Client insertClient(Client client)
-            throws UsernameAlreadyExistsException,
-            MailAlreadyRegisteredException,
-            CellNumberAlreadyAddedException,
-            BankAlreadyLinkedException {
+    public Client insertClient(Client client) {
+        if (clientRepository.existsByUsername(client.getUsername())) {
+            throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+        }
+
+        if (clientRepository.existsByMail(client.getMail())) {
+            throw new MailAlreadyRegisteredException("El correo ya esta registrado");
+        }
+
+        if (clientRepository.existsByCellNumber(client.getCellNumber())) {
+            throw new CellNumberAlreadyAddedException("El numero ya esta añadido");
+        }
+
         Role clientRole = roleRepo.findByName("CLIENT")
                 .orElseGet(() -> roleRepo.save(new Role("CLIENT")));
-        if(!clientRepository.existsByUsername(client.getUsername()))
-            if(!clientRepository.existsByMail(client.getMail()))
-                if(!clientRepository.existsByCellNumber(client.getCellNumber()))
-                    if(!clientRepository.existsByBank(client.getBank())) {
-                        client.setRole(clientRole);
-                        return clientRepository.save(client);
-                    }
-                    else
-                        throw new BankAlreadyLinkedException("La cuenta ya esta vinculada");
-                else
-                    throw new CellNumberAlreadyAddedException("El numero ya esta añadido");
-            else
-                throw new MailAlreadyRegisteredException("El correo ya esta registrado");
-        else
-            throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+        client.setRole(clientRole);
+
+        return clientRepository.save(client);
     }
 
     public List<Client> getAllClients() throws NoClientsException {

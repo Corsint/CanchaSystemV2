@@ -4,7 +4,9 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.model.Owner;
+import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.OwnerRepository;
+import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -15,10 +17,20 @@ public class OwnerService {
     @Autowired
     private OwnerRepository ownerRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     public Owner insertOwner(Owner owner) throws UsernameAlreadyExistsException {
-        if(!ownerRepository.existsByUsername(owner.getUsername()))
+        Role ownerRole = roleRepository.findByName("OWNER")
+                .orElseGet(() -> roleRepository.save(new Role("OWNER")));
+        owner.setRole(ownerRole);
+
+        if(!ownerRepository.existsByUsername(owner.getUsername())) {
+            owner.setRole(ownerRole);
+
             return ownerRepository.save(owner);
-        else throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
+
+        }  else throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
     }
 
     public List<Owner> getAllOwners() throws NoOwnersException {

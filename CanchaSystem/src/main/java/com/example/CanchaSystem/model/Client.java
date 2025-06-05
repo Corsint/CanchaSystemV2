@@ -44,14 +44,6 @@ public class Client {
     )
     private String cellNumber;
 
-    @Column(nullable = true,unique = true)
-    @Size(
-            min = 5,
-            max = 80,
-            message = "The bank number must have between 5 and 10 caracters"
-    )
-    private String bank;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;

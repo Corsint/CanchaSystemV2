@@ -4,7 +4,9 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.admin.AdminNotFoundException;
 import com.example.CanchaSystem.exception.admin.NoAdminsException;
 import com.example.CanchaSystem.model.Admin;
+import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.AdminRepository;
+import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,19 @@ public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     public Admin insertAdmin(Admin admin) throws UsernameAlreadyExistsException {
-        if(!adminRepository.existsByUsername(admin.getUsername()))
+        Role adminRole = roleRepository.findByName("ADMIN")
+                .orElseGet(() -> roleRepository.save(new Role("ADMIN")));
+
+        if (!adminRepository.existsByUsername(admin.getUsername())) {
+            admin.setRole(adminRole);
             return adminRepository.save(admin);
+        }
         else throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
-    }
+        }
 
     public List<Admin> getAllAdmins() throws NoAdminsException {
         if(!adminRepository.findAll().isEmpty()){
