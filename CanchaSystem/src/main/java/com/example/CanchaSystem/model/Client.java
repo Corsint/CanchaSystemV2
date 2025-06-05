@@ -18,6 +18,20 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
+    @Size(
+            min = 2,
+            message = "The Name must have 2 caracters"
+    )
+    private String name;
+
+    @Column(nullable = false)
+    @Size(
+            min = 2,
+            message = "The Last Name must have 2 caracters"
+    )
+    private String lastName;
+
     @Column(nullable = false,unique = true)
     @Size(
             min = 4,

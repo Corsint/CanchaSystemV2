@@ -7,20 +7,23 @@
 <body>
 <h1>Formulario de Registro</h1>
 <form id="registerForm">
-    <label>Username:</label><br>
+    <label>Nombre:</label><br>
+    <input type="text" id="name" name="name" minlength="2" required><br><br>
+
+    <label>Apellido:</label><br>
+    <input type="text" id="lastname" name="lastname" minlength="3" required><br><br>
+
+    <label>Nombre de usuario:</label><br>
     <input type="text" id="username" name="username" minlength="4" required><br><br>
 
-    <label>Password:</label><br>
+    <label>Contraseña:</label><br>
     <input type="password" id="password" name="password" minlength="4" required><br><br>
 
     <label>Email:</label><br>
     <input type="email" id="mail" name="mail" required><br><br>
 
-    <label>Cell Number:</label><br>
+    <label>Telefono:</label><br>
     <input type="text" id="cellNumber" name="cellNumber" minlength="8" maxlength="14"><br><br>
-
-    <label>Bank Number:</label><br>
-    <input type="text" id="bank" name="bank" minlength="5" maxlength="80"><br><br>
 
     <button type="submit">Registrarse</button>
 </form>
@@ -32,11 +35,12 @@
         event.preventDefault();
 
         const client = {
+            name: document.getElementById("name").value,
+            lastName: document.getElementById("lastname").value,
             username: document.getElementById("username").value,
             password: document.getElementById("password").value,
             mail: document.getElementById("mail").value,
             cellNumber: document.getElementById("cellNumber").value,
-            bank: document.getElementById("bank").value
         };
 
         fetch("/client/insert", {

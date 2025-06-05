@@ -14,6 +14,7 @@ import com.example.CanchaSystem.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,16 +44,24 @@ public class ReviewController {
             return ResponseEntity.ok(reviewService.updateReview(review));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable Long id) {
             reviewService.deleteReview(id);
             return ResponseEntity.ok(Map.of("message","Reseña eliminada"));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/findReviewById/{id}")
     public ResponseEntity<?> findReviewById(@PathVariable Long id) {
             return ResponseEntity.ok(reviewService.findReviewById(id));
     }
+
+//    @GetMapping("/findReviewsByClient")
+//    public ResponseEntity<?> findReviewsByClientId(Authentication auth) {
+//        Client client = (Client) auth.getPrincipal();
+//        return ResponseEntity.ok(reviewService.getAllReviewsByClientId(client.getId()));
+//    }
+
+    //SIN VERIFICAR
 
 
 }

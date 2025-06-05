@@ -66,7 +66,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.findReservationsByClientId(clientid));
     }
 
-    @GetMapping("/getAvailableHours/{canchaId}/{day}") // ejemplo: http://localhost:8080/api/reservations/getAvailableHours/1/2025-06-10
+    @GetMapping("/getAvailableHours/{canchaId}/{day}")
     @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<List<LocalTime>> obtainAvailableHours(
             @PathVariable Long canchaId,

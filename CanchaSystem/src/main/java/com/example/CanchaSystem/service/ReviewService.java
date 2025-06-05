@@ -54,22 +54,22 @@ public class ReviewService {
         return reviewRepository.findById(id).orElseThrow(()-> new ReviewNotFoundException("Reseña no encontrada"));
     }
 
-    public List<Review> getAllReviewsOfCanchaById(Long canchaId) throws NoReviewsException {
-        if(!reviewRepository.findByCanchaId(canchaId).isEmpty()){
-            return reviewRepository.findAll();
+    public List<Review> getAllReviewsOfCanchaByCanchaId(Long canchaId) throws NoReviewsException {
+        List<Review> reviews = reviewRepository.findByCanchaId(canchaId);
+
+        if (!reviews.isEmpty()){
+            return reviews;
         }else
             throw new NoReviewsException("Todavia no hay reseñas hechas en la cancha");
-
-
     }
 
     public List<Review> getAllReviewsByClientId(Long clientId) throws NoReviewsException {
-        if(!reviewRepository.findByClientId(clientId).isEmpty()){
-            return reviewRepository.findAll();
+        List<Review> reviews = reviewRepository.findByClientId(clientId);
+
+        if (!reviews.isEmpty()){
+            return reviews;
         }else
             throw new NoReviewsException("Todavia no hay reseñas hechas por el cliente");
-
-
     }
 
 }
