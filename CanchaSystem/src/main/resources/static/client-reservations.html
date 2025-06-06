@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis reservas</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+<h1>Mis reservas</h1>
+<ul id="listaReservas"></ul>
+
+<button onclick="window.location.href='/home-client.html'">Volver</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+      const lista = document.getElementById("listaReservas");
+      lista.innerHTML = "<li>Cargando reservas...</li>";
+
+      try {
+          const res = await fetch("http://localhost:8080/reservation/findReservationsByClient");
+          const reservas = await res.json();
+
+          if (reservas.length === 0) {
+              lista.innerHTML = "<li>Aún no hay reservas.</li>";
+              return;
+          }
+
+          lista.innerHTML = "";
+          reservas.forEach(r => {
+              const li = document.createElement("li");
+              li.innerHTML = `
+                  <strong>${r.cancha.name}</strong> - ${r.cancha.brand.brandName} - ${r.matchDate} - $${r.deposit} - ${r.status}
+              `;
+              lista.appendChild(li);
+          });
+      } catch(err) {
+          lista.innerHTML = "<li>Error al cargar las reservas.</li>";
+          console.error(err);
+      }
+  });
+</script>
+</body>
+</html>

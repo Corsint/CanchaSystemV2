@@ -2,10 +2,12 @@ package com.example.CanchaSystem.service;
 
 
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
 import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
 import com.example.CanchaSystem.model.Cancha;
+import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.ReservationStatus;
 import com.example.CanchaSystem.repository.CanchaRepository;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,8 +73,23 @@ public class ReservationService {
         return reservationRespository.findById(id).orElseThrow(()-> new ReservationNotFoundException("Reserva no encontrada"));
     }
 
-    public List<Reservation> findReservationsByClientId(Long clientId){
-        return reservationRespository.findByClientId(clientId);
+    public List<Reservation> findReservationsByClient(String username) throws NoReservationsException {
+        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+
+        if (clientOpt.isEmpty()) {
+            throw new ClientNotFoundException("Cliente no encontrado");
+        }
+
+        Client client = clientOpt.get();
+
+        List<Reservation> reservations = reservationRespository.findByClientId(client.getId());
+
+        if (!reservations.isEmpty()) {
+            return reservations;
+        } else {
+            throw new NoReservationsException("Todavia no hay reservas hechas por el cliente");
+        }
+
     }
 
     public List<Reservation> findReservationsByCanchaId(Long canchaId){

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Reseñas</title>
+</head>
+<body>
+    <h1>Mis Reseñas</h1>
+    <ul id="listaReseñas"></ul>
+
+    <button onclick="window.location.href='/home-client.html'">Volver</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const lista = document.getElementById("listaReseñas");
+            lista.innerHTML = "<li>Cargando reseñas...</li>";
+
+            try {
+                const res = await fetch("http://localhost:8080/review/findReviewsByClient");
+                const resenas = await res.json();
+
+                if (resenas.length == 0) {
+                    lista.innerHTML = "<li>Aun no hay reseñas.</li>";
+                    return;
+                }
+
+                lista.innerHTML = "";
+                resenas.forEach(r => {
+                    const li = document.createElement("li");
+                    const fullStars = Math.round(r.rating);  // o Math.floor / Math.ceil si preferís
+                    const stars = "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
+                    li.innerHTML = `<strong>${r.cancha.name}</strong> - ${r.cancha.brand.brandName} - ${stars} - ${r.message}`;
+                    lista.appendChild(li);
+                });
+            } catch(err) {
+                lista.innerHTML = "<li>Error al cargar las reseñas.</li>";
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>

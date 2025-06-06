@@ -93,9 +93,11 @@ public class ReservationController {
             return ResponseEntity.ok(reservationService.findReservationById(id));
     }
 
-    @GetMapping("/getMyReservations")
-    public ResponseEntity<?> getAllMyReservations(Long clientid){
-        return ResponseEntity.ok(reservationService.findReservationsByClientId(clientid));
+    @GetMapping("/findReservationsByClient")
+    public ResponseEntity<?> findReservationsByClient(Authentication auth){
+        String username = auth.getName();
+
+        return ResponseEntity.ok(reservationService.findReservationsByClient(username));
     }
 
     @GetMapping("/getAvailableHours/{canchaId}/{day}")
