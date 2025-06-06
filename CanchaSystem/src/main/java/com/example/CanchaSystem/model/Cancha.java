@@ -49,9 +49,6 @@ public class Cancha {
     @Column(nullable = false)
     private boolean canShower;
 
-    //private boolean birthday;
-    //private double birthday_price;
-
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private CanchaBrand brand;

@@ -121,6 +121,20 @@ public class ReservationService {
             throw new ReservationNotFoundException("Reserva no encontrada");
     }
 
+    public List<Reservation> getReservationsByBrandId(Long brandId) throws NoReservationsException{
+        List<Reservation> reservations = reservationRespository.findAllByBrandId(brandId);
+        if (reservations.isEmpty())
+            throw new NoReservationsException("Todavía no hay reseñas hechas");
+        return reservations;
+    }
+
+    public List<Reservation> getReservationsByOwnerId(Long ownerId) throws NoReservationsException{
+        List<Reservation> reservations = reservationRespository.findAllByOwnerId(ownerId);
+        if (reservations.isEmpty())
+            throw new NoReservationsException("Todavía no hay reseñas hechas");
+        return reservations;
+    }
+
 }
 
 

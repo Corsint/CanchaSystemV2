@@ -1,14 +1,5 @@
 package com.example.CanchaSystem.controller;
 
-import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.client.NoClientsException;
-import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
-import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
-import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
-import com.example.CanchaSystem.exception.review.NoReviewsException;
-import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
-import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/review")
@@ -60,6 +49,11 @@ public class ReviewController {
         String username = auth.getName();
 
         return ResponseEntity.ok(reviewService.getAllReviewsByClient(username));
+    }
+
+    @GetMapping("/findReviewsByCanchaId/{canchaId}")
+    public ResponseEntity<?> findReviewsByCanchaId(@PathVariable Long canchaId){
+        return ResponseEntity.ok(reviewService.getAllReviewsByCanchaId(canchaId));
     }
 
 

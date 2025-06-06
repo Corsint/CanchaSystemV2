@@ -1,11 +1,6 @@
 package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.client.NoClientsException;
-import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
-import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
-import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.review.NoReviewsException;
 import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.Client;
@@ -59,7 +54,7 @@ public class ReviewService {
         return reviewRepository.findById(id).orElseThrow(()-> new ReviewNotFoundException("Reseña no encontrada"));
     }
 
-    public List<Review> getAllReviewsOfCanchaByCanchaId(Long canchaId) throws NoReviewsException {
+    public List<Review> getAllReviewsByCanchaId(Long canchaId) throws NoReviewsException {
         List<Review> reviews = reviewRepository.findByCanchaId(canchaId);
 
         if (!reviews.isEmpty()){

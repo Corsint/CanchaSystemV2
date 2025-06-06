@@ -20,6 +20,7 @@ public interface CanchaRepository extends JpaRepository<Cancha,Long> {
     List<Cancha> findByBrandIdAndActive(Long id,boolean active);
     List<Cancha> findByBrandId(Long id);
     List<Cancha> findByActive(boolean active);
+
     List<Cancha> findByCanchaTypeAndActive(CanchaType canchaType,boolean active);
     List<Cancha> findByHasRoofAndActive(boolean roof,boolean active);
     List<Cancha> findByCanShowerAndActive(boolean shower, boolean active);

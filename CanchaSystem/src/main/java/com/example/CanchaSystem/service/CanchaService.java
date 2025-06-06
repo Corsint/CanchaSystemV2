@@ -5,6 +5,7 @@ import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.cancha.NoCanchasException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
 import com.example.CanchaSystem.model.Cancha;
+import com.example.CanchaSystem.model.CanchaType;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,6 +112,51 @@ public class CanchaService {
         List<Cancha> canchas = canchaRepository.findByBrandIdAndActive(brandId,true);
         if (canchas.isEmpty()) {
             throw new NoCanchasException("La marca no tiene canchas activas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> filterByCanchatype(CanchaType canchaType) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByCanchaTypeAndActive(canchaType,true);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("No se encontraron canchas de "+canchaType.toString());
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> filterByRoof(boolean roof) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByHasRoofAndActive(roof,true);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("No se encontraron canchas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> filterByShower(boolean shower) throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByCanShowerAndActive(shower,true);
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("No se encontraron canchas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> orderByTotalAsc() throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByActiveTrueOrderByTotalAmountAsc();
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("No se encontraron canchas");
+        }
+
+        return canchas;
+    }
+
+    public List<Cancha> orderByTotalDesc() throws NoCanchasException {
+        List<Cancha> canchas = canchaRepository.findByActiveTrueOrderByTotalAmountDesc();
+        if (canchas.isEmpty()) {
+            throw new NoCanchasException("No se encontraron canchas");
         }
 
         return canchas;

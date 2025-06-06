@@ -8,4 +8,5 @@ import java.util.List;
 public interface CanchaBrandRepository extends JpaRepository<CanchaBrand, Long> {
     public boolean existsByBrandName(String name);
 
+    public List<CanchaBrand> findByOwnerId(long ownerId);
 }

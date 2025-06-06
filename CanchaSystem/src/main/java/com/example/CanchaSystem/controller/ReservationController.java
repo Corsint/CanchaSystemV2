@@ -78,5 +78,17 @@ public class ReservationController {
             return ResponseEntity.ok(hours);
     }
 
+    @GetMapping("/getAllMyReservations")
+    @PreAuthorize("hasRole('OWNER')")
+    private ResponseEntity<?> getAllMyReservationsOwner(Long ownerId){
+        return ResponseEntity.ok(reservationService.getReservationsByOwnerId(ownerId));
+    }
+
+    @GetMapping("/getAllMyReservationsByBrand")
+    @PreAuthorize("hasRole('OWNER')")
+    private ResponseEntity<?> getAllMyReservationsByBrand(Long brandId){
+        return ResponseEntity.ok(reservationService.getReservationsByBrandId(brandId));
+    }
+
 
 }

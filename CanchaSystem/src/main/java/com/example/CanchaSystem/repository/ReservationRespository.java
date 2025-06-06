@@ -3,6 +3,8 @@ package com.example.CanchaSystem.repository;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -21,4 +23,17 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
 
     List<Reservation> findByMatchDateBetween(LocalDateTime from, LocalDateTime until);
     List<Reservation> findByMatchDateBeforeAndStatus(LocalDateTime now, ReservationStatus status);
+
+    @Query("SELECT r FROM Reservation r " +
+            "JOIN r.cancha c " +
+            "JOIN c.brand b " +
+            "WHERE b.id = :brandId")
+    List<Reservation> findAllByBrandId(@Param("brandId") Long brandId);
+
+    @Query("SELECT r FROM Reservation r " +
+            "JOIN r.cancha c " +
+            "JOIN c.brand b " +
+            "JOIN b.owner o " +
+            "WHERE o.id = :ownerId")
+    List<Reservation> findAllByOwnerId(@Param("ownerId") Long ownerId);
 }
