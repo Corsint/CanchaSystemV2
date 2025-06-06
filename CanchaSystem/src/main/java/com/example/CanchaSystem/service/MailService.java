@@ -28,12 +28,40 @@ public class MailService {
         message.setTo(to);
         message.setSubject("Recordatorio de partido mañana");
         message.setText(String.format(
-                "Hola %s,\n\nTe recordamos que mañana tenés un partido reservado en la cancha %s a las %s.\n\n¡Éxitos!",
+                "Hola %s," +
+                        "\n\n" +
+                        "Te recordamos que mañana tenés un partido reservado en la cancha %s a las %s." +
+                        "\n\n¡Éxitos!",
                 reservation.getClient().getName(),
                 reservation.getCancha().getName(),
                 reservation.getMatchDate().toString()
         ));
-        message.setFrom("tu-correo@gmail.com");
+        message.setFrom("canchasystem@gmail.com");
+
+        mailSender.send(message);
+    }
+
+    public void sendReservationNotice(String to,Reservation reservation){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Reserva confirmada en "+reservation.getCancha().getName());
+        message.setText(String.format(
+                "Hola %s," +
+                        "\n\n" +
+                        "Te avisamos que se confirmó una reserva de %s en %s" +
+                        "\n\n" +
+                        "Fecha de creacion de la reserva: %s" +
+                        "\n\n" +
+                        "Fecha establecida del partido: %s" +
+                        "\n\n" +
+                        "Saludos"
+                ,reservation.getCancha().getBrand().getOwner().getName()
+                ,reservation.getClient().getName()
+                ,reservation.getCancha().getName()
+                ,reservation.getReservationDate().toString()
+                ,reservation.getMatchDate().toString()
+        ));
+        message.setFrom("canchasystem@gmail.com");
 
         mailSender.send(message);
     }

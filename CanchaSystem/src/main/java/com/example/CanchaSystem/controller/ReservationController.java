@@ -12,6 +12,7 @@ import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
 import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
+import com.example.CanchaSystem.service.MailService;
 import com.example.CanchaSystem.service.ReservationService;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,16 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private MailService mailService;
+
     @PostMapping("/insert")
     public ResponseEntity<?> insertReservation(@Validated @RequestBody Reservation reservation) {
+            mailService.sendReservationNotice(reservation
+                    .getCancha()
+                    .getBrand()
+                    .getOwner()
+                    .getMail(),reservation);
             return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
     }
 
