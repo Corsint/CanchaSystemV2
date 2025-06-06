@@ -67,7 +67,7 @@ public class ReservationController {
 
         reservation.setCancha(cancha);
 
-        //mailService.sendReservationNotice(cancha.getBrand().getOwner().getMail(), reservation);
+        mailService.sendReservationNotice(cancha.getBrand().getOwner().getMail(), reservation);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
     }

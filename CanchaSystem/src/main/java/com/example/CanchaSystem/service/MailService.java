@@ -1,6 +1,7 @@
 package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.model.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -8,11 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
-    private final JavaMailSender mailSender;
-
-    public MailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    @Autowired
+    private JavaMailSender mailSender;
 
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -41,28 +39,42 @@ public class MailService {
         mailSender.send(message);
     }
 
-    public void sendReservationNotice(String to,Reservation reservation){
+    public void sendReservationNotice(String to, Reservation reservation) {
+        // Validaciones defensivas
+        if (reservation == null ||
+                reservation.getClient() == null ||
+                reservation.getCancha() == null ||
+                reservation.getCancha().getBrand() == null ||
+                reservation.getCancha().getBrand().getOwner() == null) {
+            throw new IllegalStateException("La reserva no tiene datos completos para enviar el mail.");
+        }
+
+        // Construcción del mensaje
+        String body = String.format("""
+        Hola %s,
+
+        Te avisamos que se confirmó una reserva de %s en la cancha "%s".
+
+        Fecha de creación de la reserva: %s
+        Fecha del partido: %s
+
+        Saludos,
+        CanchaSystem.
+        """,
+                reservation.getCancha().getBrand().getOwner().getName(),
+                reservation.getClient().getName(),
+                reservation.getCancha().getName(),
+                reservation.getReservationDate(),
+                reservation.getMatchDate()
+        );
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setSubject("Reserva confirmada en "+reservation.getCancha().getName());
-        message.setText(String.format(
-                "Hola %s," +
-                        "\n\n" +
-                        "Te avisamos que se confirmó una reserva de %s en %s" +
-                        "\n\n" +
-                        "Fecha de creacion de la reserva: %s" +
-                        "\n\n" +
-                        "Fecha establecida del partido: %s" +
-                        "\n\n" +
-                        "Saludos"
-                ,reservation.getCancha().getBrand().getOwner().getName()
-                ,reservation.getClient().getName()
-                ,reservation.getCancha().getName()
-                ,reservation.getReservationDate().toString()
-                ,reservation.getMatchDate().toString()
-        ));
-        message.setFrom("canchasystem@gmail.com");
+        message.setSubject("Reserva confirmada en " + reservation.getCancha().getName());
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com"); // solo si tu SMTP lo requiere explícitamente
 
+        // Envío
         mailSender.send(message);
     }
 
