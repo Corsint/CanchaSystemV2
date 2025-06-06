@@ -10,20 +10,25 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
 import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
+import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
+import com.example.CanchaSystem.model.ReservationStatus;
+import com.example.CanchaSystem.repository.CanchaRepository;
+import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.service.MailService;
 import com.example.CanchaSystem.service.ReservationService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -34,19 +39,37 @@ import java.util.Optional;
 public class ReservationController {
 
     @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private CanchaRepository canchaRepository;
 
     @Autowired
     private MailService mailService;
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insertReservation(@Validated @RequestBody Reservation reservation) {
-            mailService.sendReservationNotice(reservation
-                    .getCancha()
-                    .getBrand()
-                    .getOwner()
-                    .getMail(),reservation);
-            return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<?> insertReservation(@RequestBody Reservation reservation, Authentication auth) {
+        String username = auth.getName();
+        Client client = clientRepository.findByUsername(username)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        reservation.setClient(client); // fuerza el cliente logueado
+        reservation.setReservationDate(LocalDateTime.now());
+        reservation.setDeposit(500.0);
+        reservation.setStatus(ReservationStatus.PENDING);
+
+        Cancha cancha = canchaRepository.findById(reservation.getCancha().getId())
+                .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));
+
+        reservation.setCancha(cancha);
+
+        //mailService.sendReservationNotice(cancha.getBrand().getOwner().getMail(), reservation);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
     }
 
     @GetMapping("/findall")
@@ -76,7 +99,6 @@ public class ReservationController {
     }
 
     @GetMapping("/getAvailableHours/{canchaId}/{day}")
-    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<List<LocalTime>> obtainAvailableHours(
             @PathVariable Long canchaId,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {

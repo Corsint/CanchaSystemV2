@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Canchas Disponibles</title>
+</head>
+<body>
+<h1>Canchas Disponibles</h1>
+<ul id="listaCanchas"></ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const lista = document.getElementById("listaCanchas");
+      lista.innerHTML = "<li>Cargando canchas...</li>";
+
+      try {
+        const res = await fetch("http://localhost:8080/cancha/findallactive");
+        const canchas = await res.json();
+
+        if (canchas.length === 0) {
+          lista.innerHTML = "<li>No hay canchas disponibles.</li>";
+          return;
+        }
+
+        lista.innerHTML = "";
+        canchas.forEach(c => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+          <strong>${c.name}</strong> - ${c.address} (${c.canchaType})<br>
+          Precio: $${c.totalAmount} - Abre: ${c.openingHour} / Cierra: ${c.closingHour}<br>
+          <button onclick="location.href='make-reservation.html?canchaId=${c.id}'">Reservar</button>
+          <hr>
+            `;
+          lista.appendChild(li);
+        });
+      } catch (err) {
+        lista.innerHTML = "<li>Error al cargar las canchas.</li>";
+        console.error(err);
+      }
+    });
+
+    function reservarCancha(id) {
+      alert("Redirigiendo para reservar cancha con ID " + id);
+      // podés usar location.href = `/reservar?id=${id}` o abrir un modal
+    }
+</script>
+</body>
+</html>

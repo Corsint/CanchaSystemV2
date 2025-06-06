@@ -34,6 +34,11 @@ public class CanchaController {
             return ResponseEntity.ok(canchaService.getAllCanchas());
     }
 
+    @GetMapping("/findallactive")
+    public ResponseEntity<?> getAllCanchasActive() {
+        return ResponseEntity.ok(canchaService.getAllActiveCanchas());
+    }
+
     @GetMapping("/findMyCanchas")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> getAllMyCanchas(Authentication auth) {
@@ -71,7 +76,6 @@ public class CanchaController {
     }
 
     @GetMapping("/findCanchaById/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> findAnyCanchaById(@PathVariable Long id) {
             Cancha cancha = canchaService.findCanchaById(id);
             return ResponseEntity.ok(cancha);
