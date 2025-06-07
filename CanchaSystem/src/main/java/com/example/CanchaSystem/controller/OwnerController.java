@@ -3,12 +3,16 @@ package com.example.CanchaSystem.controller;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
+import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Owner;
+import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -22,6 +26,15 @@ public class OwnerController {
     @Autowired
     OwnerService ownerService;
 
+    @Autowired
+    OwnerRepository ownerRepository;
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
+        Owner owner = ownerRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+        return ResponseEntity.ok(owner.getId());
+    }
     @PostMapping("/insert")
     public ResponseEntity<?> insertOwner(@Validated @RequestBody Owner owner) {
             return ResponseEntity.status(HttpStatus.CREATED).body(ownerService.insertOwner(owner));

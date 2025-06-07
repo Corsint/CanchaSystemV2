@@ -7,12 +7,18 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
+import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.service.ClientService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -27,6 +33,16 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
+        Client client = clientRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+        return ResponseEntity.ok(client.getId());
+    }
+
     @PostMapping("/insert")
     public ResponseEntity<?> insertClient(@Validated @RequestBody Client client) {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));
@@ -39,8 +55,13 @@ public class ClientController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update")
-    public ResponseEntity<?> updateClient(@RequestBody Client client) {
-        return ResponseEntity.ok(clientService.updateClient(client));
+    public ResponseEntity<?> updateClient(@RequestBody Client client, HttpServletRequest request) {
+        clientService.updateClient(client);
+
+        SecurityContextHolder.clearContext();
+        request.getSession().invalidate();
+
+        return ResponseEntity.ok("Datos actualizados, inicie sesión nuevamente");
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,7 +71,6 @@ public class ClientController {
             return ResponseEntity.ok(Map.of("message","Cliente eliminado"));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> findClientById(@PathVariable Long id) {
             return ResponseEntity.ok(clientService.findClientById(id));

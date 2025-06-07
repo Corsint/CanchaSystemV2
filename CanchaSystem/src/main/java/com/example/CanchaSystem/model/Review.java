@@ -1,7 +1,7 @@
 package com.example.CanchaSystem.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,16 +25,12 @@ public class Review {
     private Cancha cancha;
 
     @Column(nullable = false)
-    @Size(
-            min = 1,
-            max = 5,
-            message = "Review only accepts values between 1 and 5"
-    )
+    @DecimalMin(value = "1.0", message = "La valoración mínima es 1")
+    @DecimalMax(value = "5.0", message = "La valoración máxima es 5")
     private double rating;
 
-    @Column(nullable = true)
+    @Column()
     @Size(
-            min = 5,
             max = 500,
             message = "Message only accepts caracters between 5 and 500"
     )

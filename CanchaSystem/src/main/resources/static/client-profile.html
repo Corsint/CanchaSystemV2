@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Cliente</title>
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[readonly] {
+            background-color: #f0f0f0;
+            border: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .editable {
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<h1>Mi Perfil</h1>
+<form id="formCliente">
+    <label>Nombre:
+        <input type="text" id="name" readonly>
+    </label>
+    <label>Apellido:
+        <input type="text" id="lastName" readonly>
+    </label>
+    <label>Username:
+        <input type="text" id="username" readonly>
+    </label>
+    <label>Contraseña:
+        <input type="password" id="password" readonly>
+    </label>
+    <label>Email:
+        <input type="email" id="mail" readonly>
+    </label>
+    <label>Celular:
+        <input type="text" id="cellNumber" readonly>
+    </label>
+    <label>Rol:
+        <input type="text" id="role" readonly>
+    </label>
+
+    <button type="button" onclick="habilitarEdicion()">Editar</button>
+    <button type="button" class="hidden" onclick="guardarCambios()">Guardar Cambios</button>
+    <button type="button" onclick="location.href='home-client.html'">Volver</button>
+</form>
+
+<script>
+    let clientId;
+    let roleId;
+
+    async function cargarDatosCliente() {
+        try {
+            const res = await fetch("http://localhost:8080/client/me");
+            clientId = await res.json();
+
+
+            const clienteres = await fetch(`http://localhost:8080/client/${clientId}`);
+            const cliente = await clienteres.json();
+            roleId = cliente.role.id;
+
+
+            document.getElementById("name").value = cliente.name;
+            document.getElementById("lastName").value = cliente.lastName;
+            document.getElementById("username").value = cliente.username;
+            document.getElementById("password").value = cliente.password;
+            document.getElementById("mail").value = cliente.mail;
+            document.getElementById("cellNumber").value = cliente.cellNumber || '';
+            document.getElementById("role").value = cliente.role.name;
+        } catch (error) {
+            alert("Error al cargar los datos del cliente");
+            console.error(error);
+        }
+    }
+
+    function habilitarEdicion() {
+        const campos = ["name", "lastName", "username", "password", "mail", "cellNumber"];
+        campos.forEach(id => {
+            const input = document.getElementById(id);
+            input.readOnly = false;
+            input.classList.add("editable");
+        });
+        document.querySelector("button[onclick='guardarCambios()']").classList.remove("hidden");
+    }
+
+    async function guardarCambios() {
+        const clienteActualizado = {
+            id: clientId,
+            name: document.getElementById("name").value,
+            lastName: document.getElementById("lastName").value,
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+            mail: document.getElementById("mail").value,
+            cellNumber: document.getElementById("cellNumber").value,
+            role: { id: roleId }
+        };
+
+        if (!validarEmail(clienteActualizado.mail)) {
+            alert("El email no tiene un formato válido.");
+            return;
+        }
+
+        try {
+            const res = await fetch("http://localhost:8080/client/update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(clienteActualizado)
+            });
+
+            if (res.ok) {
+                alert("Datos actualizados correctamente 🎉");
+                 window.location.href = "/login.html";
+            } else {
+                alert("Error al guardar los cambios");
+            }
+        } catch (e) {
+            console.error("Error en la actualización:", e);
+            alert("No se pudo guardar");
+        }
+    }
+
+    function validarEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    window.addEventListener("DOMContentLoaded", cargarDatosCliente);
+</script>
+</body>
+</html>

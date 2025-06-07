@@ -80,4 +80,8 @@ public class ReviewService {
             throw new NoReviewsException("Todavia no hay reseñas hechas por el cliente");
     }
 
+    public boolean clientAlreadyReviewedCancha(Long canchaId,Long clientId){
+        return reviewRepository.existsByCanchaIdAndClientId(canchaId,clientId);
+    }
+
 }

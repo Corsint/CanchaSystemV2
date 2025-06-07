@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Long> {
+    boolean existsByCanchaIdAndClientId(Long canchaId, Long clientId);
+
     List<Review> findByCanchaId(Long canchaId);
     List<Review> findByClientId(Long clientId);
 }

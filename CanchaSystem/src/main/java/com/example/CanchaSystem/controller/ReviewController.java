@@ -1,11 +1,16 @@
 package com.example.CanchaSystem.controller;
 
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Review;
+import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +23,21 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private ClientRepository clientRepository;
     @PostMapping("/insert")
-    public ResponseEntity<?> insertReview(@Validated @RequestBody Review review) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.insertReview(review));
+    public ResponseEntity<?> insertReview(
+            @Validated @RequestBody Review review,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        // Buscar el cliente por username del token autenticado
+        Client client = clientRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        review.setClient(client); // Sobrescribir al que vino en el JSON
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(reviewService.insertReview(review));
     }
 
     @GetMapping("/findall")
@@ -54,6 +71,12 @@ public class ReviewController {
     @GetMapping("/findReviewsByCanchaId/{canchaId}")
     public ResponseEntity<?> findReviewsByCanchaId(@PathVariable Long canchaId){
         return ResponseEntity.ok(reviewService.getAllReviewsByCanchaId(canchaId));
+    }
+
+    @GetMapping("/clientReviewExists")
+    public boolean clientAlreadyReviewedCancha(@RequestParam Long canchaId,
+                                               @RequestParam Long clientId){
+        return reviewService.clientAlreadyReviewedCancha(canchaId,clientId);
     }
 
 
