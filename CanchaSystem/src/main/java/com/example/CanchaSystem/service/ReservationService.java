@@ -14,6 +14,7 @@ import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.ReservationRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -153,6 +154,22 @@ public class ReservationService {
         if (reservations.isEmpty())
             throw new NoReservationsException("Todavía no hay reseñas hechas");
         return reservations;
+    }
+
+    @Scheduled(fixedRate = 60000) // cada 60 segundos
+    public void finishPastReservations() {
+        List<Reservation> expired = reservationRespository.findByStatusAndMatchDateBefore(
+                ReservationStatus.PENDING,
+                LocalDateTime.now()
+        );
+
+        for (Reservation r : expired) {
+            r.setStatus(ReservationStatus.COMPLETED);
+        }
+
+        if (!expired.isEmpty()) {
+            reservationRespository.saveAll(expired);
+        }
     }
 
 }

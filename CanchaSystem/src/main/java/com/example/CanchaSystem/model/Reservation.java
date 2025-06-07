@@ -40,7 +40,6 @@ public class Reservation {
 
 //    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(nullable = false)
-    @Future
     private LocalDateTime matchDate;
 
     @Column(nullable = false)

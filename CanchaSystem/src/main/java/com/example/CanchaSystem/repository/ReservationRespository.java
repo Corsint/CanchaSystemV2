@@ -39,4 +39,5 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
             "JOIN b.owner o " +
             "WHERE o.id = :ownerId")
     List<Reservation> findAllByOwnerId(@Param("ownerId") Long ownerId);
+    List<Reservation> findByStatusAndMatchDateBefore(ReservationStatus status, LocalDateTime date);
 }

@@ -60,11 +60,17 @@ public class ClientService {
 
     }
 
-    public Client updateClient(Client client) throws ClientNotFoundException {
-        if(clientRepository.existsById(client.getId())){
-            return clientRepository.save(client);
-        }else
-            throw new ClientNotFoundException("Cliente no encontrado");
+    public Client updateClient(Client clientFromRequest) throws ClientNotFoundException {
+        Client client = clientRepository.findById(clientFromRequest.getId())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        client.setName(clientFromRequest.getName());
+        client.setLastName(clientFromRequest.getLastName());
+        client.setUsername(clientFromRequest.getUsername());
+        client.setMail(clientFromRequest.getMail());
+        client.setCellNumber(clientFromRequest.getCellNumber());
+
+        return clientRepository.save(client);
     }
 
     public void deleteClient(Long id) throws ClientNotFoundException{

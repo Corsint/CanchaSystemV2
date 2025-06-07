@@ -36,17 +36,11 @@
     <label>Username:
         <input type="text" id="username" readonly>
     </label>
-    <label>Contraseña:
-        <input type="password" id="password" readonly>
-    </label>
     <label>Email:
         <input type="email" id="mail" readonly>
     </label>
     <label>Celular:
         <input type="text" id="cellNumber" readonly>
-    </label>
-    <label>Rol:
-        <input type="text" id="role" readonly>
     </label>
 
     <button type="button" onclick="habilitarEdicion()">Editar</button>
@@ -72,10 +66,8 @@
             document.getElementById("name").value = cliente.name;
             document.getElementById("lastName").value = cliente.lastName;
             document.getElementById("username").value = cliente.username;
-            document.getElementById("password").value = cliente.password;
             document.getElementById("mail").value = cliente.mail;
             document.getElementById("cellNumber").value = cliente.cellNumber || '';
-            document.getElementById("role").value = cliente.role.name;
         } catch (error) {
             alert("Error al cargar los datos del cliente");
             console.error(error);
@@ -83,7 +75,7 @@
     }
 
     function habilitarEdicion() {
-        const campos = ["name", "lastName", "username", "password", "mail", "cellNumber"];
+        const campos = ["name", "lastName", "username", "mail", "cellNumber"];
         campos.forEach(id => {
             const input = document.getElementById(id);
             input.readOnly = false;
@@ -98,10 +90,8 @@
             name: document.getElementById("name").value,
             lastName: document.getElementById("lastName").value,
             username: document.getElementById("username").value,
-            password: document.getElementById("password").value,
             mail: document.getElementById("mail").value,
-            cellNumber: document.getElementById("cellNumber").value,
-            role: { id: roleId }
+            cellNumber: document.getElementById("cellNumber").value
         };
 
         if (!validarEmail(clienteActualizado.mail)) {

@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +55,10 @@ public class ReservationController {
     @PostMapping("/insert")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> insertReservation(@RequestBody Reservation reservation, Authentication auth) {
+        if (reservation.getMatchDate() == null || reservation.getMatchDate().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body("La fecha del partido debe ser futura");
+        }
+
         String username = auth.getName();
         Client client = clientRepository.findByUsername(username)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
@@ -122,6 +128,4 @@ public class ReservationController {
     private ResponseEntity<?> getAllMyReservationsByBrand(Long brandId){
         return ResponseEntity.ok(reservationService.getReservationsByBrandId(brandId));
     }
-
-
 }
