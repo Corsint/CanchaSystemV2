@@ -55,6 +55,7 @@
         (${c.canchaType})<br>
         Precio: $${c.totalAmount}
         - Abre: ${c.openingHour} / Cierra: ${c.closingHour}<br>
+        <button onclick="location.href='details-cancha.html?canchaId=${c.id}'">Detalles</button>
         <button onclick="location.href='make-reservation.html?canchaId=${c.id}'">Reservar</button>
         <button id="btn-reseñar-${c.id}" onclick="mostrarFormularioResena(${c.id})">Reseñar</button>
        <div id="resena-form-${c.id}" style="display:none; margin-top:10px;">

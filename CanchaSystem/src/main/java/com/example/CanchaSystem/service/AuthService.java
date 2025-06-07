@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,9 +31,11 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("Intentando loguear con username: " + username);
 
-        // 1. Buscar en CLIENT
-        Client client = clientRepository.findByUsername(username).orElse(null);
-        if (client != null) {
+        // Buscar en CLIENT
+        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+        if (clientOpt.isPresent()) {
+            Client client = clientOpt.get();
+            System.out.println("Usuario encontrado como CLIENT");
             return new org.springframework.security.core.userdetails.User(
                     client.getUsername(),
                     client.getPassword(),
@@ -40,9 +43,12 @@ public class AuthService implements UserDetailsService {
             );
         }
 
-        // 2. Buscar en OWNER
-        Owner owner = ownerRepository.findByUsername(username).orElse(null);
-        if (owner != null) {
+        // Buscar en OWNER
+        Optional<Owner> ownerOpt = ownerRepository.findByUsername(username);
+        if (ownerOpt.isPresent()) {
+            Owner owner = ownerOpt.get();
+            System.out.println("Usuario encontrado como OWNER");
+            System.out.println("Rol cargado para " + username + ": " + owner.getRole().getName());
             return new org.springframework.security.core.userdetails.User(
                     owner.getUsername(),
                     owner.getPassword(),
@@ -50,9 +56,11 @@ public class AuthService implements UserDetailsService {
             );
         }
 
-        // 3. Buscar en ADMIN
-        Admin admin = adminRepository.findByUsername(username).orElse(null);
-        if (admin != null) {
+        // Buscar en ADMIN
+        Optional<Admin> adminOpt = adminRepository.findByUsername(username);
+        if (adminOpt.isPresent()) {
+            Admin admin = adminOpt.get();
+            System.out.println("Usuario encontrado como ADMIN");
             return new org.springframework.security.core.userdetails.User(
                     admin.getUsername(),
                     admin.getPassword(),
@@ -60,7 +68,7 @@ public class AuthService implements UserDetailsService {
             );
         }
 
-        // Si no se encuentra en ningún lado
+        // No encontrado en ninguna tabla
         throw new UsernameNotFoundException("Usuario no encontrado: " + username);
     }
 }
