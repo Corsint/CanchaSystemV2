@@ -1,5 +1,6 @@
 package com.example.CanchaSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
@@ -32,10 +33,12 @@ public class Reservation {
     @JoinColumn(name = "cancha_id",nullable = false)
     private Cancha cancha;
 
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(nullable = false)
     @PastOrPresent
     private LocalDateTime reservationDate;
 
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(nullable = false)
     @Future
     private LocalDateTime matchDate;

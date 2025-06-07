@@ -15,7 +15,8 @@ import java.util.Optional;
 @Repository
 public interface ReservationRespository extends JpaRepository<Reservation,Long> {
     boolean existsById(Long id);
-    boolean existsBymatchDate(LocalDateTime date);
+    boolean existsBymatchDateAndCanchaId(LocalDateTime date,Long canchaId);
+    Optional<Reservation> findById(Long id);
 
     List<Reservation> findByCanchaId(Long canchaId);
     List<Reservation> findByClientId(Long clientId);
@@ -23,6 +24,8 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
 
     List<Reservation> findByMatchDateBetween(LocalDateTime from, LocalDateTime until);
     List<Reservation> findByMatchDateBeforeAndStatus(LocalDateTime now, ReservationStatus status);
+    List<Reservation> findByCanchaIdAndMatchDateBetweenAndStatus(
+            Long canchaId, LocalDateTime start, LocalDateTime end, ReservationStatus status);
 
     @Query("SELECT r FROM Reservation r " +
             "JOIN r.cancha c " +

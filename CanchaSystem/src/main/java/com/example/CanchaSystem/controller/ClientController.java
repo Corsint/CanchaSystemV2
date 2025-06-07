@@ -43,6 +43,13 @@ public class ClientController {
         return ResponseEntity.ok(client.getId());
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<?> getClientName(@AuthenticationPrincipal UserDetails userDetails) {
+        Client client = clientRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+        return ResponseEntity.ok(Map.of("name",client.getName()));
+    }
+
     @PostMapping("/insert")
     public ResponseEntity<?> insertClient(@Validated @RequestBody Client client) {
             return ResponseEntity.status(HttpStatus.CREATED).body(clientService.insertClient(client));

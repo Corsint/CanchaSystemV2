@@ -5,10 +5,21 @@
       <title>Menu Cliente</title>
   </head>
   <body>
-    <h1>Bienvenido!</h1>
+    <h1 id="salute"></h1>
     <button onclick="location.href='client-profile.html'">Mi perfil</button>
     <button onclick="location.href='client-canchas.html'">Canchas disponibles</button>
     <button onclick="location.href='client-reservations.html'">Mis reservas</button>
     <button onclick="location.href='client-reviews.html'">Mis reseñas</button>
   </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("http://localhost:8080/client/name");
+        const data = await res.json();
+        document.getElementById("salute").textContent = `¡Bienvenido ${data.name}!`;
+      } catch (e) {
+        console.error("Error al obtener nombre del cliente:", e);
+      }
+    });
+  </script>
 </html>

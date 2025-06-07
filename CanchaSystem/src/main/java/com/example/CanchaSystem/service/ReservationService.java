@@ -39,7 +39,7 @@ public class ReservationService {
 
     public Reservation insertReservation(Reservation reservation)
             throws IllegalReservationDateException {
-        if(!reservationRespository.existsBymatchDate(reservation.getMatchDate())) // pensar cancha_id
+        if(!reservationRespository.existsBymatchDateAndCanchaId(reservation.getMatchDate(),reservation.getCancha().getId()))
             return reservationRespository.save(reservation);
         else
             throw new IllegalReservationDateException("La fecha ya esta reservada");
@@ -55,10 +55,12 @@ public class ReservationService {
     }
 
     public Reservation updateReservation(Reservation reservation) throws ReservationNotFoundException {
-        if(reservationRespository.existsById(reservation.getId())){
-           return reservationRespository.save(reservation);
-        }else
-            throw new ReservationNotFoundException("Reserva no encontrada");
+        Reservation existing = reservationRespository.findById(reservation.getId())
+                .orElseThrow(() ->  new ReservationNotFoundException("Reserva no encontrada"));
+        existing.setStatus(reservation.getStatus());
+        existing.setMatchDate(reservation.getMatchDate());
+        return reservationRespository.save(existing);
+
     }
 
     public void deleteReservation(Long id) throws ReservationNotFoundException{
@@ -112,7 +114,7 @@ public class ReservationService {
         LocalDateTime until = day.atTime(canchaAux.getClosingHour());
 
         List<Reservation> reservations = reservationRespository
-                .findByCanchaIdAndMatchDateBetween(canchaId,from,until);
+                .findByCanchaIdAndMatchDateBetweenAndStatus(canchaId,from,until,ReservationStatus.PENDING);
 
         Set<LocalTime> reservedHours = reservations.stream()
                 .map(reservation -> reservation.getMatchDate().toLocalTime())
