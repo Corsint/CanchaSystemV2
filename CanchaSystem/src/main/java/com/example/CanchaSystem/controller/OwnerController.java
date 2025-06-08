@@ -60,4 +60,11 @@ public class OwnerController {
     public ResponseEntity<?> findOwnerById(@PathVariable Long id) {
             return ResponseEntity.ok(ownerService.findOwnerById(id));
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<?> getOwnerName(@AuthenticationPrincipal UserDetails userDetails) {
+        Owner owner = ownerRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+        return ResponseEntity.ok(Map.of("name",owner.getName()));
+    }
 }

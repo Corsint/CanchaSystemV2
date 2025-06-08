@@ -5,11 +5,25 @@
       <title>Menu Dueño</title>
   </head>
   <body>
+    <h1 id="salute"></h1>
+
     <button>Mi perfil</button>
     <button>Canchas disponibles</button>
     <button>Mis marcas</button>
-    <button>Mis canchas</button>
-    <button>Mis reservas</button>
     <button>Estadisticas</button>
   </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("http://localhost:8080/owner/name", {
+          credentials: "include"
+        });
+        const data = await res.json();
+        document.getElementById("salute").textContent = `¡Bienvenido ${data.name}!`;
+      } catch (e) {
+        console.error("Error al obtener nombre del dueño:", e);
+      }
+    });
+  </script>
 </html>
