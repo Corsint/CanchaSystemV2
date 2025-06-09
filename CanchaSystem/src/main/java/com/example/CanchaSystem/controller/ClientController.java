@@ -60,7 +60,7 @@ public class ClientController {
             return ResponseEntity.ok(clientService.getAllClients());
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
+
     @PutMapping("/update")
     public ResponseEntity<?> updateClient(@RequestBody Client client, HttpServletRequest request) {
         clientService.updateClient(client);
@@ -71,8 +71,13 @@ public class ClientController {
         return ResponseEntity.ok("Datos actualizados, inicie sesión nuevamente");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @PutMapping("/updateAdmin")
+    public ResponseEntity<?> updateClientAdmin(@RequestBody Client client) {
+        clientService.updateClientAdmin(client);
+        return ResponseEntity.ok("Datos actualizados");
+    }
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
             clientService.deleteClient(id);
             return ResponseEntity.ok(Map.of("message","Cliente eliminado"));

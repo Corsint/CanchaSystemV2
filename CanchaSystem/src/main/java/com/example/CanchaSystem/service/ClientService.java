@@ -73,6 +73,25 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    public Client updateClientAdmin(Client clientFromRequest) throws ClientNotFoundException {
+        Client client = clientRepository.findById(clientFromRequest.getId())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        client.setName(clientFromRequest.getName());
+        client.setLastName(clientFromRequest.getLastName());
+        client.setUsername(clientFromRequest.getUsername());
+        client.setMail(clientFromRequest.getMail());
+        client.setCellNumber(clientFromRequest.getCellNumber());
+
+        String pass = clientFromRequest.getPassword();
+
+        if (!pass.isEmpty()) {
+            client.setPassword(passwordEncoder.encode(pass));
+        }
+
+        return clientRepository.save(client);
+    }
+
     public void deleteClient(Long id) throws ClientNotFoundException{
         if (clientRepository.existsById(id)) {
             clientRepository.deleteById(id);

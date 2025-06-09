@@ -1,13 +1,16 @@
 package com.example.CanchaSystem.service;
 
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
+import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Owner;
 import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -20,6 +23,9 @@ public class OwnerService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Owner insertOwner(Owner owner) throws UsernameAlreadyExistsException {
         Role ownerRole = roleRepository.findByName("OWNER")
                 .orElseGet(() -> roleRepository.save(new Role("OWNER")));
@@ -28,6 +34,7 @@ public class OwnerService {
         if(!ownerRepository.existsByUsername(owner.getUsername())) {
             owner.setRole(ownerRole);
 
+            owner.setPassword(passwordEncoder.encode(owner.getPassword()));
             return ownerRepository.save(owner);
 
         }  else throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
@@ -40,12 +47,36 @@ public class OwnerService {
         return owners;
     }
 
-    public Owner updateOwner(Owner owner) throws OwnerNotFoundException {
-        if(ownerRepository.existsById(owner.getId())){
-           return ownerRepository.save(owner);
+    public Owner updateOwner(Owner ownerFromRequest) throws OwnerNotFoundException {
+        Owner owner = ownerRepository.findById(ownerFromRequest.getId())
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
-        }else
-            throw new OwnerNotFoundException("Dueño no encontrado");
+        owner.setName(ownerFromRequest.getName());
+        owner.setLastName(ownerFromRequest.getLastName());
+        owner.setUsername(ownerFromRequest.getUsername());
+        owner.setMail(ownerFromRequest.getMail());
+        owner.setCellNumber(ownerFromRequest.getCellNumber());
+
+        return ownerRepository.save(owner);
+    }
+
+    public Owner updateOwnerAdmin(Owner ownerFromRequest) throws OwnerNotFoundException {
+        Owner owner = ownerRepository.findById(ownerFromRequest.getId())
+                .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+
+        owner.setName(ownerFromRequest.getName());
+        owner.setLastName(ownerFromRequest.getLastName());
+        owner.setUsername(ownerFromRequest.getUsername());
+        owner.setMail(ownerFromRequest.getMail());
+        owner.setCellNumber(owner.getCellNumber());
+
+        String pass = ownerFromRequest.getPassword();
+
+        if (!pass.isEmpty()) {
+            owner.setPassword(passwordEncoder.encode(pass));
+        }
+
+        return ownerRepository.save(owner);
     }
 
     public void deleteOwner(Long id) throws OwnerNotFoundException{
