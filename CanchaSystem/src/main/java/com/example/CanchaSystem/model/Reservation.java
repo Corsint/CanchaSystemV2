@@ -8,6 +8,8 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "cancha_id",nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Cancha cancha;
 
 //    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")

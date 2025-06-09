@@ -59,11 +59,21 @@ public class CanchaService {
         return canchas;
     }
 
-    public void updateCancha(Cancha cancha) throws CanchaNotFoundException {
-        if(canchaRepository.existsById(cancha.getId())){
-            canchaRepository.save(cancha);
-        } else
-            throw new CanchaNotFoundException("Cancha no encontrada");
+    public Cancha updateCancha(Cancha canchaFromRequest) throws CanchaNotFoundException {
+        Cancha cancha = canchaRepository.findById(canchaFromRequest.getId())
+                .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));
+
+        cancha.setName(canchaFromRequest.getName());
+        cancha.setAddress(canchaFromRequest.getAddress());
+        cancha.setTotalAmount(canchaFromRequest.getTotalAmount());
+        cancha.setOpeningHour(canchaFromRequest.getOpeningHour());
+        cancha.setClosingHour(canchaFromRequest.getClosingHour());
+        cancha.setHasRoof(canchaFromRequest.isHasRoof());
+        cancha.setCanShower(canchaFromRequest.isCanShower());
+        cancha.setCanchaType(canchaFromRequest.getCanchaType());
+
+        return canchaRepository.save(cancha);
+
     }
 
     public void updateOwnerCancha(Cancha cancha, String username) throws CanchaNotFoundException {

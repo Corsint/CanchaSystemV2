@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalTime;
 
@@ -51,6 +53,7 @@ public class Cancha {
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CanchaBrand brand;
 
     @Column(nullable = false)

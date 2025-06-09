@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
@@ -22,6 +24,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "cancha_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Cancha cancha;
 
     @Column(nullable = false)

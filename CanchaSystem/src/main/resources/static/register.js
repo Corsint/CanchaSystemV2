@@ -21,7 +21,7 @@ document.getElementById("registerForm").addEventListener("submit", function(even
             if (response.ok) {
                 document.getElementById("message").textContent = "¡Registro exitoso! Redirigiendo...";
                 setTimeout(() => {
-                    window.location.href = "/ejemplo.html"; // Asegúrate de tener /login configurado
+                    window.location.href = "/login.html"; // Asegúrate de tener /login configurado
                 }, 2000);
             } else {
                 const data = await response.json();
