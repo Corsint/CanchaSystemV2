@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,8 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/register.html", "/client/insert",
-                                "/css/**", "/js/**", "/images/**",
-                                "/swagger-ui/**", "/v3/api-docs/**"
+                                "/css/**", "/register.js","/login.js", "/images/**",
+                                "/swagger-ui/**", "/v3/api-docs/**", "/login.html"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -43,9 +44,13 @@ public class SecurityConfig {
                         .successHandler(successHandler)
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll)
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login.html") // Redirige después del logout
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
                 .userDetailsService(authService)
-                .requestCache(requestCache -> requestCache.disable());
+                .requestCache(RequestCacheConfigurer::disable);
 
         return http.build();
     }
