@@ -48,7 +48,7 @@ public class CanchaController {
 
     @PutMapping("/updateAny")
     public ResponseEntity<?> updateAnyCancha(@RequestBody Cancha cancha) {
-            canchaService.updateCancha(cancha);
+            canchaService.updateCancha(cancha.getId(),cancha);
             return ResponseEntity.ok(Map.of("message", "Cancha actualizada correctamente"));
     }
 

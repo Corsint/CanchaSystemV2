@@ -45,7 +45,7 @@ let clientId = null;
     <textarea id="comentario-${c.id}" rows="4" cols="40" placeholder="Escribe tu comentario..."></textarea><br>
     <button onclick="enviarResena(${c.id})">Confirmar Reseña</button>
     </div>
-    <hr>`;
+
     lista.appendChild(li);
     verificarSiYaReseno(c.id, clientId);
     });

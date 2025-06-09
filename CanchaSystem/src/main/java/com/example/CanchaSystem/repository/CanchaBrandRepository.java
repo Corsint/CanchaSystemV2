@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CanchaBrandRepository extends JpaRepository<CanchaBrand, Long> {
-    public boolean existsByBrandName(String name);
+    boolean existsByBrandName(String name);
+    List<CanchaBrand> findByOwnerId(Long ownerId);
 
-    public List<CanchaBrand> findByOwnerId(long ownerId);
 }

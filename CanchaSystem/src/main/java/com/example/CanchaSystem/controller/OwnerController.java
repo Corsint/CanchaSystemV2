@@ -1,5 +1,6 @@
 package com.example.CanchaSystem.controller;
 
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
@@ -37,6 +38,7 @@ public class OwnerController {
                 .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
         return ResponseEntity.ok(owner.getId());
     }
+
     @PostMapping("/insert")
     public ResponseEntity<?> insertOwner(@Validated @RequestBody Owner owner) {
             return ResponseEntity.status(HttpStatus.CREATED).body(ownerService.insertOwner(owner));

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CanchaRepository extends JpaRepository<Cancha,Long> {
@@ -13,6 +14,7 @@ public interface CanchaRepository extends JpaRepository<Cancha,Long> {
     boolean existsByAddress(String address);
     boolean existsByName(String name);
     boolean existsByIdAndBrandOwnerUsername(Long id, String username);
+    Optional<Cancha> findById(Long id);
 
     List<Cancha> findByBrandOwnerUsername(String username);
     List<Cancha> findByBrandOwnerIdAndActive(Long id,boolean active);

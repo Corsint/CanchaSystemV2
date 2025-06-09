@@ -59,21 +59,21 @@ public class CanchaService {
         return canchas;
     }
 
-    public Cancha updateCancha(Cancha canchaFromRequest) throws CanchaNotFoundException {
-        Cancha cancha = canchaRepository.findById(canchaFromRequest.getId())
+    public Cancha updateCancha(Long id,Cancha updated) throws CanchaNotFoundException {
+        Cancha cancha = canchaRepository.findById(id)
                 .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));
 
-        cancha.setName(canchaFromRequest.getName());
-        cancha.setAddress(canchaFromRequest.getAddress());
-        cancha.setTotalAmount(canchaFromRequest.getTotalAmount());
-        cancha.setOpeningHour(canchaFromRequest.getOpeningHour());
-        cancha.setClosingHour(canchaFromRequest.getClosingHour());
-        cancha.setHasRoof(canchaFromRequest.isHasRoof());
-        cancha.setCanShower(canchaFromRequest.isCanShower());
-        cancha.setCanchaType(canchaFromRequest.getCanchaType());
+        cancha.setName(updated.getName());
+        cancha.setAddress(updated.getAddress());
+        cancha.setTotalAmount(updated.getTotalAmount());
+        cancha.setOpeningHour(updated.getOpeningHour());
+        cancha.setClosingHour(updated.getClosingHour());
+        cancha.setActive(updated.isActive());
+        cancha.setHasRoof(updated.isHasRoof());
+        cancha.setCanShower(updated.isCanShower());
+        cancha.setCanchaType(updated.getCanchaType());
 
         return canchaRepository.save(cancha);
-
     }
 
     public void updateOwnerCancha(Cancha cancha, String username) throws CanchaNotFoundException {

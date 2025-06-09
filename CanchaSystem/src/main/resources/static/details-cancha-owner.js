@@ -1,6 +1,5 @@
 const canchaId = new URLSearchParams(window.location.search).get("canchaId");
 
-
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {

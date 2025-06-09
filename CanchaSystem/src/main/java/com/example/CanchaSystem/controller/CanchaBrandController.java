@@ -7,11 +7,13 @@ import com.example.CanchaSystem.exception.cancha.NoCanchasException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNameAlreadyExistsException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNotFoundException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
+import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.model.CanchaBrand;
 import com.example.CanchaSystem.model.Owner;
 import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.service.CanchaBrandService;
+import com.example.CanchaSystem.service.CanchaService;
 import com.example.CanchaSystem.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,14 +35,18 @@ public class CanchaBrandController {
     private CanchaBrandService canchaBrandService;
 
     @Autowired
+    private CanchaService canchaService;
+
+    @Autowired
     private OwnerRepository ownerRepository;
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertCanchaBrand(@Validated @RequestBody CanchaBrand canchaBrand, Authentication auth) {
 
             String username = auth.getName();
-            Optional<Owner> ownerOpt = ownerRepository.findByUsername(username);
-            Owner owner = ownerOpt.get();
+            Owner owner = ownerRepository.findByUsername(username)
+                    .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+
 
             canchaBrand.setOwner(owner);
 
@@ -69,4 +75,16 @@ public class CanchaBrandController {
     public ResponseEntity<?> findCanchaBrandById(@PathVariable Long id) {
             return ResponseEntity.ok(canchaBrandService.findCanchaBrandById(id));
     }
+
+    @GetMapping("/findAllOwnerBrands")
+    public ResponseEntity<?> findBrandsByOwnerId(Authentication auth){
+        String username = auth.getName();
+        return ResponseEntity.ok(canchaBrandService.findCanchaBrandsByOwnerUsername(username));
+    }
+
+    @GetMapping("/{brandId}/canchas")
+    public ResponseEntity<List<Cancha>> getCanchasByBrand(@PathVariable Long brandId) {
+        return ResponseEntity.ok(canchaService.getCanchasByBrandId(brandId));
+    }
+
 }

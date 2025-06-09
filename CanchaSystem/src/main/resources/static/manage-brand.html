@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestionar Marca</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            const brandId = params.get("brandId");
+            const brandName = params.get("brandName");
+
+            document.getElementById("brand-name").textContent = brandName;
+
+            try {
+                const res = await fetch(`/brand/${brandId}/canchas`);
+                const canchas = await res.json();
+                const tbody = document.getElementById("cancha-list");
+
+                canchas.forEach(cancha => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${cancha.name}</td>
+                        <td>${cancha.address}</td>
+                        <td>${cancha.canchaType}</td>
+                        <td>
+                            <button onclick="window.location.href='/details-cancha-owner.html'">Ver</button>
+                            <button onclick="editarCancha()">Modificar</button>
+                            <button onclick="eliminarCancha(${cancha.id})">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (e) {
+                console.error("Error cargando canchas:", e);
+            }
+
+            // Agregar nueva cancha
+            document.getElementById("cancha-form").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const data = Object.fromEntries(new FormData(e.target));
+                data.brandId = brandId;
+                try {
+                    await fetch("/cancha/insert", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                    });
+                    location.reload();
+                } catch (e) {
+                    alert("Error al agregar cancha");
+                }
+            });
+        });
+
+        function editarCancha() {
+            window.location.href = `/cancha/updateMyCancha`;
+        }
+
+        async function eliminarCancha(id) {
+            if (confirm("¿Seguro que quieres eliminar esta cancha?")) {
+                await fetch(`/cancha/dropMyCanchaById/${id}`, { method: "DELETE" });
+                location.reload();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Marca: <span id="brand-name"></span></h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cancha-list"></tbody>
+    </table>
+
+    <h2>Agregar Cancha</h2>
+    <form id="cancha-form">
+        <label>Nombre: <input name="name" required></label><br>
+        <label>Dirección: <input name="address" required></label><br>
+        <label>Precio Total: <input name="totalAmount" type="number" step="0.01" required></label><br>
+        <label>Apertura: <input name="openingHour" type="time" required></label><br>
+        <label>Cierre: <input name="closingHour" type="time" required></label><br>
+        <label>¿Activa?: <input name="active" type="checkbox"></label><br>
+        <label>¿Tiene Techo?: <input name="hasRoof" type="checkbox"></label><br>
+        <label>¿Tiene Ducha?: <input name="canShower" type="checkbox"></label><br>
+        <label>Tipo:
+            <select name="canchaType">
+                <option value="FUTBOL5">Fútbol 5</option>
+                <option value="FUTBOL7">Fútbol 7</option>
+                <option value="FUTBOL11">Fútbol 11</option>
+            </select>
+        </label><br>
+        <button type="submit">Agregar Cancha</button>
+        <button onclick=location.href='owner-brands.html'">Volver</button>
+    </form>
+</body>
+</html>
