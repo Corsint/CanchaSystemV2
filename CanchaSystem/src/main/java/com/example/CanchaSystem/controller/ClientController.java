@@ -40,7 +40,7 @@ public class ClientController {
     public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
         Client client = clientRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
-        return ResponseEntity.ok(client.getId());
+        return ResponseEntity.ok(Map.of("id",client.getId()));
     }
 
     @GetMapping("/name")

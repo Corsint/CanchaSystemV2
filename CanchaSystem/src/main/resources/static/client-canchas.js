@@ -1,63 +1,102 @@
-let clientId = null;
+
+    let clientId = null;
     document.addEventListener("DOMContentLoaded", async () => {
-    const lista = document.getElementById("listaCanchas");
-    lista.innerHTML = "<li>Cargando canchas...</li>";
+      const lista = document.getElementById("listaCanchas");
+      lista.innerHTML = "<li>Cargando canchas...</li>";
 
-    try {
+      try {
+        // Obtener cliente
+        const clientRes = await fetch("http://localhost:8080/client/me");
 
-    const clientRes = await fetch("http://localhost:8080/client/me");
-    clientId = await clientRes.json();
+        if (!clientRes.ok) {
+          throw new Error(`Error obteniendo cliente: ${clientRes.status}`);
+        }
 
-    const res = await fetch("http://localhost:8080/cancha/findallactive");
-    const canchas = await res.json();
+        const clientData = await clientRes.json();
+        clientId = clientData.id;
+        console.log("Client ID:", clientId);
 
-    if (canchas.length === 0) {
-      lista.innerHTML = "<li>No hay canchas disponibles.</li>";
-      return;
-    }
+        // Obtener canchas
+        const res = await fetch("http://localhost:8080/cancha/findallactive");
+        const canchas = await res.json();
+        console.log("Canchas recibidas:", canchas);
 
-    canchas.forEach(c => {
-    const li = document.createElement("li");
+        if (canchas.length === 0) {
+          lista.innerHTML = "<li>No hay canchas disponibles.</li>";
+          return;
+        }
 
-    // Generar estrellas manualmente
-    let estrellasHTML = "";
-    for (let i = 1; i <= 5; i++) {
-        estrellasHTML += `<span class="star" data-value="${i}" onclick="seleccionarEstrellas(${c.id}, ${i})">☆</span>`;
-    }
+        lista.innerHTML = ""; // limpiar el mensaje anterior
 
-    li.innerHTML = `
-        <strong>${c.name}</strong>
-        - ${c.address}
-        (${c.canchaType})<br>
-        Precio: $${c.totalAmount}
-        - Abre: ${c.openingHour} / Cierra: ${c.closingHour}<br>
-        <button onclick="location.href='details-cancha.html?canchaId=${c.id}'">Detalles</button>
-        <button onclick="location.href='make-reservation.html?canchaId=${c.id}'">Reservar</button>
-        <button id="btn-reseñar-${c.id}" onclick="mostrarFormularioResena(${c.id})">Reseñar</button>
-       <div id="resena-form-${c.id}" style="display:none; margin-top:10px;">
-            <label>Valoración (1-5):</label><br>
-        <div class="stars" id="stars-${c.id}">
-            ${estrellasHTML}
-        </div>
-    <input type="hidden" id="rating-${c.id}" /><br>
+        canchas.forEach(c => {
+          const li = document.createElement("li");
 
-    <label>Comentario:</label><br>
-    <textarea id="comentario-${c.id}" rows="4" cols="40" placeholder="Escribe tu comentario..."></textarea><br>
-    <button onclick="enviarResena(${c.id})">Confirmar Reseña</button>
-    </div>
+          // Generar estrellas manualmente
+          let estrellasHTML = "";
+          for (let i = 1; i <= 5; i++) {
+            estrellasHTML += `<span class="star" data-value="${i}">☆</span>`;
+          }
 
-    lista.appendChild(li);
-    verificarSiYaReseno(c.id, clientId);
-    });
-    } catch (err) {
+          li.innerHTML = `
+            <strong>${c.name}</strong>
+            - ${c.address}
+            (${c.canchaType})<br>
+            Precio: $${c.totalAmount}
+            - Abre: ${c.openingHour} / Cierra: ${c.closingHour}<br>
+            <button class="btn-detalles">Detalles</button>
+            <button class="btn-reservar">Reservar</button>
+            <button class="btn-reseñar" id="btn-reseñar-${c.id}">Reseñar</button>
+            <div id="resena-form-${c.id}" style="display:none; margin-top:10px;">
+                <label>Valoración (1-5):</label><br>
+                <div class="stars" id="stars-${c.id}">
+                    ${estrellasHTML}
+                </div>
+                <input type="hidden" id="rating-${c.id}" /><br>
+                <label>Comentario:</label><br>
+                <textarea id="comentario-${c.id}" rows="4" cols="40" placeholder="Escribe tu comentario..."></textarea><br>
+                <button class="btn-confirmar-resena">Confirmar Reseña</button>
+            </div>
+          `;
+
+          lista.appendChild(li);
+
+          // Agregar eventos
+          li.querySelector(".btn-detalles").addEventListener("click", () => {
+            window.location.href = `details-cancha.html?canchaId=${c.id}`;
+          });
+
+          li.querySelector(".btn-reservar").addEventListener("click", () => {
+            window.location.href = `make-reservation.html?canchaId=${c.id}`;
+          });
+
+          li.querySelector(".btn-reseñar").addEventListener("click", () => {
+            mostrarFormularioResena(c.id);
+          });
+
+          li.querySelector(".btn-confirmar-resena").addEventListener("click", () => {
+            enviarResena(c.id);
+          });
+
+          const estrellas = li.querySelectorAll(`#stars-${c.id} .star`);
+          estrellas.forEach((star, index) => {
+            star.addEventListener("click", () => {
+              seleccionarEstrellas(c.id, index + 1);
+            });
+          });
+
+          verificarSiYaReseno(c.id, clientId);
+        });
+
+      } catch (err) {
         lista.innerHTML = "<li>Error al cargar las canchas.</li>";
-        console.error(err);
-    }
+        console.error("Error general:", err);
+      }
     });
+
 
 function reservarCancha(id) {
     alert("Redirigiendo para reservar cancha con ID " + id);
-    // podés usar location.href = `/reservar?id=${id}` o abrir un modal
+
 }
 
 function mostrarFormularioResena(canchaId) {
