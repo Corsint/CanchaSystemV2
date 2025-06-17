@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/register.html", "/client/insert",
                                 "/css/**", "/register.js","/login.js", "/images/**",
-                                "/swagger-ui/**", "/v3/api-docs/**", "/login.html"
+                                "/swagger-ui/**", "/v3/api-docs/**", "/login.html", "/login.css", "/home-client.css", "/client-canchas.css", "/details-cancha.css"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

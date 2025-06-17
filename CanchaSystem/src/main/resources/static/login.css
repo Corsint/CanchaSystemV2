@@ -1,0 +1,80 @@
+/* Estilo general de fondo */
+body {
+  background-color: #0a0a0a; /* negro profundo */
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Contenedor del formulario */
+form {
+  background-color: #111; /* gris oscuro */
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  border: 1px solid #1f1f1f;
+}
+
+/* Título */
+h1 {
+  color: #00ff55; /* verde tipo césped */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas y campos */
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #e0e0e0;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #00ff55;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 5px #00ff88;
+}
+
+/* Botón de login */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #00ff55;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00cc44;
+}
+
+/* Errores */
+div[style*="color:red"] {
+  margin-top: 15px;
+  color: #ff4d4d;
+  text-align: center;
+}
