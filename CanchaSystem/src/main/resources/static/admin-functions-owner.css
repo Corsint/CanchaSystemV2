@@ -1,0 +1,98 @@
+body {
+  background-color: #121212;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: #00e676;
+}
+
+h2 {
+  color: #00c853;
+  margin-top: 40px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="hidden"] {
+  padding: 8px;
+  margin: 6px 0;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #1f1f1f;
+  color: #f0f0f0;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #00e676;
+}
+
+button {
+  background-color: #00c853;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin: 6px 8px 12px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #009624;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#listaOwners li {
+  background-color: #1c1c1c;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 5px rgba(0, 255, 128, 0.1);
+}
+
+hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #333;
+}
+
+#filtroNombre {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #1f1f1f;
+  color: #f0f0f0;
+  margin-bottom: 15px;
+}
+
+@media screen and (max-width: 600px) {
+  input, button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #listaOwners li {
+    padding: 14px;
+  }
+}
