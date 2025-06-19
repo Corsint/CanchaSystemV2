@@ -24,7 +24,7 @@ public class Cancha {
     @Column(nullable = false, unique = true)
     @Size(
             min = 3,
-            max = 15,
+            max = 25,
             message = "Name only accepts values between 3 and 15"
     )
     private String name;

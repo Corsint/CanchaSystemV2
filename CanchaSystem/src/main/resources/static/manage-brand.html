@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="stylesheet" href="manage-brand.css">
     <meta charset="UTF-8" />
     <title>Gestionar Marca</title>
     <style>
@@ -82,7 +83,7 @@
                             <td>${cancha.address}</td>
                             <td>${cancha.canchaType}</td>
                             <td>
-                                <button onclick="window.location.href='/details-cancha-owner.html?canchaId=${cancha.id}'">Ver</button>
+                                <button onclick="window.location.href='/details-my-cancha-owner.html?canchaId=${cancha.id}'">Ver</button>
                                 <button onclick="window.location.href='edit-cancha.html?canchaId=${cancha.id}'">Modificar</button>
                                 <button onclick="eliminarCancha(${cancha.id})">Eliminar</button>
                             </td>

@@ -24,7 +24,11 @@ const canchaId = new URLSearchParams(window.location.search).get("canchaId");
         Techo: ${cancha.hasRoof ? "Sí" : "No"}<br>
       `;
 
-      await cargarResenas();
+      try {
+        await cargarResenas();
+      } catch (error) {
+        console.error("Error en cargarResenas:", error);
+      }
     } catch (e) {
       console.error(e);
       document.body.innerHTML = "<h2>Error al cargar los datos.</h2>";
@@ -49,7 +53,7 @@ const canchaId = new URLSearchParams(window.location.search).get("canchaId");
       const resenas = await res.json();
       const lista = document.getElementById("listaResenas");
 
-      if (resenas.length === 0) {
+      if (resenas.length == 0) {
         lista.innerHTML = "<li>No hay reseñas aún.</li>";
         return;
       }
@@ -75,4 +79,48 @@ const canchaId = new URLSearchParams(window.location.search).get("canchaId");
       html += `<span class="star ${i <= valor ? "selected" : ""}">★</span>`;
     }
     return html;
+
+  }
+
+  async function cargarReservas() {
+    try {
+        const res = await fetch(`http://localhost:8080/reservation/getReservationsByCanchaId/${canchaId}`);
+            const reservations = await res.json();
+            const lista = document.getElementById("listaReservas");
+
+            if (reservations.length === 0) {
+              lista.innerHTML = "<li>No hay reservas aún.</li>";
+              return;
+            }
+
+            reservations.forEach(r => {
+              const li = document.createElement("li");
+
+              const fecha = new Date(r.matchDate);
+              const fechaFormateada = fecha.toLocaleString("es-AR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+
+              const depositoFormateado = new Intl.NumberFormat("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 2,
+              }).format(r.deposit);
+
+              li.innerHTML = `
+                <strong>${r.client.username}</strong><br>
+                ${fechaFormateada}<br>
+                ${depositoFormateado}
+                <hr>
+              `;
+              lista.appendChild(li);
+            });
+    } catch(e) {
+        document.getElementById("listaReservas").innerHTML = "<li>Error al cargar reservas</li>";
+        console.error(e);
+    }
   }

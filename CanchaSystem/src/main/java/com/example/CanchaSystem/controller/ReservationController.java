@@ -128,4 +128,9 @@ public class ReservationController {
     private ResponseEntity<?> getAllMyReservationsByBrand(Long brandId){
         return ResponseEntity.ok(reservationService.getReservationsByBrandId(brandId));
     }
+
+    @GetMapping("/getReservationsByCanchaId/{canchaId}")
+    public ResponseEntity<?> getReservationsByCanchaId(@PathVariable Long canchaId) {
+        return ResponseEntity.ok(reservationService.findReservationsByCanchaId(canchaId));
+     }
 }

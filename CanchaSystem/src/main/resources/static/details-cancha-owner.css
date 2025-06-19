@@ -1,0 +1,75 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #121212;
+  color: #f5f5f5;
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+}
+
+h1, h2 {
+  color: #00e676;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+#detalleCancha {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 6px #00e67655;
+  line-height: 1.6;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 4px #00e67633;
+}
+
+li strong {
+  color: #00ff88;
+  font-size: 16px;
+}
+
+.star {
+  font-size: 22px;
+  color: gray;
+  cursor: default;
+}
+
+.star.selected {
+  color: gold;
+}
+
+button {
+  display: block;
+  margin: 30px auto 0;
+  padding: 10px 20px;
+  background-color: #00c853;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #009624;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #333;
+  margin-top: 10px;
+}

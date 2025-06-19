@@ -1,7 +1,6 @@
 let ownerId = null;
     document.addEventListener("DOMContentLoaded", async () => {
     const lista = document.getElementById("listaCanchas");
-    lista.innerHTML = "<li>Cargando canchas...</li>";
 
     try {
 

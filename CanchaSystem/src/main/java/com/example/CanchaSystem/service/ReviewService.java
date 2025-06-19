@@ -58,10 +58,7 @@ public class ReviewService {
     public List<Review> getAllReviewsByCanchaId(Long canchaId) throws NoReviewsException {
         List<Review> reviews = reviewRepository.findByCanchaId(canchaId);
 
-        if (!reviews.isEmpty()){
-            return reviews;
-        }else
-            throw new NoReviewsException("Todavia no hay reseñas hechas en la cancha");
+        return reviews;
     }
 
     public List<Review> getAllReviewsByClient(String username) throws NoReviewsException, ClientNotFoundException {
