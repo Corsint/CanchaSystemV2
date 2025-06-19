@@ -4,7 +4,8 @@ let clientId;
     async function cargarDatosCliente() {
         try {
             const res = await fetch("http://localhost:8080/client/me");
-            clientId = await res.json();
+            const me = await res.json();
+            clientId = me.id;
 
 
             const clienteres = await fetch(`http://localhost:8080/client/${clientId}`);

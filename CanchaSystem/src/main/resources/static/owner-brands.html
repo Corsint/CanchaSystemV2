@@ -9,7 +9,7 @@
             try {
                 const ownerRes = await fetch("/owner/me");
                 const ownerId = await ownerRes.json();
-                //window.ownerId = ownerId; // Guardamos globalmente
+                //window.ownerId = ownerId;
 
                 const brandsRes = await fetch("/canchaBrand/findAllOwnerBrands");
                 const brands = await brandsRes.json();
@@ -40,7 +40,6 @@
                 const brandName = document.getElementById("brandNameInput").value;
                 const payload = {
                    brandName: brandName
-                    // NO mandamos owner
                 };
 
                 try {

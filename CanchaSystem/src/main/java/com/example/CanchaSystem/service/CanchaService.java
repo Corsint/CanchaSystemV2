@@ -52,10 +52,6 @@ public class CanchaService {
 
     public List<Cancha> getCanchasByBrandId(Long id) throws NoCanchasException {
         List<Cancha> canchas = canchaRepository.findByBrandId(id);
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("La marca no tiene canchas");
-        }
-
         return canchas;
     }
 

@@ -88,7 +88,6 @@ public class CanchaController {
     }
 
     @GetMapping("/getCanchasByBrandId/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCanchasByBrandId(@PathVariable Long id) {
             return ResponseEntity.ok(canchaService.getCanchasByBrandId(id));
     }

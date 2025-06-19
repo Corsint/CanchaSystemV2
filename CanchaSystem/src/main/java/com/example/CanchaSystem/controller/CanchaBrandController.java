@@ -64,13 +64,13 @@ public class CanchaBrandController {
             return ResponseEntity.ok(canchaBrandService.updateCanchaBrand(canchaBrand));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteCanchaBrand/{id}")
     public ResponseEntity<?> deleteCanchaBrand(@PathVariable Long id) {
             canchaBrandService.deleteCanchaBrand(id);
             return ResponseEntity.ok(Map.of("message","Marca eliminada"));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("findCanchaBrand/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> findCanchaBrandById(@PathVariable Long id) {
             return ResponseEntity.ok(canchaBrandService.findCanchaBrandById(id));
