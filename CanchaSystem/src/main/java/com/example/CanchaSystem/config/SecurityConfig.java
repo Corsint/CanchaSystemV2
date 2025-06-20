@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,12 +31,21 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/docs/**"
+                        ).permitAll()  // Swagger requiere auth pero con HTTP Basic
+                        .requestMatchers(
                                 "/register.html", "/client/insert",
-                                "/css/**", "/register.js","/login.js", "/images/**",
-                                "/swagger-ui/**", "/v3/api-docs/**", "/login.html", "/login.css", "/home-client.css", "/client-canchas.css", "/details-cancha.css"
+                                "/css/**", "/register.js", "/login.js", "/images/**",
+                                "/login.html", "/login.css", "/home-client.css", "/client-canchas.css", "/details-cancha.css"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
+                // Configurá HTTP Basic SOLO para las rutas de Swagger
+                .httpBasic(httpBasic -> httpBasic.realmName("CanchaSystem API"))
+                // Para el resto, usá formLogin
                 .formLogin(form -> form
                         .loginPage("/login.html")
                         .loginProcessingUrl("/login")
@@ -46,9 +54,10 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login.html") // Redirige después del logout
+                        .logoutSuccessUrl("/login.html")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID"))
+                        .deleteCookies("JSESSIONID")
+                )
                 .userDetailsService(authService)
                 .requestCache(RequestCacheConfigurer::disable);
 
