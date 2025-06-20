@@ -46,6 +46,9 @@ public class Client {
     )
     private String password;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     @Column(nullable = false,unique = true)
     @Email(message = "The email is not valid")
     private String mail;

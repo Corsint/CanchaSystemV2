@@ -4,19 +4,27 @@ import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.cancha.NoCanchasException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
-import com.example.CanchaSystem.model.Cancha;
-import com.example.CanchaSystem.model.CanchaType;
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.exception.misc.UnableToDropException;
+import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CanchaService {
 
     @Autowired
     private CanchaRepository canchaRepository;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     public Cancha insertCancha(Cancha cancha) throws CanchaNameAlreadyExistsException, IllegalCanchaAddressException {
         if(!canchaRepository.existsByName(cancha.getName()))
@@ -78,17 +86,39 @@ public class CanchaService {
         } else throw new CanchaNotFoundException("Cancha de dueño no encontrada");
     }
 
-    public void deleteCancha(Long id) throws CanchaNotFoundException{
-        if (canchaRepository.existsById(id)) {
-            canchaRepository.deleteById(id);
-        }else
-            throw new CanchaNotFoundException("Cancha no encontrada");
+    public void deleteCancha(Long canchaId) {
 
+        Cancha cancha = canchaRepository.findById(canchaId)
+                .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));
+
+        if (!cancha.isActive())
+            throw new UnableToDropException("La cancha ya esta inactivo");
+
+        List<Review> reviews = reviewService.getAllReviewsByCanchaId(cancha.getId());
+
+        for (Review review : reviews) {
+            reviewService.deleteReview(review.getId());
+        }
+
+        List<Reservation> reservations = reservationService.findReservationsByCanchaId(cancha.getId());
+
+        for (Reservation reservation : reservations) {
+            reservationService.cancelReservation(reservation);
+        }
+
+        cancha.setActive(false);
+        canchaRepository.save(cancha);
     }
 
-    public void deleteOwnerCancha(Long id, String username) throws CanchaNotFoundException {
-        if (canchaRepository.existsByIdAndBrandOwnerUsername(id, username)) {
-            canchaRepository.deleteById(id);
+    public void deleteOwnerCancha(Long canchaId, String username) {
+        if (canchaRepository.existsByIdAndBrandOwnerUsername(canchaId, username)) {
+            Optional<Cancha> canchaOpt = canchaRepository.findById(canchaId);
+
+            Cancha cancha = canchaOpt.get();
+
+            cancha.setActive(false);
+
+            canchaRepository.save(cancha);
         } else throw new CanchaNotFoundException("Cancha de dueño no encontrada");
     }
 

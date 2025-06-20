@@ -43,7 +43,7 @@ public class Cancha {
     private LocalTime closingHour;
 
     @Column(nullable = false)
-    private boolean active;
+    private boolean active = true;
 
     @Column(nullable = false)
     private boolean hasRoof;
@@ -59,5 +59,8 @@ public class Cancha {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CanchaType canchaType;
+
+    @Column(nullable = false)
+    private boolean working;
 
 }

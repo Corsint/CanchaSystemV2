@@ -1,6 +1,7 @@
 package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.exception.review.NoReviewsException;
 import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.Client;
@@ -43,11 +44,16 @@ public class ReviewService {
         return reviewRepository.save(existing);
     }
 
-    public void deleteReview(Long id) throws ReviewNotFoundException{
-        if (reviewRepository.existsById(id)) {
-            reviewRepository.deleteById(id);
-        }else
-            throw new ReviewNotFoundException("Reseña no encontrada");
+    public void deleteReview(Long reviewId){
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewNotFoundException("Review no encontrado"));
+
+        if (!review.isActive())
+            throw new UnableToDropException("La review ya esta inactiva");
+
+        review.setActive(false);
+        reviewRepository.save(review);
 
     }
 

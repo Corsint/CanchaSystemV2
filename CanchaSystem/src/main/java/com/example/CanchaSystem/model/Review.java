@@ -38,4 +38,7 @@ public class Review {
             message = "Message only accepts caracters between 5 and 500"
     )
     private String message;
+
+    @Column(nullable = false)
+    private boolean active = true;
 }

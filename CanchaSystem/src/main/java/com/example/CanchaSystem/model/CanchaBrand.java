@@ -27,4 +27,7 @@ public class CanchaBrand {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
+
+    @Column(nullable = false)
+    private boolean active = true;
 }

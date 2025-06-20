@@ -5,10 +5,13 @@ import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNameAlreadyExistsException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNotFoundException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
+import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
+import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.model.CanchaBrand;
 import com.example.CanchaSystem.model.Owner;
+import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.repository.CanchaBrandRepository;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.OwnerRepository;
@@ -30,6 +33,9 @@ public class CanchaBrandService {
     @Autowired
     private OwnerRepository ownerRepository;
 
+    @Autowired
+    private CanchaService canchaService;
+
     public CanchaBrand insertCanchaBrand(CanchaBrand canchaBrand) throws CanchaBrandNameAlreadyExistsException {
         if (!canchaBrandRepository.existsByBrandName(canchaBrand.getBrandName())) {
             return canchaBrandRepository.save(canchaBrand);
@@ -50,10 +56,22 @@ public class CanchaBrandService {
         } else throw new CanchaBrandNotFoundException("Marca no encontrada");
     }
 
-    public void deleteCanchaBrand(Long id) throws CanchaNotFoundException {
-        if (canchaBrandRepository.existsById(id)) {
-            canchaBrandRepository.deleteById(id);
-        } else throw new CanchaNotFoundException("Marca no encontrada");
+    public void deleteCanchaBrand(Long canchaBrandId) {
+
+        CanchaBrand canchaBrand = canchaBrandRepository.findById(canchaBrandId)
+                .orElseThrow(() -> new CanchaBrandNotFoundException("Marca no encontrada"));
+
+        if (!canchaBrand.isActive())
+            throw new UnableToDropException("La marca ya esta inactiva");
+
+        List<Cancha> canchas = canchaRepository.findByBrandId(canchaBrandId);
+
+        for (Cancha cancha : canchas) {
+            canchaService.deleteCancha(cancha.getId());
+        }
+
+        canchaBrand.setActive(false);
+        canchaBrandRepository.save(canchaBrand);
     }
 
     public CanchaBrand findCanchaBrandById(Long id) throws CanchaBrandNotFoundException {

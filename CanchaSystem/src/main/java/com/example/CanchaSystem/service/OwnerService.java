@@ -2,14 +2,15 @@ package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.misc.IllegalAmountException;
+import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
-import com.example.CanchaSystem.model.Client;
-import com.example.CanchaSystem.model.Owner;
-import com.example.CanchaSystem.model.Role;
+import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
+import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class OwnerService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CanchaBrandService canchaBrandService;
 
     public Owner insertOwner(Owner owner) throws UsernameAlreadyExistsException {
         Role ownerRole = roleRepository.findByName("OWNER")
@@ -95,11 +99,23 @@ public class OwnerService {
         return ownerRepository.save(owner);
     }
 
-    public void deleteOwner(Long id) throws OwnerNotFoundException{
-        if (ownerRepository.existsById(id)) {
-            ownerRepository.deleteById(id);
-        }else
-            throw new OwnerNotFoundException("Dueño no encontrado");
+    public void deleteOwner(Long ownerId){
+
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new OwnerNotFoundException("Owner no encontrado"));
+
+        if (!owner.isActive())
+            throw new UnableToDropException("El dueño ya esta inactiva");
+
+        List<CanchaBrand> canchaBrands = canchaBrandService.findCanchaBrandsByOwnerUsername(owner.getUsername());
+
+        for (CanchaBrand canchaBrand : canchaBrands) {
+            canchaBrandService.deleteCanchaBrand(canchaBrand.getId());
+        }
+
+        owner.setActive(false);
+        ownerRepository.save(owner);
+
     }
 
     public Owner findOwnerById(Long id) throws OwnerNotFoundException {

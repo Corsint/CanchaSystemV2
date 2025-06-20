@@ -4,8 +4,11 @@ import com.example.CanchaSystem.exception.misc.*;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
+import com.example.CanchaSystem.model.Reservation;
+import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.ClientRepository;
+import com.example.CanchaSystem.repository.ReviewRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +28,12 @@ public class ClientService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private ReservationService reservationService;
 
 
     public Client insertClient(Client client) {
@@ -80,6 +89,7 @@ public class ClientService {
         client.setMail(clientFromRequest.getMail());
         client.setCellNumber(clientFromRequest.getCellNumber());
         client.setBankClient(clientFromRequest.getBankClient());
+        client.setActive(clientFromRequest.isActive());
 
         String pass = clientFromRequest.getPassword();
 
@@ -90,7 +100,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public Client addMoneyToClientBank(long clientId,double addedAmount){
+    public Client addMoneyToClientBank(Long clientId,double addedAmount){
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
@@ -103,7 +113,7 @@ public class ClientService {
 
     }
 
-    public Client payFromClientBank(long clientId,double amountToPay){
+    public Client payFromClientBank(Long clientId, double amountToPay){
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
@@ -116,12 +126,28 @@ public class ClientService {
 
     }
 
-    public void deleteClient(Long id) throws ClientNotFoundException{
-        if (clientRepository.existsById(id)) {
-            clientRepository.deleteById(id);
-        }else
-            throw new ClientNotFoundException("Cliente no encontrado");
+    public Client deleteClient(Long clientId) {
 
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        if (!client.isActive())
+            throw new UnableToDropException("El cliente ya esta inactivo");
+
+        List<Review> reviews = reviewService.getAllReviewsByClient(client.getUsername());
+
+        for (Review review : reviews) {
+            reviewService.deleteReview(review.getId());
+        }
+
+        List<Reservation> reservations = reservationService.findReservationsByClient(client.getUsername());
+
+        for (Reservation reservation : reservations) {
+            reservationService.cancelReservation(reservation);
+        }
+
+        client.setActive(false);
+        return clientRepository.save(client);
     }
 
     public Client findClientById(Long id) throws ClientNotFoundException {

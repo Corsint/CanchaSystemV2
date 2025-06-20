@@ -64,4 +64,7 @@ public class Owner {
 
     @Column(nullable = false)
     private double bankOwner=0;
+
+    @Column(nullable = false)
+    private boolean active = true;
 }
