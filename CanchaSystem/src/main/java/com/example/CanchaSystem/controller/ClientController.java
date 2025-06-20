@@ -1,29 +1,20 @@
 package com.example.CanchaSystem.controller;
 
-import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
-import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
-import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.service.ClientService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
@@ -38,14 +29,14 @@ public class ClientController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
-        Client client = clientRepository.findByUsername(userDetails.getUsername())
+        Client client = clientRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
         return ResponseEntity.ok(Map.of("id",client.getId()));
     }
 
     @GetMapping("/name")
     public ResponseEntity<?> getClientName(@AuthenticationPrincipal UserDetails userDetails) {
-        Client client = clientRepository.findByUsername(userDetails.getUsername())
+        Client client = clientRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
         return ResponseEntity.ok(Map.of("name",client.getName()));
     }

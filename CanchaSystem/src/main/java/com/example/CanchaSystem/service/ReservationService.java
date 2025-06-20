@@ -3,7 +3,6 @@ package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
 import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
@@ -75,7 +74,7 @@ public class ReservationService {
     }
 
     public List<Reservation> findReservationsByClient(String username) throws NoReservationsException {
-        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+        Optional<Client> clientOpt = clientRepository.findByUsernameAndActive(username, true);
 
         if (clientOpt.isEmpty()) {
             throw new ClientNotFoundException("Cliente no encontrado");

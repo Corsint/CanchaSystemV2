@@ -1,5 +1,6 @@
 package com.example.CanchaSystem.service;
 
+import com.example.CanchaSystem.exception.client.UnactiveClientException;
 import com.example.CanchaSystem.exception.misc.*;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
@@ -8,14 +9,12 @@ import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.model.Role;
 import com.example.CanchaSystem.repository.ClientRepository;
-import com.example.CanchaSystem.repository.ReviewRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ClientService {
@@ -105,6 +104,9 @@ public class ClientService {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
+        if (!client.isActive())
+            throw new UnactiveClientException("Cliente dado de baja");
+
         if (addedAmount <= 0)
             throw new IllegalAmountException("Monto invalido");
 
@@ -117,6 +119,9 @@ public class ClientService {
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        if (!client.isActive())
+            throw new UnactiveClientException("Cliente dado de baja");
 
         if (amountToPay <= 0)
             throw new IllegalAmountException("Monto invalido");

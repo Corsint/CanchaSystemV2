@@ -25,7 +25,7 @@ public class NotificationService {
         LocalDateTime tomorrowStart = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime tomorrowEnd = tomorrowStart.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
-        List<Reservation> reservations = reservationRespository.findByMatchDateBetween(tomorrowStart, tomorrowEnd);
+        List<Reservation> reservations = reservationRespository.findByMatchDateBetweenAndStatus(tomorrowStart, tomorrowEnd, ReservationStatus.PENDING);
 
         for (Reservation reservation : reservations) {
             if (reservation.getClient() != null && reservation.getClient().getMail() != null &&

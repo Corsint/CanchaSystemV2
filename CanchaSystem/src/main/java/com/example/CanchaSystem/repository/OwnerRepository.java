@@ -13,6 +13,6 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     boolean existsByMail(String mail);
     boolean existsByCellNumber(String cellNumber);
 
-    Optional<Owner> findByUsername(String username);
+    Optional<Owner> findByUsernameAndActive(String username,boolean active);
 
 }

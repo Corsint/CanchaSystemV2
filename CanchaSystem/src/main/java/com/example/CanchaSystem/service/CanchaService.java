@@ -75,6 +75,7 @@ public class CanchaService {
         cancha.setActive(updated.isActive());
         cancha.setHasRoof(updated.isHasRoof());
         cancha.setCanShower(updated.isCanShower());
+        cancha.setWorking(updated.isWorking());
         cancha.setCanchaType(updated.getCanchaType());
 
         return canchaRepository.save(cancha);

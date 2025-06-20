@@ -1,17 +1,13 @@
 package com.example.CanchaSystem.service;
 
-import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
-import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNameAlreadyExistsException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNotFoundException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
 import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
-import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.Cancha;
 import com.example.CanchaSystem.model.CanchaBrand;
 import com.example.CanchaSystem.model.Owner;
-import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.repository.CanchaBrandRepository;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.OwnerRepository;
@@ -79,7 +75,7 @@ public class CanchaBrandService {
     }
 
     public List<CanchaBrand> findCanchaBrandsByOwnerUsername(String usernamme) throws CanchaBrandNotFoundException,OwnerNotFoundException {
-        Optional<Owner> optowner = ownerRepository.findByUsername(usernamme);
+        Optional<Owner> optowner = ownerRepository.findByUsernameAndActive(usernamme, true);
 
         if(optowner.isEmpty())
             throw new OwnerNotFoundException("Dueño no encontrado");

@@ -3,7 +3,6 @@ package com.example.CanchaSystem.repository;
 import com.example.CanchaSystem.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -15,6 +14,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
    boolean existsByMail(String mail);
    boolean existsByCellNumber(String cellNumber);
 
-   Optional<Client> findByUsername(String username);
+   Optional<Client> findByUsernameAndActive(String username,boolean active);
 
 }

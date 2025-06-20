@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -32,7 +31,7 @@ public class AuthService implements UserDetailsService {
         System.out.println("Intentando loguear con username: " + username);
 
         // Buscar en CLIENT
-        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+        Optional<Client> clientOpt = clientRepository.findByUsernameAndActive(username, true);
         if (clientOpt.isPresent()) {
             Client client = clientOpt.get();
             System.out.println("Usuario encontrado como CLIENT");
@@ -44,7 +43,7 @@ public class AuthService implements UserDetailsService {
         }
 
         // Buscar en OWNER
-        Optional<Owner> ownerOpt = ownerRepository.findByUsername(username);
+        Optional<Owner> ownerOpt = ownerRepository.findByUsernameAndActive(username, true);
         if (ownerOpt.isPresent()) {
             Owner owner = ownerOpt.get();
             System.out.println("Usuario encontrado como OWNER");

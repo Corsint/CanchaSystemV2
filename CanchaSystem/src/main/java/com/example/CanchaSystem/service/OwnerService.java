@@ -6,6 +6,7 @@ import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
+import com.example.CanchaSystem.exception.owner.UnactiveOwnerException;
 import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.OwnerRepository;
@@ -70,6 +71,9 @@ public class OwnerService {
 
         Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+
+        if (!owner.isActive())
+            throw new UnactiveOwnerException("Dueño dado de baja");
 
         if (addedAmount <= 0)
             throw new IllegalAmountException("Monto invalido");

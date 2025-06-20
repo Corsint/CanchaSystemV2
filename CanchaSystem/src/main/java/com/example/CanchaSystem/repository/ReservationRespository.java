@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
     List<Reservation> findByClientId(Long clientId);
     List<Reservation> findByCanchaIdAndMatchDateBetween(Long canchaId, LocalDateTime from, LocalDateTime until);
 
-    List<Reservation> findByMatchDateBetween(LocalDateTime from, LocalDateTime until);
+    List<Reservation> findByMatchDateBetweenAndStatus(LocalDateTime from, LocalDateTime until,ReservationStatus status);
     List<Reservation> findByMatchDateBeforeAndStatus(LocalDateTime now, ReservationStatus status);
     List<Reservation> findByCanchaIdAndMatchDateBetweenAndStatus(
             Long canchaId, LocalDateTime start, LocalDateTime end, ReservationStatus status);

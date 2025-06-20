@@ -55,7 +55,7 @@ public class ReservationController {
         }
 
         String username = auth.getName();
-        Client client = clientRepository.findByUsername(username)
+        Client client = clientRepository.findByUsernameAndActive(username, true)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
         reservation.setClient(client); // fuerza el cliente logueado

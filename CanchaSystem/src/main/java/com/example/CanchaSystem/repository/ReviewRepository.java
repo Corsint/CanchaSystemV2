@@ -12,6 +12,6 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     boolean existsByCanchaIdAndClientId(Long canchaId, Long clientId);
     Optional<Review> findById(Long reviewId);
 
-    List<Review> findByCanchaId(Long canchaId);
-    List<Review> findByClientId(Long clientId);
+    List<Review> findByCanchaIdAndActive(Long canchaId,boolean active);
+    List<Review> findByClientIdAndActive(Long clientId,boolean active);
 }

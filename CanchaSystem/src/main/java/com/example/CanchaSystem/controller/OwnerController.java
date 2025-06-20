@@ -1,26 +1,20 @@
 package com.example.CanchaSystem.controller;
 
-import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
-import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
-import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Owner;
 import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.service.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/owner")
@@ -34,7 +28,7 @@ public class OwnerController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
-        Owner owner = ownerRepository.findByUsername(userDetails.getUsername())
+        Owner owner = ownerRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
         return ResponseEntity.ok(owner.getId());
     }
@@ -77,7 +71,7 @@ public class OwnerController {
 
     @GetMapping("/name")
     public ResponseEntity<?> getOwnerName(@AuthenticationPrincipal UserDetails userDetails) {
-        Owner owner = ownerRepository.findByUsername(userDetails.getUsername())
+        Owner owner = ownerRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
         return ResponseEntity.ok(Map.of("name",owner.getName()));
     }

@@ -62,13 +62,13 @@ public class ReviewService {
     }
 
     public List<Review> getAllReviewsByCanchaId(Long canchaId) throws NoReviewsException {
-        List<Review> reviews = reviewRepository.findByCanchaId(canchaId);
+        List<Review> reviews = reviewRepository.findByCanchaIdAndActive(canchaId, true);
 
         return reviews;
     }
 
     public List<Review> getAllReviewsByClient(String username) throws NoReviewsException, ClientNotFoundException {
-        Optional<Client> clientOpt = clientRepository.findByUsername(username);
+        Optional<Client> clientOpt = clientRepository.findByUsernameAndActive(username, true);
 
         if (clientOpt.isEmpty()) {
             throw new ClientNotFoundException("Cliente no encontrado");
@@ -76,7 +76,7 @@ public class ReviewService {
 
         Client client = clientOpt.get();
 
-        List<Review> reviews = reviewRepository.findByClientId(client.getId());
+        List<Review> reviews = reviewRepository.findByClientIdAndActive(client.getId(), true);
 
         if (!reviews.isEmpty()){
             return reviews;
