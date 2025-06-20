@@ -1,6 +1,7 @@
 package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.exception.misc.IllegalAmountException;
 import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
@@ -59,6 +60,19 @@ public class OwnerService {
         owner.setBankOwner(ownerFromRequest.getBankOwner());
 
         return ownerRepository.save(owner);
+    }
+
+    public Owner addMoneyToOwnerBank(long ownerId,double addedAmount){
+
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
+
+        if (addedAmount <= 0)
+            throw new IllegalAmountException("Monto invalido");
+
+        owner.setBankOwner(owner.getBankOwner()+addedAmount);
+        return ownerRepository.save(owner);
+
     }
 
     public Owner updateOwnerAdmin(Owner ownerFromRequest) throws OwnerNotFoundException {

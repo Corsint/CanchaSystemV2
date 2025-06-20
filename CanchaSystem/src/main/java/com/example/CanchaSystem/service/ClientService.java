@@ -103,6 +103,19 @@ public class ClientService {
 
     }
 
+    public Client payFromClientBank(long clientId,double amountToPay){
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        if (amountToPay <= 0)
+            throw new IllegalAmountException("Monto invalido");
+
+        client.setBankClient(client.getBankClient()-amountToPay);
+        return clientRepository.save(client);
+
+    }
+
     public void deleteClient(Long id) throws ClientNotFoundException{
         if (clientRepository.existsById(id)) {
             clientRepository.deleteById(id);

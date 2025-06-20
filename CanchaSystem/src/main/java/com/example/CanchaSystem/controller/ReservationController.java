@@ -70,20 +70,15 @@ public class ReservationController {
         if (client.getBankClient()<deposit)
             throw new NotEnoughMoneyException("No hay suficientes fondos");
 
-        client.setBankClient((client.getBankClient())-(deposit));
-
         Owner owner = reservationService.getOwnerFromReservation(reservation.getId())
                 .orElseThrow(() -> new OwnerNotFoundException("No se encontro al dueño"));
 
-        owner.setBankOwner(owner.getBankOwner()+deposit);
+        clientService.payFromClientBank(client.getId(),deposit);
+        ownerService.addMoneyToOwnerBank(owner.getId(),deposit);
 
         reservation.setReservationDate(LocalDateTime.now());
-        reservation.setDeposit(deposit);
-
         reservation.setStatus(ReservationStatus.PENDING);
-
-        clientService.updateClient(client);
-        ownerService.updateOwner(owner);
+        reservation.setDeposit(deposit);
 
         mailService.sendReservationNoticeOwner(owner.getMail(), reservation);
         mailService.sendReservationNoticeClient(client.getMail(), reservation);
