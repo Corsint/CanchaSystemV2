@@ -2,31 +2,21 @@ package com.example.CanchaSystem.controller;
 
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.client.NoClientsException;
-import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
-import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
-import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
-import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
-import com.example.CanchaSystem.exception.reservation.NoReservationsException;
-import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
-import com.example.CanchaSystem.model.Cancha;
-import com.example.CanchaSystem.model.Client;
-import com.example.CanchaSystem.model.Reservation;
-import com.example.CanchaSystem.model.ReservationStatus;
+import com.example.CanchaSystem.exception.client.NotEnoughMoneyException;
+import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
+import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
+import com.example.CanchaSystem.service.ClientService;
 import com.example.CanchaSystem.service.MailService;
+import com.example.CanchaSystem.service.OwnerService;
 import com.example.CanchaSystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -34,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservation")
@@ -45,6 +34,12 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private OwnerService ownerService;
 
     @Autowired
     private CanchaRepository canchaRepository;
@@ -64,16 +59,34 @@ public class ReservationController {
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
         reservation.setClient(client); // fuerza el cliente logueado
-        reservation.setReservationDate(LocalDateTime.now());
-        reservation.setDeposit(500.0);
-        reservation.setStatus(ReservationStatus.PENDING);
 
         Cancha cancha = canchaRepository.findById(reservation.getCancha().getId())
                 .orElseThrow(() -> new CanchaNotFoundException("Cancha no encontrada"));
 
         reservation.setCancha(cancha);
 
-        mailService.sendReservationNotice(cancha.getBrand().getOwner().getMail(), reservation);
+        double deposit = reservation.getCancha().getTotalAmount()/(double) reservation.getCancha().getCanchaType().getTotalPlayers();
+
+        if (client.getBankClient()<deposit)
+            throw new NotEnoughMoneyException("No hay suficientes fondos");
+
+        client.setBankClient((client.getBankClient())-(deposit));
+
+        Owner owner = reservationService.getOwnerFromReservation(reservation.getId())
+                .orElseThrow(() -> new OwnerNotFoundException("No se encontro al dueño"));
+
+        owner.setBankOwner(owner.getBankOwner()+deposit);
+
+        reservation.setReservationDate(LocalDateTime.now());
+        reservation.setDeposit(deposit);
+
+        reservation.setStatus(ReservationStatus.PENDING);
+
+        clientService.updateClient(client);
+        ownerService.updateOwner(owner);
+
+        mailService.sendReservationNoticeOwner(owner.getMail(), reservation);
+        mailService.sendReservationNoticeClient(client.getMail(), reservation);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.insertReservation(reservation));
     }

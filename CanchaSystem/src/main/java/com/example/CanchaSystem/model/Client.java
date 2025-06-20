@@ -61,6 +61,9 @@ public class Client {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role = new Role("CLIENT");
+
+    @Column(nullable = false)
+    private double bankClient=0;
 }
 
 

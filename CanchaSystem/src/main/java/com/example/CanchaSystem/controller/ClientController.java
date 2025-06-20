@@ -71,6 +71,14 @@ public class ClientController {
         return ResponseEntity.ok("Datos actualizados, inicie sesión nuevamente");
     }
 
+    @PutMapping("/addMoneyToClient/{clientId}/{amount}")
+    public ResponseEntity<?> AddMoneyToBankClient(@PathVariable Long clientId,@PathVariable double amount){
+
+        clientService.addMoneyToClientBank(clientId,amount);
+
+        return ResponseEntity.ok("Saldo actualizado");
+    }
+
     @PutMapping("/updateAdmin")
     public ResponseEntity<?> updateClientAdmin(@RequestBody Client client) {
         clientService.updateClientAdmin(client);

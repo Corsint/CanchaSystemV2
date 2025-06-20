@@ -3,13 +3,11 @@ package com.example.CanchaSystem.service;
 
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
 import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
-import com.example.CanchaSystem.model.Cancha;
-import com.example.CanchaSystem.model.Client;
-import com.example.CanchaSystem.model.Reservation;
-import com.example.CanchaSystem.model.ReservationStatus;
+import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.ReservationRespository;
@@ -171,6 +169,14 @@ public class ReservationService {
             reservationRespository.saveAll(expired);
         }
     }
+
+    public Optional<Owner> getOwnerFromReservation(Long reservationId) {
+        return reservationRespository.findById(reservationId)
+                .map(Reservation::getCancha)
+                .map(Cancha::getBrand)
+                .map(CanchaBrand::getOwner);
+    }
+
 
 }
 

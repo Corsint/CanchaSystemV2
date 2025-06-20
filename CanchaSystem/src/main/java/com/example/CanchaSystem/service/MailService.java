@@ -41,8 +41,8 @@ public class MailService {
     }
 
     @Async
-    public void sendReservationNotice(String to, Reservation reservation) {
-        // Validaciones defensivas
+    public void sendReservationNoticeOwner(String to, Reservation reservation) {
+
         if (reservation == null ||
                 reservation.getClient() == null ||
                 reservation.getCancha() == null ||
@@ -51,7 +51,7 @@ public class MailService {
             throw new IllegalStateException("La reserva no tiene datos completos para enviar el mail.");
         }
 
-        // Construcción del mensaje
+
         String body = String.format("""
         Hola %s,
 
@@ -64,6 +64,45 @@ public class MailService {
         CanchaSystem.
         """,
                 reservation.getCancha().getBrand().getOwner().getName(),
+                reservation.getClient().getName(),
+                reservation.getCancha().getName(),
+                reservation.getReservationDate(),
+                reservation.getMatchDate()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Reserva confirmada en " + reservation.getCancha().getName());
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com");
+
+
+        mailSender.send(message);
+    }
+
+    @Async
+    public void sendReservationNoticeClient(String to, Reservation reservation) {
+
+        if (reservation == null ||
+                reservation.getClient() == null ||
+                reservation.getCancha() == null ||
+                reservation.getCancha().getBrand() == null ||
+                reservation.getCancha().getBrand().getOwner() == null) {
+            throw new IllegalStateException("La reserva no tiene datos completos para enviar el mail.");
+        }
+
+
+        String body = String.format("""
+        Hola %s,
+
+        Te avisamos que se confirmó tu reserva en la cancha "%s".
+
+        Fecha de creación de la reserva: %s
+        Fecha del partido: %s
+
+        Saludos,
+        CanchaSystem.
+        """,
                 reservation.getClient().getName(),
                 reservation.getCancha().getName(),
                 reservation.getReservationDate(),

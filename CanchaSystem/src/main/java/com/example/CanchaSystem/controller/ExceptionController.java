@@ -11,6 +11,7 @@ import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNotFoundExcepti
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
+import com.example.CanchaSystem.exception.client.NotEnoughMoneyException;
 import com.example.CanchaSystem.exception.misc.*;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
@@ -92,10 +93,17 @@ public class ExceptionController {
 
     @ExceptionHandler(NoClientsException.class)
     public ResponseEntity<Map<String, Object>> handleNoClients(NoClientsException ex) {
-        System.out.println("Entro al handler");
+        //System.out.println("Entro al handler");
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
     }
+
+    @ExceptionHandler(NotEnoughMoneyException.class)
+    public ResponseEntity<Map<String, Object>> handleNotEnoughMoney(NotEnoughMoneyException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
+    }
+
 
     @ExceptionHandler(BankAlreadyLinkedException.class)
     public ResponseEntity<Map<String, Object>> handleBankAlreadyLinked(BankAlreadyLinkedException ex) {

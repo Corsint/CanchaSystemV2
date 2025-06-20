@@ -1,9 +1,6 @@
 package com.example.CanchaSystem.service;
 
-import com.example.CanchaSystem.exception.misc.BankAlreadyLinkedException;
-import com.example.CanchaSystem.exception.misc.CellNumberAlreadyAddedException;
-import com.example.CanchaSystem.exception.misc.MailAlreadyRegisteredException;
-import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
+import com.example.CanchaSystem.exception.misc.*;
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.client.NoClientsException;
 import com.example.CanchaSystem.model.Client;
@@ -82,6 +79,7 @@ public class ClientService {
         client.setUsername(clientFromRequest.getUsername());
         client.setMail(clientFromRequest.getMail());
         client.setCellNumber(clientFromRequest.getCellNumber());
+        client.setBankClient(clientFromRequest.getBankClient());
 
         String pass = clientFromRequest.getPassword();
 
@@ -90,6 +88,19 @@ public class ClientService {
         }
 
         return clientRepository.save(client);
+    }
+
+    public Client addMoneyToClientBank(long clientId,double addedAmount){
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+
+        if (addedAmount <= 0)
+            throw new IllegalAmountException("Monto invalido");
+
+        client.setBankClient(client.getBankClient()+addedAmount);
+        return clientRepository.save(client);
+
     }
 
     public void deleteClient(Long id) throws ClientNotFoundException{

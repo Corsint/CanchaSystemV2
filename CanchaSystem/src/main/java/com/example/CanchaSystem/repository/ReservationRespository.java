@@ -1,5 +1,6 @@
 package com.example.CanchaSystem.repository;
 
+import com.example.CanchaSystem.model.Owner;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,4 +41,11 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
             "WHERE o.id = :ownerId")
     List<Reservation> findAllByOwnerId(@Param("ownerId") Long ownerId);
     List<Reservation> findByStatusAndMatchDateBefore(ReservationStatus status, LocalDateTime date);
+
+    @Query("SELECT b.owner FROM Reservation r " +
+            "JOIN r.cancha c " +
+            "JOIN c.brand b " +
+            "WHERE c.id = :canchaId")
+    Owner findOwnerByCanchaId(@Param("canchaId") Long canchaId);
+
 }

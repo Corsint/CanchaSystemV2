@@ -61,4 +61,7 @@ public class Owner {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @Column(nullable = false)
+    private double bankOwner=0;
 }

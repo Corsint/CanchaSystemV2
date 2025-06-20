@@ -49,13 +49,14 @@ public class OwnerService {
 
     public Owner updateOwner(Owner ownerFromRequest) throws OwnerNotFoundException {
         Owner owner = ownerRepository.findById(ownerFromRequest.getId())
-                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
+                .orElseThrow(() -> new ClientNotFoundException("Dueño no encontrado"));
 
         owner.setName(ownerFromRequest.getName());
         owner.setLastName(ownerFromRequest.getLastName());
         owner.setUsername(ownerFromRequest.getUsername());
         owner.setMail(ownerFromRequest.getMail());
         owner.setCellNumber(ownerFromRequest.getCellNumber());
+        owner.setBankOwner(ownerFromRequest.getBankOwner());
 
         return ownerRepository.save(owner);
     }
@@ -68,7 +69,8 @@ public class OwnerService {
         owner.setLastName(ownerFromRequest.getLastName());
         owner.setUsername(ownerFromRequest.getUsername());
         owner.setMail(ownerFromRequest.getMail());
-        owner.setCellNumber(owner.getCellNumber());
+        owner.setCellNumber(ownerFromRequest.getCellNumber());
+        owner.setBankOwner(ownerFromRequest.getBankOwner());
 
         String pass = ownerFromRequest.getPassword();
 
