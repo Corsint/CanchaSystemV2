@@ -9,14 +9,13 @@ import com.example.CanchaSystem.exception.cancha.NoCanchasException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNameAlreadyExistsException;
 import com.example.CanchaSystem.exception.canchaBrand.CanchaBrandNotFoundException;
 import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
-import com.example.CanchaSystem.exception.client.ClientNotFoundException;
-import com.example.CanchaSystem.exception.client.NoClientsException;
-import com.example.CanchaSystem.exception.client.NotEnoughMoneyException;
-import com.example.CanchaSystem.exception.client.UnactiveClientException;
+import com.example.CanchaSystem.exception.client.*;
 import com.example.CanchaSystem.exception.misc.*;
 import com.example.CanchaSystem.exception.owner.NoOwnersException;
 import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.exception.owner.UnactiveOwnerException;
+import com.example.CanchaSystem.exception.requests.NoRequestsException;
+import com.example.CanchaSystem.exception.requests.RequestNotFoundException;
 import com.example.CanchaSystem.exception.reservation.IllegalReservationDateException;
 import com.example.CanchaSystem.exception.reservation.NoReservationsException;
 import com.example.CanchaSystem.exception.reservation.ReservationNotFoundException;
@@ -106,6 +105,12 @@ public class ExceptionController {
                 .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
     }
 
+    @ExceptionHandler(ClientAlreadyRequestedException.class)
+    public ResponseEntity<Map<String, Object>> handleClientAlreadyRequested(ClientAlreadyRequestedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
+    }
+
     @ExceptionHandler(NotEnoughMoneyException.class)
     public ResponseEntity<Map<String, Object>> handleNotEnoughMoney(NotEnoughMoneyException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -158,6 +163,18 @@ public class ExceptionController {
     @ExceptionHandler(UnactiveOwnerException.class)
     public ResponseEntity<Map<String, Object>> handleUnactiveOwner(UnactiveOwnerException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(NoRequestsException.class)
+    public ResponseEntity<Map<String, Object>> handleNoRequests(NoRequestsException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(RequestNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleRequestNotFound(RequestNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage(), "timestamp", LocalDateTime.now()));
     }
 

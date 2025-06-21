@@ -35,7 +35,6 @@ public class OwnerService {
     public Owner insertOwner(Owner owner) throws UsernameAlreadyExistsException {
         Role ownerRole = roleRepository.findByName("OWNER")
                 .orElseGet(() -> roleRepository.save(new Role("OWNER")));
-        owner.setRole(ownerRole);
 
         if(!ownerRepository.existsByUsername(owner.getUsername())) {
             owner.setRole(ownerRole);

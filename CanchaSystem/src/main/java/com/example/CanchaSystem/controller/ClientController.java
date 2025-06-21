@@ -2,8 +2,10 @@ package com.example.CanchaSystem.controller;
 
 import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.model.Client;
+import com.example.CanchaSystem.model.OwnerRequest;
 import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.service.ClientService;
+import com.example.CanchaSystem.service.OwnerRequestService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private OwnerRequestService ownerRequestService;
 
     @GetMapping("/me")
     public ResponseEntity<?> getClientId(@AuthenticationPrincipal UserDetails userDetails) {
@@ -86,4 +91,10 @@ public class ClientController {
     public ResponseEntity<?> findClientById(@PathVariable Long id) {
             return ResponseEntity.ok(clientService.findClientById(id));
     }
+
+    @PostMapping("/request")
+    public ResponseEntity<?> request(@Validated @RequestBody OwnerRequest ownerRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ownerRequestService.insertRequest(ownerRequest));
+    }
+
 }

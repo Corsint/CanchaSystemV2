@@ -4,7 +4,9 @@ import com.example.CanchaSystem.exception.misc.UsernameAlreadyExistsException;
 import com.example.CanchaSystem.exception.admin.AdminNotFoundException;
 import com.example.CanchaSystem.exception.admin.NoAdminsException;
 import com.example.CanchaSystem.model.Admin;
+import com.example.CanchaSystem.model.OwnerRequestStatus;
 import com.example.CanchaSystem.service.AdminService;
+import com.example.CanchaSystem.service.OwnerRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private OwnerRequestService ownerRequestService;
 
     @PostMapping("/insert")
     public ResponseEntity<?> insertAdmin(@Validated @RequestBody Admin admin) {
@@ -52,4 +57,15 @@ public class AdminController {
         return ResponseEntity.ok(adminService.findAdminById(id));
 
     }
+
+    @PutMapping("/denyRequest/{requestId}")
+    public ResponseEntity<?> denyRequest(@PathVariable Long requestId){
+        return ResponseEntity.ok(ownerRequestService.updateRequest(requestId, OwnerRequestStatus.DENIED));
+    }
+
+    @PutMapping("/approveRequest/{requestId}")
+    public ResponseEntity<?> approveRequest(@PathVariable Long requestId){
+        return ResponseEntity.ok(ownerRequestService.updateRequest(requestId, OwnerRequestStatus.APPROVED));
+    }
+
 }
