@@ -67,6 +67,12 @@ public class ReviewService {
         return reviews;
     }
 
+    public List<Review> getAllReviewsByCanchaIdAdmin(Long canchaId) throws NoReviewsException {
+        List<Review> reviews = reviewRepository.findByCanchaId(canchaId);
+
+        return reviews;
+    }
+
     public List<Review> getAllReviewsByClient(String username) throws NoReviewsException, ClientNotFoundException {
         Optional<Client> clientOpt = clientRepository.findByUsernameAndActive(username, true);
 

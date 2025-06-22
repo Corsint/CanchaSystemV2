@@ -73,6 +73,11 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getAllReviewsByCanchaId(canchaId));
     }
 
+    @GetMapping("/findReviewsByCanchaIdAdmin/{canchaId}")
+    public ResponseEntity<?> findReviewsByCanchaIdAdmin(@PathVariable Long canchaId){
+        return ResponseEntity.ok(reviewService.getAllReviewsByCanchaIdAdmin(canchaId));
+    }
+
     @GetMapping("/clientReviewExists")
     public boolean clientAlreadyReviewedCancha(@RequestParam Long canchaId,
                                                @RequestParam Long clientId){

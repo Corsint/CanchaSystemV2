@@ -1,0 +1,112 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 20px;
+  background-color: #121212; /* fondo negro */
+  color: #b0f2b6; /* verde claro para texto */
+}
+
+h1, h2 {
+  color: #39b54a; /* verde cancha intenso */
+  text-shadow: 0 0 5px #0f620f;
+}
+
+#detalleCancha {
+  background-color: #1e1e1e; /* gris oscuro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px #39b54a;
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  background-color: #222; /* un poco más claro que fondo */
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #237a0a;
+  font-size: 0.95em;
+  line-height: 1.4;
+  color: #b0f2b6;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #39b54a;
+  margin: 10px 0 0 0;
+}
+
+button {
+  background-color: #39b54a;
+  color: #121212;
+  border: none;
+  padding: 8px 14px;
+  margin-top: 10px;
+  margin-right: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95em;
+  box-shadow: 0 0 6px #237a0a;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #2e8b35;
+  box-shadow: 0 0 12px #39b54a;
+}
+
+.star {
+  font-size: 24px;
+  color: #4caf50; /* verde para estrellas */
+  cursor: default;
+  user-select: none;
+  text-shadow: 0 0 4px #0f620f;
+}
+
+.star.selected {
+  color: #a5d6a7; /* verde claro brillante */
+}
+
+span {
+  user-select: none;
+}
+
+/* Estados con colores */
+li span[style*="color:red"] {
+  color: #ff3b3b;
+  font-weight: bold;
+  text-shadow: 0 0 4px #900000;
+}
+
+li span[style*="color:green"] {
+  color: #39b54a;
+  font-weight: bold;
+  text-shadow: 0 0 5px #1e4d1e;
+}
+
+li span[style*="color:blue"] {
+  color: #2a9df4;
+  font-weight: bold;
+  text-shadow: 0 0 5px #164e7a;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  body {
+    margin: 10px;
+  }
+  button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+  }
+  #detalleCancha {
+    font-size: 1em;
+  }
+}

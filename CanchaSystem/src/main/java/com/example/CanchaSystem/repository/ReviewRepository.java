@@ -13,5 +13,6 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     Optional<Review> findById(Long reviewId);
 
     List<Review> findByCanchaIdAndActive(Long canchaId,boolean active);
+    List<Review> findByCanchaId(Long canchaId);
     List<Review> findByClientIdAndActive(Long clientId,boolean active);
 }
