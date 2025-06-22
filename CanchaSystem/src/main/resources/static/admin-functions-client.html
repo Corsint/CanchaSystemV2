@@ -30,6 +30,7 @@
 <ul id="listaClientes"></ul>
 
 <script>
+  <script>
   let clientes = [];
 
   async function cargarClientes() {
@@ -125,6 +126,19 @@
       return;
     }
 
+    // 1. Validación por regex
+    if (!validarEmail(data.mail)) {
+      alert("El email no tiene un formato válido.");
+      return;
+    }
+
+    // 2. Validación externa con AbstractAPI
+    const emailValido = await validarEmailConAPI(data.mail);
+    if (!emailValido) {
+      alert("El email ingresado no es válido");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:8080/client/${esUpdate ? "updateAdmin" : "insert"}`, {
         method: esUpdate ? "PUT" : "POST",
@@ -140,12 +154,31 @@
 
       alert(esUpdate ? "Cliente modificado" : "Cliente creado");
       cancelarEdicion();
-      await cargarClientes(); //
+      await cargarClientes();
     } catch (err) {
       console.error(err);
       alert("Error: " + err.message);
     }
   });
+
+  function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  async function validarEmailConAPI(email) {
+    const apiKey = 'be22398a0ca646a08843a2d4ff1f8970';
+    const verifyUrl = `https://emailvalidation.abstractapi.com/v1/?api_key=${apiKey}&email=${encodeURIComponent(email)}`;
+
+    try {
+      const response = await fetch(verifyUrl);
+      const data = await response.json();
+      return data.deliverability === "DELIVERABLE" && data.is_valid_format.value === true;
+    } catch (error) {
+      console.error("Error al validar el correo con AbstractAPI:", error);
+      return false;
+    }
+  }
 
   document.addEventListener("DOMContentLoaded", cargarClientes);
 </script>
