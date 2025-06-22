@@ -5,7 +5,6 @@ const urlParams = new URLSearchParams(window.location.search);
   const fechaInput = document.getElementById('fecha');
   const horarioSelect = document.getElementById('horario');
 
-  // Mostrar detalles de la cancha
   async function cargarDetallesCancha() {
     try {
       const res = await fetch(`http://localhost:8080/cancha/findCanchaById/${canchaId}`);
@@ -28,7 +27,6 @@ const urlParams = new URLSearchParams(window.location.search);
 
   cargarDetallesCancha();
 
-  // Cargar horarios disponibles al elegir fecha
   fechaInput.addEventListener('change', async () => {
     const fecha = fechaInput.value;
     if (!fecha) return;
@@ -55,12 +53,11 @@ const urlParams = new URLSearchParams(window.location.search);
     }
   });
 
-  // Enviar reserva
   document.getElementById('formReserva').addEventListener('submit', async (e) => {
     e.preventDefault();
     const fecha = fechaInput.value;
     const hora = horarioSelect.value;
-    const fechaHora = `${fecha}T${hora}`; // formato ISO
+    const fechaHora = `${fecha}T${hora}`;
 
     const body = {
       cancha: { id: canchaId },
@@ -76,7 +73,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
       if (res.ok) {
         alert("¡Reserva confirmada!");
-        location.href = "home-client.html"; // o redireccioná donde quieras
+        location.href = "home-client.html";
       } else {
         alert("Error al reservar");
       }

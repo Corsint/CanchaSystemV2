@@ -1,4 +1,4 @@
-/* Fuente general y fondo */
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
@@ -8,7 +8,6 @@ body {
   margin: 0 auto;
 }
 
-/* Título principal */
 h1 {
   text-align: center;
   color: #00ff55;
@@ -16,7 +15,6 @@ h1 {
   text-shadow: 0 0 5px #00ff55;
 }
 
-/* Subtítulos */
 h2 {
   margin-top: 40px;
   color: #00cc44;
@@ -24,7 +22,6 @@ h2 {
   padding-bottom: 6px;
 }
 
-/* Listas */
 ul {
   list-style: none;
   padding-left: 0;
@@ -44,13 +41,11 @@ li:hover {
   background-color: #222;
 }
 
-/* Texto en negrita dentro de las listas */
 li strong {
   color: #00ff88;
   font-size: 1.1em;
 }
 
-/* Botón cancelar */
 .cancel-btn {
   margin-top: 12px;
   background-color: #e53935;
@@ -69,7 +64,6 @@ li strong {
   background-color: #b71c1c;
 }
 
-/* Botón volver */
 button {
   margin-top: 40px;
   display: block;

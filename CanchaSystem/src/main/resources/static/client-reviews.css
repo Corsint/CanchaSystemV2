@@ -11,7 +11,6 @@ h1 {
   margin-bottom: 25px;
 }
 
-/* Lista de reseñas */
 ul#listaReseñas {
   list-style: none;
   padding: 0;
@@ -28,18 +27,15 @@ ul#listaReseñas li {
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
 }
 
-/* Nombre cancha y marca */
 ul#listaReseñas strong {
   font-size: 1.2em;
   color: #00ff55;
 }
 
-/* Contenedor de estrellas */
 div[id^="stars-"] {
   margin: 8px 0;
 }
 
-/* Estrellas */
 .star {
   font-size: 24px;
   color: gray;
@@ -57,7 +53,6 @@ div[id^="stars-"] {
   color: #00ff55;
 }
 
-/* Textarea para comentario */
 textarea {
   width: 100%;
   resize: vertical;
@@ -69,7 +64,6 @@ textarea {
   transition: border-color 0.3s ease;
 }
 
-/* Lectura (no editable) */
 textarea.readonly {
   background-color: #222;
   color: #ccc;
@@ -77,7 +71,6 @@ textarea.readonly {
   cursor: default;
 }
 
-/* Editable */
 textarea.editable {
   background-color: #1a1a1a;
   border: 1px solid #00ff55;
@@ -90,7 +83,6 @@ textarea.editable:focus {
   box-shadow: 0 0 5px #00cc44;
 }
 
-/* Botones */
 button {
   background-color: #00ff55;
   color: #000;
@@ -116,14 +108,12 @@ button[disabled] {
   color: #999;
 }
 
-/* Separador */
 hr {
   border: 0;
   border-top: 1px solid #333;
   margin: 15px 0;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   ul#listaReseñas li {
     padding: 10px 15px;

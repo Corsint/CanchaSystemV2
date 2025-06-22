@@ -1,11 +1,10 @@
-document.getElementById("registerForm").addEventListener("submit", async function(event) {
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const email = document.getElementById("mail").value;
 
-    // Validar email usando AbstractAPI
-    const apiKey = 'be22398a0ca646a08843a2d4ff1f8970'; // ← reemplaza con tu API Key real
-const verifyUrl = "https:" + "//emailvalidation.abstractapi.com/v1/?api_key=" + apiKey + "&email=" + encodeURIComponent(email);
+    const apiKey = 'be22398a0ca646a08843a2d4ff1f8970';
+    const verifyUrl = "https:" + "//emailvalidation.abstractapi.com/v1/?api_key=" + apiKey + "&email=" + encodeURIComponent(email);
 
     try {
         const verifyResponse = await fetch(verifyUrl);
@@ -16,7 +15,6 @@ const verifyUrl = "https:" + "//emailvalidation.abstractapi.com/v1/?api_key=" + 
             return;
         }
 
-        // Si el email es válido, continuar con el registro
         const client = {
             name: document.getElementById("name").value,
             lastName: document.getElementById("lastname").value,

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("filtroTecho").addEventListener("change", cargarCanchas);
   document.getElementById("filtroDucha").addEventListener("change", cargarCanchas);
 
-  // Obtener cliente y luego cargar canchas
+
   try {
     const clientRes = await fetch("http://localhost:8080/client/me");
     if (!clientRes.ok) throw new Error(`Error obteniendo cliente: ${clientRes.status}`);

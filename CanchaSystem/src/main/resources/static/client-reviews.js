@@ -43,18 +43,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function activarEdicion(id) {
-        // Hacer el mensaje editable
         const textarea = document.getElementById(`msg-${id}`);
         textarea.readOnly = false;
         textarea.classList.remove("readonly");
         textarea.classList.add("editable");
-
-        // Activar las estrellas clickeables
         const ratingDiv = document.getElementById(`stars-${id}`);
         const currentRating = parseInt(ratingDiv.dataset.rating || 0);
         ratingDiv.innerHTML = renderStars(currentRating, id, true);
 
-        // Mostrar botón guardar, ocultar editar
         document.getElementById(`btn-edit-${id}`).style.display = "none";
         document.getElementById(`btn-save-${id}`).style.display = "inline-block";
     }
@@ -90,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (res.ok) {
                 alert("Reseña actualizada 🎉");
 
-                // Volver a modo lectura
                 const textarea = document.getElementById(`msg-${id}`);
                 textarea.readOnly = true;
                 textarea.classList.remove("editable");

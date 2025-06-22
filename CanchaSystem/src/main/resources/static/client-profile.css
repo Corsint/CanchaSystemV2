@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,7 +21,6 @@ h1 {
   font-size: 2.2rem;
 }
 
-/* Formulario */
 form {
   background-color: #1e1e1e;
   padding: 30px;
@@ -54,7 +53,6 @@ input:focus {
   outline: none;
 }
 
-/* Campos de solo lectura */
 input[readonly] {
   background-color: #1a1a1a;
   border: 1px solid #555;
@@ -62,14 +60,12 @@ input[readonly] {
   cursor: not-allowed;
 }
 
-/* Campos editables */
 input.editable {
   background-color: #222;
   border: 1px solid #00ff55;
   color: #fff;
 }
 
-/* Botones */
 button {
   padding: 10px 16px;
   margin-right: 10px;

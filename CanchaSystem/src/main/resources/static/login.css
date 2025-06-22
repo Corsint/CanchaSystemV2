@@ -1,6 +1,6 @@
-/* Estilo general de fondo */
+
 body {
-  background-color: #0a0a0a; /* negro profundo */
+  background-color: #0a0a0a;
   color: #e0e0e0;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
@@ -10,23 +10,20 @@ body {
   margin: 0;
 }
 
-/* Contenedor del formulario */
 form {
-  background-color: #111; /* gris oscuro */
+  background-color: #111;
   padding: 30px 40px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
   border: 1px solid #1f1f1f;
 }
 
-/* Título */
 h1 {
-  color: #00ff55; /* verde tipo césped */
+  color: #00ff55;
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Etiquetas y campos */
 label {
   display: block;
   margin-bottom: 10px;
@@ -54,7 +51,6 @@ input[type="password"]:focus {
   box-shadow: 0 0 5px #00ff88;
 }
 
-/* Botón de login */
 button {
   width: 100%;
   padding: 10px;
@@ -73,7 +69,6 @@ button:hover {
   background-color: #00cc44;
 }
 
-/* Errores */
 div[style*="color:red"] {
   margin-top: 15px;
   color: #ff4d4d;

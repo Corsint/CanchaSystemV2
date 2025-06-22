@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const resActual = await fetch(`http://localhost:8080/reservation/${id}`);
       const reserva = await resActual.json();
 
-      reserva.status = "CANCELED"; // el resto se mantiene tal como vino (matchDate en crudo)
+      reserva.status = "CANCELED";
 
       const res = await fetch("http://localhost:8080/reservation/update", {
         method: "PUT",
