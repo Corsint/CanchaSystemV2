@@ -26,7 +26,7 @@ public class OwnerRequest {
 
     @Column(nullable = false)
     @PastOrPresent
-    private LocalDateTime requestDate;
+    private LocalDateTime requestDate = LocalDateTime.now();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

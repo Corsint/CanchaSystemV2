@@ -1,7 +1,5 @@
 package com.example.CanchaSystem.controller;
 
-import com.example.CanchaSystem.repository.ReservationRespository;
-import com.example.CanchaSystem.service.MailService;
 import com.example.CanchaSystem.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

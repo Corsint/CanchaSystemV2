@@ -9,7 +9,7 @@ import com.example.CanchaSystem.exception.reservation.ReservationNotFoundExcepti
 import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.CanchaRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
-import com.example.CanchaSystem.repository.ReservationRespository;
+import com.example.CanchaSystem.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     @Autowired
-    private ReservationRespository reservationRespository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
     private CanchaRepository canchaRepository;
@@ -37,15 +37,15 @@ public class ReservationService {
 
     public Reservation insertReservation(Reservation reservation)
             throws IllegalReservationDateException {
-        if(!reservationRespository.existsBymatchDateAndCanchaId(reservation.getMatchDate(),reservation.getCancha().getId()))
-            return reservationRespository.save(reservation);
+        if(!reservationRepository.existsBymatchDateAndCanchaId(reservation.getMatchDate(),reservation.getCancha().getId()))
+            return reservationRepository.save(reservation);
         else
             throw new IllegalReservationDateException("La fecha ya esta reservada");
     }
 
     public List<Reservation> getAllReservations() throws NoReservationsException {
-        if(!reservationRespository.findAll().isEmpty()){
-            return reservationRespository.findAll();
+        if(!reservationRepository.findAll().isEmpty()){
+            return reservationRepository.findAll();
         }else
             throw new NoReservationsException("Todavia no hay reservas registradas");
 
@@ -53,24 +53,24 @@ public class ReservationService {
     }
 
     public Reservation updateReservation(Reservation reservation) throws ReservationNotFoundException {
-        Reservation existing = reservationRespository.findById(reservation.getId())
+        Reservation existing = reservationRepository.findById(reservation.getId())
                 .orElseThrow(() ->  new ReservationNotFoundException("Reserva no encontrada"));
         existing.setStatus(reservation.getStatus());
         existing.setMatchDate(reservation.getMatchDate());
-        return reservationRespository.save(existing);
+        return reservationRepository.save(existing);
 
     }
 
     public void deleteReservation(Long id) throws ReservationNotFoundException{
-        if (reservationRespository.existsById(id)) {
-            reservationRespository.deleteById(id);
+        if (reservationRepository.existsById(id)) {
+            reservationRepository.deleteById(id);
         }else
             throw new ReservationNotFoundException("Reserva no encontrada");
 
     }
 
     public Reservation findReservationById(Long id) throws ReservationNotFoundException {
-        return reservationRespository.findById(id).orElseThrow(()-> new ReservationNotFoundException("Reserva no encontrada"));
+        return reservationRepository.findById(id).orElseThrow(()-> new ReservationNotFoundException("Reserva no encontrada"));
     }
 
     public List<Reservation> findReservationsByClient(String username) throws NoReservationsException {
@@ -82,7 +82,7 @@ public class ReservationService {
 
         Client client = clientOpt.get();
 
-        List<Reservation> reservations = reservationRespository.findByClientId(client.getId());
+        List<Reservation> reservations = reservationRepository.findByClientId(client.getId());
 
         if (!reservations.isEmpty()) {
             return reservations;
@@ -93,7 +93,7 @@ public class ReservationService {
     }
 
     public List<Reservation> findReservationsByCanchaId(Long canchaId){
-        return reservationRespository.findByCanchaId(canchaId);
+        return reservationRepository.findByCanchaId(canchaId);
     }
 
     public List<LocalTime> getAvailableHours(Long canchaId, LocalDate day)throws CanchaNotFoundException{
@@ -111,7 +111,7 @@ public class ReservationService {
         LocalDateTime from = day.atTime(canchaAux.getOpeningHour());
         LocalDateTime until = day.atTime(canchaAux.getClosingHour());
 
-        List<Reservation> reservations = reservationRespository
+        List<Reservation> reservations = reservationRepository
                 .findByCanchaIdAndMatchDateBetweenAndStatus(canchaId,from,until,ReservationStatus.PENDING);
 
         Set<LocalTime> reservedHours = reservations.stream()
@@ -124,30 +124,30 @@ public class ReservationService {
     }
 
     public Reservation completeReservation(Reservation reservation){
-        if(reservationRespository.existsById(reservation.getId())){
+        if(reservationRepository.existsById(reservation.getId())){
             reservation.setStatus(ReservationStatus.COMPLETED);
-            return reservationRespository.save(reservation);
+            return reservationRepository.save(reservation);
         }else
             throw new ReservationNotFoundException("Reserva no encontrada");
     }
 
     public Reservation cancelReservation(Reservation reservation){
-        if(reservationRespository.existsById(reservation.getId())){
+        if(reservationRepository.existsById(reservation.getId())){
             reservation.setStatus(ReservationStatus.CANCELED);
-            return reservationRespository.save(reservation);
+            return reservationRepository.save(reservation);
         }else
             throw new ReservationNotFoundException("Reserva no encontrada");
     }
 
     public List<Reservation> getReservationsByBrandId(Long brandId) throws NoReservationsException{
-        List<Reservation> reservations = reservationRespository.findAllByBrandId(brandId);
+        List<Reservation> reservations = reservationRepository.findAllByBrandId(brandId);
         if (reservations.isEmpty())
             throw new NoReservationsException("Todavía no hay reseñas hechas");
         return reservations;
     }
 
     public List<Reservation> getReservationsByOwnerId(Long ownerId) throws NoReservationsException{
-        List<Reservation> reservations = reservationRespository.findAllByOwnerId(ownerId);
+        List<Reservation> reservations = reservationRepository.findAllByOwnerId(ownerId);
         if (reservations.isEmpty())
             throw new NoReservationsException("Todavía no hay reseñas hechas");
         return reservations;
@@ -155,7 +155,7 @@ public class ReservationService {
 
     @Scheduled(fixedRate = 60000) // cada 60 segundos
     public void finishPastReservations() {
-        List<Reservation> expired = reservationRespository.findByStatusAndMatchDateBefore(
+        List<Reservation> expired = reservationRepository.findByStatusAndMatchDateBefore(
                 ReservationStatus.PENDING,
                 LocalDateTime.now()
         );
@@ -165,12 +165,12 @@ public class ReservationService {
         }
 
         if (!expired.isEmpty()) {
-            reservationRespository.saveAll(expired);
+            reservationRepository.saveAll(expired);
         }
     }
 
     public Optional<Owner> getOwnerFromReservation(Long reservationId) {
-        return reservationRespository.findById(reservationId)
+        return reservationRepository.findById(reservationId)
                 .map(Reservation::getCancha)
                 .map(Cancha::getBrand)
                 .map(CanchaBrand::getOwner);

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRespository extends JpaRepository<Reservation,Long> {
+public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     boolean existsById(Long id);
     boolean existsBymatchDateAndCanchaId(LocalDateTime date,Long canchaId);
     Optional<Reservation> findById(Long id);
@@ -47,4 +47,48 @@ public interface ReservationRespository extends JpaRepository<Reservation,Long> 
             "WHERE c.id = :canchaId")
     Owner findOwnerByCanchaId(@Param("canchaId") Long canchaId);
 
+    /// money stats
+
+    /// total
+
+    @Query("""
+    SELECT r.cancha.id, r.cancha.name, SUM(r.deposit)
+    FROM Reservation r
+    WHERE r.cancha.brand.owner.id = :ownerId
+    GROUP BY r.cancha.id, r.cancha.name
+    """)
+    List<Object[]> getLifetimeCanchaEarnings(@Param("ownerId") Long ownerId);
+
+    @Query("""
+    SELECT r.cancha.brand.id, r.cancha.brand.brandName, SUM(r.deposit)
+    FROM Reservation r
+    WHERE r.cancha.brand.owner.id = :ownerId
+    GROUP BY r.cancha.brand.id, r.cancha.brand.brandName
+    """)
+    List<Object[]> getLifetimeBrandEarnings(@Param("ownerId") Long ownerId);
+
+    /// time-frame
+
+    @Query("""
+        SELECT r.cancha.id, r.cancha.name, FUNCTION('DATE', r.matchDate), SUM(r.deposit)
+        FROM Reservation r
+        WHERE r.cancha.brand.owner.id = :ownerId
+          AND r.matchDate BETWEEN :start AND :end
+        GROUP BY r.cancha.id, r.cancha.name, FUNCTION('DATE', r.matchDate)
+        ORDER BY FUNCTION('DATE', r.matchDate) DESC
+    """)
+    List<Object[]> findCanchaEarnings(@Param("ownerId") Long ownerId,
+                                      @Param("start") LocalDateTime start,
+                                      @Param("end") LocalDateTime end);
+    @Query("""
+        SELECT r.cancha.brand.id, r.cancha.brand.brandName, FUNCTION('DATE', r.matchDate), SUM(r.deposit)
+        FROM Reservation r
+        WHERE r.cancha.brand.owner.id = :ownerId
+          AND r.matchDate BETWEEN :start AND :end
+        GROUP BY r.cancha.brand.id, r.cancha.brand.brandName, FUNCTION('DATE', r.matchDate)
+        ORDER BY FUNCTION('DATE', r.matchDate) DESC
+    """)
+    List<Object[]> findBrandEarnings(@Param("ownerId") Long ownerId,
+                                     @Param("start") LocalDateTime start,
+                                     @Param("end") LocalDateTime end);
 }

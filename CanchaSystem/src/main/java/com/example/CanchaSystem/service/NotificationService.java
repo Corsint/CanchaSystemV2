@@ -3,7 +3,7 @@ package com.example.CanchaSystem.service;
 import com.example.CanchaSystem.exception.misc.MissingDataException;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.ReservationStatus;
-import com.example.CanchaSystem.repository.ReservationRespository;
+import com.example.CanchaSystem.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ public class NotificationService {
     MailService mailService;
 
     @Autowired
-    ReservationRespository reservationRespository;
+    ReservationRepository reservationRepository;
 
     @Scheduled(cron = "0 0 7 * * ?") // Todos los días a las 7am
     public void notifyUpcomingMatches() throws MissingDataException {
         LocalDateTime tomorrowStart = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime tomorrowEnd = tomorrowStart.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
-        List<Reservation> reservations = reservationRespository.findByMatchDateBetweenAndStatus(tomorrowStart, tomorrowEnd, ReservationStatus.PENDING);
+        List<Reservation> reservations = reservationRepository.findByMatchDateBetweenAndStatus(tomorrowStart, tomorrowEnd, ReservationStatus.PENDING);
 
         for (Reservation reservation : reservations) {
             if (reservation.getClient() != null && reservation.getClient().getMail() != null &&
@@ -40,12 +40,12 @@ public class NotificationService {
     @Scheduled(cron = "0 0 * * * ?") // Cada hora
     public void completePastReservations() {
         LocalDateTime now = LocalDateTime.now();
-        List<Reservation> toComplete = reservationRespository.findByMatchDateBeforeAndStatus(now, ReservationStatus.PENDING);
+        List<Reservation> toComplete = reservationRepository.findByMatchDateBeforeAndStatus(now, ReservationStatus.PENDING);
 
         for (Reservation reservation : toComplete) {
             reservation.setStatus(ReservationStatus.COMPLETED);
         }
 
-        reservationRespository.saveAll(toComplete);
+        reservationRepository.saveAll(toComplete);
     }
 }
