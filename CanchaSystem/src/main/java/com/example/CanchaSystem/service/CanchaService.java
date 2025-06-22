@@ -108,6 +108,7 @@ public class CanchaService {
         }
 
         cancha.setActive(false);
+        cancha.setWorking(false);
         canchaRepository.save(cancha);
     }
 
@@ -115,11 +116,7 @@ public class CanchaService {
         if (canchaRepository.existsByIdAndBrandOwnerUsername(canchaId, username)) {
             Optional<Cancha> canchaOpt = canchaRepository.findById(canchaId);
 
-            Cancha cancha = canchaOpt.get();
-
-            cancha.setActive(false);
-
-            canchaRepository.save(cancha);
+            deleteCancha(canchaOpt.get().getId());
         } else throw new CanchaNotFoundException("Cancha de dueño no encontrada");
     }
 
@@ -128,7 +125,7 @@ public class CanchaService {
     }
 
     public List<Cancha> getAllActiveCanchas() throws NoCanchasException {
-        List<Cancha> canchas =  canchaRepository.findByActive(true);
+        List<Cancha> canchas =  canchaRepository.findByActiveAndWorking(true, true);
         if(canchas.isEmpty()){
             throw new NoCanchasException("Todavia no hay Canchas activas");
         }
@@ -146,54 +143,9 @@ public class CanchaService {
     }
 
     public List<Cancha> getActiveCanchasByBrandId(Long brandId) throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByBrandIdAndActive(brandId,true);
+        List<Cancha> canchas = canchaRepository.findByBrandIdAndActiveAndWorking(brandId,true, true);
         if (canchas.isEmpty()) {
             throw new NoCanchasException("La marca no tiene canchas activas");
-        }
-
-        return canchas;
-    }
-
-    public List<Cancha> filterByCanchatype(CanchaType canchaType) throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByCanchaTypeAndActive(canchaType,true);
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("No se encontraron canchas de "+canchaType.toString());
-        }
-
-        return canchas;
-    }
-
-    public List<Cancha> filterByRoof(boolean roof) throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByHasRoofAndActive(roof,true);
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("No se encontraron canchas");
-        }
-
-        return canchas;
-    }
-
-    public List<Cancha> filterByShower(boolean shower) throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByCanShowerAndActive(shower,true);
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("No se encontraron canchas");
-        }
-
-        return canchas;
-    }
-
-    public List<Cancha> orderByTotalAsc() throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByActiveTrueOrderByTotalAmountAsc();
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("No se encontraron canchas");
-        }
-
-        return canchas;
-    }
-
-    public List<Cancha> orderByTotalDesc() throws NoCanchasException {
-        List<Cancha> canchas = canchaRepository.findByActiveTrueOrderByTotalAmountDesc();
-        if (canchas.isEmpty()) {
-            throw new NoCanchasException("No se encontraron canchas");
         }
 
         return canchas;
