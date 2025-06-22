@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OwnerService {
@@ -124,5 +125,10 @@ public class OwnerService {
     public Owner findOwnerById(Long id) throws OwnerNotFoundException {
         return ownerRepository.findById(id).orElseThrow(()-> new OwnerNotFoundException("Dueño no encontrado"));
     }
+
+    public Optional<Owner> getOwnerByCanchaId(Long canchaId) {
+        return ownerRepository.findOwnerByCanchaIdAndActive(canchaId, true);
+    }
+
 }
 

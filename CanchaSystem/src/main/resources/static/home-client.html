@@ -1,19 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/home-client.css" />
-    <meta charset="UTF-8">
-    <title>Menu Cliente</title>
-  </head>
-  <body>
-    <h1 id="salute"></h1>
-    <button onclick="location.href='client-profile.html'">Mi perfil</button>
-    <button onclick="location.href='client-canchas.html'">Canchas disponibles</button>
-    <button onclick="location.href='client-reservations.html'">Mis reservas</button>
-    <button onclick="location.href='client-reviews.html'">Mis reseñas</button>
-    <button id="requestOwnerBtn">Solicitar ser dueño</button>
-    <button id="logoutBtn" style="display: none;">Cerrar sesión</button>
-  </body>
-  <script src="home-client.js"></script>
-  <script src="/logout.js"></script>
+<head>
+  <link rel="stylesheet" href="/home-client.css" />
+  <meta charset="UTF-8" />
+  <title>Menu Cliente</title>
+</head>
+<body>
+<h1 id="salute"></h1>
+
+<button onclick="location.href='client-profile.html'">Mi perfil</button>
+<button onclick="location.href='client-canchas.html'">Canchas disponibles</button>
+<button onclick="location.href='client-reservations.html'">Mis reservas</button>
+<button onclick="location.href='client-reviews.html'">Mis reseñas</button>
+<button id="requestOwnerBtn">Solicitar ser dueño</button>
+<label id="currentBalance"></label>
+<form id="addMoneyForm">
+  <label for="amount">Monto a agregar:</label>
+  <input
+          type="number"
+          step="0.01"
+          id="amount"
+          name="amount"
+          required
+          min="0.01"
+  />
+  <button type="submit">Agregar saldo</button>
+</form>
+
+<p id="responseMessage" style="color: green;"></p>
+<button id="logoutBtn" style="display: none;">Cerrar sesión</button>
+</body>
+
+<script>
+  // Mostrar saludo con el nombre del cliente
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch("http://localhost:8080/client/name", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      document.getElementById("salute").textContent = `¡Bienvenido ${data.name}!`;
+
+      // Obtener ID del cliente para usarlo en el POST para agregar saldo
+      const idRes = await fetch("http://localhost:8080/client/me", {
+        credentials: "include",
+      });
+      const idData = await idRes.json();
+      window.clientId = idData.id; // guardamos globalmente el id
+
+    } catch (e) {
+      console.error("Error al obtener datos del cliente:", e);
+    }
+  });
+
+  // Evento para agregar saldo
+  document.getElementById("addMoneyForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const amount = document.getElementById("amount").value;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/client/addMoneyToClient/${window.clientId}/${amount}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+
+      const message = await response.text();
+      const responseMessage = document.getElementById("responseMessage");
+      responseMessage.textContent = message;
+      responseMessage.style.color = "green";
+
+    } catch (error) {
+      console.error("Error al agregar saldo:", error);
+      const responseMessage = document.getElementById("responseMessage");
+      responseMessage.textContent = "Error al agregar saldo.";
+      responseMessage.style.color = "red";
+    }
+  });
+</script>
+
+<script src="home-client.js"></script>
+<script src="/logout.js"></script>
 </html>

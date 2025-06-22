@@ -31,4 +31,8 @@ public class OwnerRequest {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OwnerRequestStatus status = OwnerRequestStatus.PENDING;
+
+    @Column(nullable = false)
+    private boolean active=true;
+
 }

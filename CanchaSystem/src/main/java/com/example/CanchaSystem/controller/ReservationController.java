@@ -70,8 +70,8 @@ public class ReservationController {
         if (client.getBankClient()<deposit)
             throw new NotEnoughMoneyException("No hay suficientes fondos");
 
-        Owner owner = reservationService.getOwnerFromReservation(reservation.getId())
-                .orElseThrow(() -> new OwnerNotFoundException("No se encontro al dueño"));
+        Owner owner = ownerService.getOwnerByCanchaId(cancha.getId())
+                .orElseThrow(() -> new OwnerNotFoundException("No se encontró al dueño para la cancha"));
 
         clientService.payFromClientBank(client.getId(),deposit);
         ownerService.addMoneyToOwnerBank(owner.getId(),deposit);

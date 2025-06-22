@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,7 +46,7 @@ public class OwnerRequestService {
     }
 
     public List<OwnerRequest> getAllPendingRequests(){
-        List<OwnerRequest> requests = ownerRequestRepository.findByStatus(OwnerRequestStatus.PENDING);
+        List<OwnerRequest> requests = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.PENDING, true);
         if (requests.isEmpty())
             throw new NoRequestsException("Todavia no hay solicitudes registradas");
         return requests;
@@ -63,7 +62,7 @@ public class OwnerRequestService {
 
     @Scheduled(fixedRate = 300000) // cada 300 segundos
     public void completeApprovedRequests() {
-        List<OwnerRequest> approved = ownerRequestRepository.findByStatus(OwnerRequestStatus.APPROVED);
+        List<OwnerRequest> approved = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.APPROVED, true);
 
         for (OwnerRequest request : approved){
             Client approvedClient = clientRepository.findById(request.getClient().getId())
@@ -88,9 +87,11 @@ public class OwnerRequestService {
 
             approvedClient.setActive(false);
             newOwner.setActive(true);
+            request.setActive(false);
 
             clientRepository.save(approvedClient);
             ownerRepository.save(newOwner);
+            ownerRequestRepository.save(request);
         }
     }
 }
