@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Long> {
-    boolean existsByCanchaIdAndClientId(Long canchaId, Long clientId);
+    boolean existsByCanchaIdAndClientIdAndActive(Long canchaId, Long clientId, boolean active);
     Optional<Review> findById(Long reviewId);
 
     List<Review> findByCanchaIdAndActive(Long canchaId,boolean active);

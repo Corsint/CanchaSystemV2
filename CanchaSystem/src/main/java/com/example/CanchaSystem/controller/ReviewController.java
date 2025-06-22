@@ -79,8 +79,7 @@ public class ReviewController {
     }
 
     @GetMapping("/clientReviewExists")
-    public boolean clientAlreadyReviewedCancha(@RequestParam Long canchaId,
-                                               @RequestParam Long clientId){
+    public boolean clientAlreadyReviewedCancha(@RequestParam Long canchaId, @RequestParam Long clientId){
         return reviewService.clientAlreadyReviewedCancha(canchaId,clientId);
     }
 

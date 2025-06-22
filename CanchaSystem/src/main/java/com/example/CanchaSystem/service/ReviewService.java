@@ -91,7 +91,7 @@ public class ReviewService {
     }
 
     public boolean clientAlreadyReviewedCancha(Long canchaId,Long clientId){
-        return reviewRepository.existsByCanchaIdAndClientId(canchaId,clientId);
+        return reviewRepository.existsByCanchaIdAndClientIdAndActive(canchaId,clientId, true);
     }
 
 }
