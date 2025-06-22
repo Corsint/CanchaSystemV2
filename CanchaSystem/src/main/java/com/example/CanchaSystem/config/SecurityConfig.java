@@ -39,7 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/register.html", "/client/insert",
                                 "/css/**", "/register.js", "/login.js", "/images/**",
-                                "/login.html", "/login.css", "/home-client.css", "/client-canchas.css", "/details-cancha.css"
+                                "/login.html", "/login.css", "/home-client.css", "/client-canchas.css", "/details-cancha.css", "register.css"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

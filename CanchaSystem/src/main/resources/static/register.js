@@ -1,35 +1,51 @@
-document.getElementById("registerForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+document.getElementById("registerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
+    const email = document.getElementById("mail").value;
+
+    // Validar email usando AbstractAPI
+    const apiKey = 'be22398a0ca646a08843a2d4ff1f8970'; // ← reemplaza con tu API Key real
+const verifyUrl = "https:" + "//emailvalidation.abstractapi.com/v1/?api_key=" + apiKey + "&email=" + encodeURIComponent(email);
+
+    try {
+        const verifyResponse = await fetch(verifyUrl);
+        const verifyData = await verifyResponse.json();
+
+        if (verifyData.deliverability !== "DELIVERABLE") {
+            document.getElementById("message").textContent = "Correo inválido o no entregable.";
+            return;
+        }
+
+        // Si el email es válido, continuar con el registro
         const client = {
             name: document.getElementById("name").value,
             lastName: document.getElementById("lastname").value,
             username: document.getElementById("username").value,
             password: document.getElementById("password").value,
-            mail: document.getElementById("mail").value,
+            mail: email,
             cellNumber: document.getElementById("cellNumber").value,
         };
 
-        fetch("/client/insert", {
+        const response = await fetch("/client/insert", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(client)
-        })
-        .then(async response => {
-            if (response.ok) {
-                document.getElementById("message").textContent = "¡Registro exitoso! Redirigiendo...";
-                setTimeout(() => {
-                    window.location.href = "/login.html"; // Asegúrate de tener /login configurado
-                }, 2000);
-            } else {
-                const data = await response.json();
-                document.getElementById("message").textContent = "Error: " + (data.message || JSON.stringify(data));
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            document.getElementById("message").textContent = "Error de red o del servidor.";
         });
-    });
+
+        if (response.ok) {
+            document.getElementById("message").textContent = "¡Registro exitoso! Redirigiendo...";
+            setTimeout(() => {
+                window.location.href = "/login.html";
+            }, 2000);
+        } else {
+            const data = await response.json();
+            document.getElementById("message").textContent = "Error: " + (data.message || JSON.stringify(data));
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("message").textContent = "Error verificando el correo o en el servidor.";
+    }
+});
