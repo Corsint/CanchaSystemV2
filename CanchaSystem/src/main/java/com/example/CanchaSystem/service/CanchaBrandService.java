@@ -45,11 +45,14 @@ public class CanchaBrandService {
         return brands;
     }
 
-    public CanchaBrand updateCanchaBrand(CanchaBrand canchaBrand) throws CanchaBrandNotFoundException {
-        if (canchaBrandRepository.existsById(canchaBrand.getId())){
-            return canchaBrandRepository.save(canchaBrand);
+    public CanchaBrand updateCanchaBrand(CanchaBrand canchaBrandFromRequest) throws CanchaBrandNotFoundException {
+        CanchaBrand canchaBrand = canchaBrandRepository.findById(canchaBrandFromRequest.getId())
+                .orElseThrow(() -> new CanchaBrandNotFoundException("Marca no encontrada"));
 
-        } else throw new CanchaBrandNotFoundException("Marca no encontrada");
+        canchaBrand.setBrandName(canchaBrandFromRequest.getBrandName());
+        canchaBrand.setActive(canchaBrandFromRequest.isActive());
+
+        return canchaBrandRepository.save(canchaBrand);
     }
 
     public void deleteCanchaBrand(Long canchaBrandId) {

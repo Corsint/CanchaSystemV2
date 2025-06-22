@@ -60,7 +60,7 @@ public class OwnerRequestService {
         return ownerRequestRepository.save(ownerRequest);
     }
 
-    @Scheduled(fixedRate = 300000) // cada 300 segundos
+    @Scheduled(fixedRate = 60000) // cada 1 minuto
     public void completeApprovedRequests() {
         List<OwnerRequest> approved = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.APPROVED, true);
 

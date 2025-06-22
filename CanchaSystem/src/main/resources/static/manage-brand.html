@@ -37,7 +37,7 @@
     <label>Precio Total: <input name="totalAmount" id="totalAmount" type="number" step="0.01" required></label><br>
     <label>Apertura: <input name="openingHour" id="openingHour" type="time" required></label><br>
     <label>Cierre: <input name="closingHour" id="closingHour" type="time" required></label><br>
-    <label>¿Activa?: <input type="checkbox" name="active" id="active"></label><br>
+    <label>¿Activa?: <input type="checkbox" name="working" id="working"></label><br>
     <label>¿Tiene Techo?: <input type="checkbox" name="hasRoof" id="hasRoof"></label><br>
     <label>¿Tiene Ducha?: <input type="checkbox" name="canShower" id="canShower"></label><br>
     <label>Tipo:
@@ -140,12 +140,13 @@
                 totalAmount: parseFloat(document.getElementById("totalAmount").value),
                 openingHour: document.getElementById("openingHour").value,
                 closingHour: document.getElementById("closingHour").value,
-                active: document.getElementById("active").checked,
                 hasRoof: document.getElementById("hasRoof").checked,
                 canShower: document.getElementById("canShower").checked,
                 canchaType: document.getElementById("canchaType").value,
+                working: document.getElementById("working").checked,
             };
 
+            data.active = true;
             data.brand = { id: brandId };
 
             try {

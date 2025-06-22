@@ -1,0 +1,104 @@
+body {
+  background-color: #121212;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 30px;
+  max-width: 700px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: #00e676;
+  margin-bottom: 30px;
+}
+
+label {
+  margin-right: 10px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  box-sizing: border-box;
+}
+
+input[type="text"]::placeholder {
+  color: #aaa;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #00e676;
+}
+
+input[type="checkbox"] {
+  margin-left: 8px;
+  transform: scale(1.2);
+}
+
+select {
+  padding: 6px;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border: 1px solid #444;
+  margin-left: 5px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+#listaMarcas li {
+  background-color: #1c1c1c;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 255, 128, 0.1);
+}
+
+button {
+  background-color: #00c853;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  margin: 6px 10px 0 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #009624;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 20px;
+  }
+
+  input[type="text"],
+  select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
