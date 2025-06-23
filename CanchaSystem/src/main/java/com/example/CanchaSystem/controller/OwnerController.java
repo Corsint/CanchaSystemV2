@@ -73,6 +73,9 @@ public class OwnerController {
     public ResponseEntity<?> getOwnerName(@AuthenticationPrincipal UserDetails userDetails) {
         Owner owner = ownerRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new OwnerNotFoundException("Dueño no encontrado"));
-        return ResponseEntity.ok(Map.of("name",owner.getName()));
+        return ResponseEntity.ok(Map.of(
+                "name", owner.getName(),
+                "bankOwner", owner.getBankOwner()
+        ));
     }
 }
