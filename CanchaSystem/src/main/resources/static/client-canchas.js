@@ -153,6 +153,7 @@ async function enviarResena(canchaId) {
     if (response.ok) {
       alert("¡Reseña enviada exitosamente! 🎉");
       document.getElementById(`resena-form-${canchaId}`).style.display = "none";
+      verificarSiYaReseno(canchaId, clientId);
     } else {
       const err = await response.json();
       console.error(err);
@@ -163,6 +164,7 @@ async function enviarResena(canchaId) {
     alert("Error de red al enviar la reseña.");
   }
 }
+
 
 async function verificarSiYaReseno(canchaId, clientId) {
   try {
