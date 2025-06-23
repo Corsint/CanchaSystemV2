@@ -78,7 +78,7 @@ public class OwnerRequestService {
         return ResponseEntity.ok("Solicitud rechazada correctamente.");
     }
 
-    @Scheduled(fixedRate = 60000) // cada 1 minuto
+    @Scheduled(fixedRate = 60000)
     public void completeApprovedRequests() {
         List<OwnerRequest> approved = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.APPROVED, true);
 

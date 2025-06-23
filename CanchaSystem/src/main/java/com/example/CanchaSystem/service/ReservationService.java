@@ -34,6 +34,9 @@ public class ReservationService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private MailService mailService;
+
 
     public Reservation insertReservation(Reservation reservation)
             throws IllegalReservationDateException {
@@ -153,7 +156,7 @@ public class ReservationService {
         return reservations;
     }
 
-    @Scheduled(fixedRate = 60000) // cada 60 segundos
+    @Scheduled(fixedRate = 60000)
     public void finishPastReservations() {
         List<Reservation> expired = reservationRepository.findByStatusAndMatchDateBefore(
                 ReservationStatus.PENDING,
@@ -168,6 +171,23 @@ public class ReservationService {
             reservationRepository.saveAll(expired);
         }
     }
+
+    @Scheduled(fixedRate = 60000)
+    public void notifyReservationCancel() {
+        List<Reservation> cancelled = reservationRepository.findByStatus(ReservationStatus.CANCELED);
+
+        if (cancelled.isEmpty()) return;
+
+        for (Reservation r : cancelled) {
+            Optional<Client> optionalClient = clientRepository.findByIdAndActive(r.getClient().getId(), true);
+
+            if (optionalClient.isPresent()) {
+                Client client = optionalClient.get();
+                mailService.sendReservationCancelNotice(client.getMail(), r);
+            }
+        }
+    }
+
 
     public Optional<Owner> getOwnerFromReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)

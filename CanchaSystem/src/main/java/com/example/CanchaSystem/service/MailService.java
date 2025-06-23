@@ -80,6 +80,42 @@ public class MailService {
     }
 
     @Async
+    public void sendReservationCancelNotice(String to, Reservation reservation) {
+
+        if (reservation == null ||
+                reservation.getClient() == null ||
+                reservation.getCancha() == null ||
+                reservation.getCancha().getBrand() == null ||
+                reservation.getCancha().getBrand().getOwner() == null) {
+            throw new IllegalStateException("La reserva no tiene datos completos para enviar el mail.");
+        }
+
+
+        String body = String.format("""
+        Hola %s,
+
+        Nos apena avisarte que se canceló tu reserva en la cancha "%s"
+        del dia %s.
+
+        Saludos,
+        CanchaSystem.
+        """,
+                reservation.getClient().getName(),
+                reservation.getCancha().getName(),
+                reservation.getMatchDate()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Reserva cancelada en " + reservation.getCancha().getName());
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com");
+
+
+        mailSender.send(message);
+    }
+
+    @Async
     public void sendReservationNoticeClient(String to, Reservation reservation) {
 
         if (reservation == null ||
