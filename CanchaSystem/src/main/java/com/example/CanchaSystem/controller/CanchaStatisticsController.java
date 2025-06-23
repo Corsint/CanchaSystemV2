@@ -4,6 +4,7 @@ package com.example.CanchaSystem.controller;
 import com.example.CanchaSystem.service.StatisticsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/stats/owner/{ownerId}/cancha")
+@PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
 public class CanchaStatisticsController {
 
     @Autowired
