@@ -3,8 +3,6 @@ import com.example.CanchaSystem.exception.cancha.CanchaNameAlreadyExistsExceptio
 import com.example.CanchaSystem.exception.cancha.CanchaNotFoundException;
 import com.example.CanchaSystem.exception.cancha.IllegalCanchaAddressException;
 import com.example.CanchaSystem.exception.cancha.NoCanchasException;
-import com.example.CanchaSystem.exception.canchaBrand.NoCanchaBrandsException;
-import com.example.CanchaSystem.exception.client.ClientNotFoundException;
 import com.example.CanchaSystem.exception.misc.UnableToDropException;
 import com.example.CanchaSystem.model.*;
 import com.example.CanchaSystem.repository.CanchaRepository;
@@ -81,10 +79,21 @@ public class CanchaService {
         return canchaRepository.save(cancha);
     }
 
-    public void updateOwnerCancha(Cancha cancha, String username) throws CanchaNotFoundException {
-        if (canchaRepository.existsByIdAndBrandOwnerUsername(cancha.getId(), username)) {
-            canchaRepository.save(cancha);
-        } else throw new CanchaNotFoundException("Cancha de dueño no encontrada");
+    public void updateOwnerCancha(Cancha updated, String username) throws CanchaNotFoundException {
+        Cancha existing = canchaRepository.findByIdAndBrandOwnerUsernameAndActive(updated.getId(),username,true)
+                .orElseThrow(()->new CanchaNotFoundException("No se encontro su cancha"));
+
+        existing.setName(updated.getName());
+        existing.setAddress(updated.getAddress());
+        existing.setCanchaType(updated.getCanchaType());
+        existing.setCanShower(updated.isCanShower());
+        existing.setBrand(updated.getBrand());
+        existing.setOpeningHour(updated.getOpeningHour());
+        existing.setClosingHour(updated.getClosingHour());
+        existing.setTotalAmount(updated.getTotalAmount());
+        existing.setWorking(updated.isWorking());
+
+        canchaRepository.save(existing);
     }
 
     public void deleteCancha(Long canchaId) {

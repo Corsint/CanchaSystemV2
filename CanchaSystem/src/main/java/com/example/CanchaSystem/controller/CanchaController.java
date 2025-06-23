@@ -56,7 +56,7 @@ public class CanchaController {
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> updateMyCancha(@RequestBody Cancha cancha, Authentication auth) {
         String username = auth.getName();
-        canchaService.updateOwnerCancha(cancha, username);
+        canchaService.updateOwnerCancha(cancha,username);
         return ResponseEntity.ok(Map.of("message", "Cancha actualizada correctamente"));
     }
 

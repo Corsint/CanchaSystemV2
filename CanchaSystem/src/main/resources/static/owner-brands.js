@@ -1,4 +1,19 @@
-document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("addBrandBtn").addEventListener("click", () => {
+  document.getElementById("brandForm").style.display = "block";
+  });
+
+  document.getElementById("newBrandForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const brandName = document.getElementById("brandNameInput").value;
+        await fetch("/canchaBrand/insert", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ brandName })
+        });
+        location.reload();
+      });
+      
   try {
     const ownerRes = await fetch("/owner/me");
     const ownerId = await ownerRes.json();
@@ -40,20 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       list.appendChild(li);
     }
 
-    document.getElementById("addBrandBtn").addEventListener("click", () => {
-      document.getElementById("brandForm").style.display = "block";
-    });
-
-    document.getElementById("newBrandForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const brandName = document.getElementById("brandNameInput").value;
-      await fetch("/canchaBrand/insert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brandName })
-      });
-      location.reload();
-    });
   } catch (e) {
     console.error("Error cargando marcas:", e);
     document.getElementById("brand-list").innerText = "No se pudieron cargar las marcas.";
