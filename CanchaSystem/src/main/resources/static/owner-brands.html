@@ -1,71 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="stylesheet" href="owner-brands.css">
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Mis Marcas</title>
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                const ownerRes = await fetch("/owner/me");
-                const ownerId = await ownerRes.json();
-                //window.ownerId = ownerId;
-
-                const brandsRes = await fetch("/canchaBrand/findAllOwnerBrands");
-                const brands = await brandsRes.json();
-
-                const list = document.getElementById("brand-list");
-
-                brands.forEach(brand => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                        ${brand.brandName}
-                        <button onclick="location.href='manage-brand.html?brandId=${brand.id}&brandName=${encodeURIComponent(brand.brandName)}'">
-                            Gestionar Marca
-                        </button>
-                    `;
-                    list.appendChild(li);
-                });
-            } catch (e) {
-                console.error("Error cargando marcas:", e);
-                document.getElementById("brand-list").innerText = "No se pudieron cargar las marcas.";
-            }
-
-            document.getElementById("addBrandBtn").addEventListener("click", () => {
-                document.getElementById("brandForm").style.display = "block";
-            });
-
-            document.getElementById("newBrandForm").addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const brandName = document.getElementById("brandNameInput").value;
-                const payload = {
-                   brandName: brandName
-                };
-
-                try {
-                    await fetch("/canchaBrand/insert", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    });
-                    location.reload();
-                } catch (error) {
-                    alert("Error al agregar marca");
-                }
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="owner-brands.css" />
+    <script src="owner-brands.js" defer></script>
 </head>
 <body>
 <h1>Mis Marcas</h1>
-<ul id="brand-list"></ul>
 
-<button id="addBrandBtn">Agregar Marca</button>
-<button onclick="location.href='home-owner.html'">Volver</button>
+<div id="brand-list"></div>
 
-<div id="brandForm" style="display:none; margin-top: 20px;">
+<div class="action-bar">
+    <button id="addBrandBtn">Agregar Marca</button>
+    <button onclick="location.href='home-owner.html'">Volver</button>
+</div>
+
+<div id="brandForm" style="display: none;">
     <form id="newBrandForm">
-        <label>Nombre de la Marca: <input type="text" id="brandNameInput" required /></label>
+        <label>Nombre de la Marca:
+            <input type="text" id="brandNameInput" required />
+        </label>
         <button type="submit">Crear Marca</button>
     </form>
 </div>

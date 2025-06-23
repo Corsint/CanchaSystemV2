@@ -1,188 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="stylesheet" href="manage-brand.css">
     <meta charset="UTF-8" />
     <title>Gestionar Marca</title>
-    <style>
-        #cancha-form {
-            display: none;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="manage-brand.css" />
+    <script defer src="manage-brand.js"></script>
 </head>
 <body>
 <h1>Marca: <span id="brand-name"></span></h1>
 
-<button id="btn-show-form">Agregar Cancha</button>
-<button id="btn-eliminar-marca">Eliminar Marca</button>
-<button id="btn-volver">Volver</button>
+<div class="action-bar">
+    <button id="btn-show-form">Agregar Cancha</button>
+    <button id="btn-eliminar-marca">Eliminar Marca</button>
+    <button id="btn-volver">Volver</button>
+</div>
 
-<table border="1" style="margin-top: 20px;">
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Dirección</th>
-        <th>Tipo</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody id="cancha-list"></tbody>
-</table>
+<div id="cancha-form" style="display: none;">
+    <form id="newCanchaForm">
+        <h2>Agregar Cancha</h2>
+        <label>Nombre: <input name="name" id="name" required /></label><br />
+        <label>Dirección: <input name="address" id="address" required /></label><br />
+        <label>Precio Total: <input name="totalAmount" id="totalAmount" type="number" step="0.01" required /></label><br />
+        <label>Apertura: <input name="openingHour" id="openingHour" type="time" required /></label><br />
+        <label>Cierre: <input name="closingHour" id="closingHour" type="time" required /></label><br />
+        <label>¿Activa?: <input type="checkbox" name="working" id="working" /></label><br />
+        <label>¿Tiene Techo?: <input type="checkbox" name="hasRoof" id="hasRoof" /></label><br />
+        <label>¿Tiene Ducha?: <input type="checkbox" name="canShower" id="canShower" /></label><br />
+        <label>Tipo:
+            <select name="canchaType" id="canchaType">
+                <option value="FUTBOL_5">Fútbol 5</option>
+                <option value="FUTBOL_7">Fútbol 7</option>
+                <option value="FUTBOL_11">Fútbol 11</option>
+            </select>
+        </label><br /><br />
+        <button type="submit">Agregar Cancha</button>
+        <button type="button" id="btn-cancel">Cancelar</button>
+    </form>
+</div>
 
-<form id="cancha-form">
-    <h2>Agregar Cancha</h2>
-    <label>Nombre: <input name="name" id="name" required></label><br>
-    <label>Dirección: <input name="address" id="address" required></label><br>
-    <label>Precio Total: <input name="totalAmount" id="totalAmount" type="number" step="0.01" required></label><br>
-    <label>Apertura: <input name="openingHour" id="openingHour" type="time" required></label><br>
-    <label>Cierre: <input name="closingHour" id="closingHour" type="time" required></label><br>
-    <label>¿Activa?: <input type="checkbox" name="working" id="working"></label><br>
-    <label>¿Tiene Techo?: <input type="checkbox" name="hasRoof" id="hasRoof"></label><br>
-    <label>¿Tiene Ducha?: <input type="checkbox" name="canShower" id="canShower"></label><br>
-    <label>Tipo:
-        <select name="canchaType" id="canchaType">
-            <option value="FUTBOL_5">Fútbol 5</option>
-            <option value="FUTBOL_7">Fútbol 7</option>
-            <option value="FUTBOL_11">Fútbol 11</option>
-        </select>
-    </label><br><br>
-    <button type="submit">Agregar Cancha</button>
-    <button type="button" id="btn-cancel">Cancelar</button>
-</form>
-
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        const params = new URLSearchParams(window.location.search);
-        const brandId = params.get("brandId");
-        const brandName = params.get("brandName");
-
-        document.getElementById("brand-name").textContent = brandName;
-
-        const tbody = document.getElementById("cancha-list");
-
-        async function cargarCanchas() {
-                tbody.innerHTML = "<tr><td colspan='4'>Cargando canchas...</td></tr>";
-                try {
-                    const res = await fetch(`/cancha/getCanchasByBrandId/${brandId}`);
-                    if (!res.ok) {
-                        throw new Error("Error al obtener canchas");
-                    }
-                    const canchas = await res.json();
-
-                    if (canchas.length === 0) {
-                        tbody.innerHTML = "<tr><td colspan='4'>Esta marca aún no tiene canchas.</td></tr>";
-                        return;
-                    }
-
-                    tbody.innerHTML = "";
-                    canchas.forEach(cancha => {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${cancha.name}</td>
-                            <td>${cancha.address}</td>
-                            <td>${cancha.canchaType}</td>
-                            <td>
-                                <button onclick="window.location.href='/details-my-cancha-owner.html?canchaId=${cancha.id}'">Ver</button>
-                                <button onclick="window.location.href='edit-cancha.html?canchaId=${cancha.id}'">Modificar</button>
-                                <button onclick="eliminarCancha(${cancha.id})">Eliminar</button>
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                } catch (error) {
-                    tbody.innerHTML = "<tr><td colspan='4'>Error al cargar las canchas.</td></tr>";
-                    console.error(error);
-                }
-        }
-
-        document.getElementById("btn-eliminar-marca").addEventListener("click", async () => {
-            if (confirm("¿Seguro que querés eliminar esta marca? Esta acción eliminará también todas sus canchas.")) {
-                try {
-                    const res = await fetch(`/canchaBrand/deleteCanchaBrand/${brandId}`, {
-                        method: "DELETE"
-                    });
-                    if (!res.ok) throw new Error("Error al eliminar la marca");
-
-                    alert("Marca eliminada correctamente");
-                    window.location.href = "owner-brands.html";
-                } catch (error) {
-                    alert("No se pudo eliminar la marca: " + error.message);
-                }
-            }
-        });
-
-
-        cargarCanchas();
-
-        // Mostrar y ocultar formulario
-        const form = document.getElementById("cancha-form");
-        document.getElementById("btn-show-form").addEventListener("click", () => {
-            form.style.display = "block";
-        });
-        document.getElementById("btn-cancel").addEventListener("click", () => {
-            form.style.display = "none";
-            form.reset();
-        });
-
-        // Volver al listado de marcas
-        document.getElementById("btn-volver").addEventListener("click", () => {
-            window.location.href = "owner-brands.html";
-        });
-
-        // Enviar formulario
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const data = {
-                name: document.getElementById("name").value,
-                address: document.getElementById("address").value,
-                totalAmount: parseFloat(document.getElementById("totalAmount").value),
-                openingHour: document.getElementById("openingHour").value,
-                closingHour: document.getElementById("closingHour").value,
-                hasRoof: document.getElementById("hasRoof").checked,
-                canShower: document.getElementById("canShower").checked,
-                canchaType: document.getElementById("canchaType").value,
-                working: document.getElementById("working").checked,
-            };
-
-            data.active = true;
-            data.brand = { id: brandId };
-
-            try {
-                const res = await fetch("/cancha/insert", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-                if (!res.ok) throw new Error("Error al agregar cancha");
-                alert("Cancha agregada correctamente");
-                form.reset();
-                form.style.display = "none";
-                cargarCanchas();
-            } catch (error) {
-                alert(error.message);
-            }
-        });
-    });
-
-    function editarCancha(id) {
-        // Aquí podés poner la lógica para modificar cancha, por ahora solo redirijo con id
-        window.location.href = `/cancha/updateMyCancha?id=${id}`;
-    }
-
-    async function eliminarCancha(id) {
-        if (confirm("¿Seguro que quieres eliminar esta cancha?")) {
-            try {
-                const res = await fetch(`/cancha/dropMyCanchaById/${id}`, { method: "DELETE" });
-                if (!res.ok) throw new Error("Error al eliminar cancha");
-                alert("Cancha eliminada");
-                location.reload();
-            } catch (error) {
-                alert(error.message);
-            }
-        }
-    }
-</script>
+<div id="cancha-list-container"></div>
 </body>
 </html>

@@ -50,6 +50,15 @@ li strong {
   font-size: 1.1em;
 }
 
+.volverbutton{
+    background-color: #00cc66;
+     box-shadow: 0 0 8px rgba(116, 255, 155, 0.8);
+}
+
+.volverbutton:hover {
+  background-color: #009944;
+}
+
 button {
   background-color: #ff4d4d;
   color: white;
@@ -67,7 +76,6 @@ button:hover {
   background-color: #c62828;
 }
 
-/* Estrellas */
 .star {
   font-size: 22px;
   color: gray;
@@ -77,3 +85,4 @@ button:hover {
 .star.selected {
   color: gold;
 }
+
