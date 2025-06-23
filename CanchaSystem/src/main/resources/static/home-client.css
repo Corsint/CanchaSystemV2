@@ -13,23 +13,22 @@ body {
 }
 
 h1#salute {
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   font-size: 2.5rem;
   margin-bottom: 30px;
   text-align: center;
   user-select: none;
 }
 
-/* Botones generales y botón del formulario */
 button,
 form#addMoneyForm button {
   width: 240px;
   padding: 12px 0;
   margin: 10px 0;
-  background-color: #00ff77; /* verde cambiado */
+  background-color: #00ff77;
   border: none;
   border-radius: 8px;
-  color: #000; /* letras negras */
+  color: #000;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
@@ -39,7 +38,7 @@ form#addMoneyForm button {
 
 button:hover,
 form#addMoneyForm button:hover {
-  background-color: #00cc66; /* verde oscuro ajustado */
+  background-color: #00cc66;
 }
 
 #logoutBtn {
@@ -50,11 +49,10 @@ form#addMoneyForm button:hover {
 label {
   margin-bottom: 6px;
   font-weight: 600;
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   user-select: none;
 }
 
-/* Formulario para agregar saldo */
 form#addMoneyForm {
   display: flex;
   flex-direction: column;
@@ -65,7 +63,7 @@ form#addMoneyForm {
 form#addMoneyForm label {
   margin-bottom: 6px;
   font-weight: 600;
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   user-select: none;
 }
 
@@ -83,7 +81,7 @@ form#addMoneyForm input[type="number"] {
 }
 
 form#addMoneyForm input[type="number"]:focus {
-  box-shadow: 0 0 5px #00ff77; /* verde cambiado */
+  box-shadow: 0 0 5px #00ff77;
   outline: none;
 }
 
@@ -107,4 +105,10 @@ form#addMoneyForm input[type="number"]:focus {
 
 .btn-volver:hover {
   background-color: #666666;
+}
+
+.disabled-btn {
+  background-color: #666 !important;
+  color: #ccc !important;
+  cursor: not-allowed;
 }

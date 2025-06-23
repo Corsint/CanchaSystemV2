@@ -11,4 +11,6 @@ public interface OwnerRequestRepository extends JpaRepository<OwnerRequest, Long
     boolean existsByClientIdAndStatus(Long clientId, OwnerRequestStatus status);
     Optional<OwnerRequest> findById(Long id);
     List<OwnerRequest> findByStatusAndActive(OwnerRequestStatus status, boolean active);
+
+    Optional<OwnerRequest> findByClientId(Long clientId);
 }

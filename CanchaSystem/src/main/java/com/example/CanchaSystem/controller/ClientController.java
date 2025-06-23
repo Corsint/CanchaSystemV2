@@ -102,4 +102,11 @@ public class ClientController {
         return clientService.verifyUsername(username);
     }
 
+    @GetMapping("/request/{clientId}")
+    public ResponseEntity<OwnerRequest> getRequestByClientId(@PathVariable Long clientId) {
+        OwnerRequest request = ownerRequestService.findByClientId(clientId);
+        return ResponseEntity.ok(request);
+    }
+
+
 }

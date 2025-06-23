@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const requestBtn = document.getElementById("requestOwnerBtn");
+
   try {
     const nameResponse = await fetch("http://localhost:8080/client/name", { credentials: "include" });
     const nameData = await nameResponse.json();
@@ -9,20 +11,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!idData.id) throw new Error("No se pudo obtener el ID del cliente.");
     window.clientId = idData.id;
 
+    try {
+      const reqCheck = await fetch(`http://localhost:8080/client/request/${window.clientId}`, {
+        credentials: "include"
+      });
+
+      if (reqCheck.ok && requestBtn) {
+        requestBtn.disabled = true;
+        requestBtn.textContent = "Solicitud enviada";
+        requestBtn.classList.add("disabled-btn"); // for greyed-out style
+      }
+    } catch (error) {
+      console.log("No hay solicitud previa (o error):", error);
+    }
+
     const balanceResponse = await fetch(`http://localhost:8080/client/${window.clientId}`);
     const balanceData = await balanceResponse.json();
     const balanceElement = document.getElementById("currentBalance");
+
     if (typeof balanceData.bankClient === "number") {
       balanceElement.textContent = `Saldo actual: $${balanceData.bankClient.toFixed(2)}`;
     } else {
       balanceElement.textContent = "Saldo actual: No disponible";
       console.warn("El campo 'bankClient' no está presente en la respuesta.");
     }
+
   } catch (error) {
     console.error("Error al cargar datos iniciales:", error);
   }
 
-  const requestBtn = document.getElementById("requestOwnerBtn");
   if (requestBtn) {
     requestBtn.addEventListener("click", async () => {
       try {
@@ -43,6 +60,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("✅ Solicitud enviada con éxito.");
         requestBtn.disabled = true;
         requestBtn.textContent = "Solicitud enviada";
+        requestBtn.classList.add("disabled-btn");
+
       } catch (error) {
         console.error("Error de red al enviar la solicitud:", error);
         alert("❌ Error de red al enviar la solicitud. Inténtalo de nuevo.");
@@ -87,6 +106,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       responseMessage.style.color = "red";
     }
   });
-
-
 });

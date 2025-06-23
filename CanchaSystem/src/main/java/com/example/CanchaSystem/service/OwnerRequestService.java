@@ -87,7 +87,6 @@ public class OwnerRequestService {
                         .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
                 if (ownerRepository.existsByUsernameAndActive(approvedClient.getUsername(), true)) {
-                    // Ya existe un owner con ese username, se desactiva el request para no seguir reintentando
                     request.setActive(false);
                     ownerRequestRepository.save(request);
                     continue;
@@ -109,7 +108,6 @@ public class OwnerRequestService {
                 newOwner.setActive(true);
                 ownerRepository.save(newOwner);
 
-                // Desactivar el cliente y la solicitud
                 approvedClient.setActive(false);
                 request.setActive(false);
 
@@ -117,11 +115,15 @@ public class OwnerRequestService {
                 ownerRequestRepository.save(request);
 
             } catch (Exception e) {
-                // Logueás y seguís con la siguiente solicitud, no frena toda la tarea
                 System.err.println("Error procesando solicitud con id " + request.getId() + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
+    }
+
+    public OwnerRequest findByClientId(Long clientId){
+        return ownerRequestRepository.findByClientId(clientId)
+                .orElseThrow(()->new ClientNotFoundException("Cliente no encontrado"));
     }
 
 
