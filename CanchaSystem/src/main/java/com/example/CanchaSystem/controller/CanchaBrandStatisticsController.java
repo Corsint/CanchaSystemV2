@@ -54,5 +54,10 @@ public class CanchaBrandStatisticsController {
         return statsService.getLifetimeBrandEarnings(ownerId);
     }
 
+    @GetMapping("/lifetime/all")
+    public List<Map<String, Object>> getLifetimeEarningsForAllBrands(@PathVariable Long ownerId) {
+        return statsService.getAllLifetimeBrandEarnings();
+    }
+
 }
 

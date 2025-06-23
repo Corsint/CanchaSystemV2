@@ -92,3 +92,50 @@ select#filtroTipo {
     padding: 15px;
   }
 }
+
+.cancha-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.right-earnings {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.earnings-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.earnings-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.earnings-buttons button {
+  background-color: #444;
+  color: #eee;
+  padding: 6px 10px;
+  font-size: 12px;
+  border: 1px solid #00ff55;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.earnings-buttons button:hover {
+  background-color: #006633;
+}
+

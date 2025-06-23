@@ -91,4 +91,22 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     List<Object[]> findBrandEarnings(@Param("ownerId") Long ownerId,
                                      @Param("start") LocalDateTime start,
                                      @Param("end") LocalDateTime end);
+    // totales
+    @Query("""
+    SELECT cb.id AS brandId, cb.brandName, SUM(r.deposit) AS totalEarnings
+    FROM Reservation r
+    JOIN r.cancha c
+    JOIN c.brand cb
+    GROUP BY cb.id, cb.brandName
+    """)
+    List<Object[]> getAllLifetimeBrandEarnings();
+
+    @Query("""
+    SELECT c.id, c.name, SUM(r.deposit)
+    FROM Reservation r
+    JOIN r.cancha c
+    GROUP BY c.id, c.name
+    """)
+    List<Object[]> getAllLifetimeCanchaEarnings();
+
 }

@@ -55,5 +55,11 @@ public class CanchaStatisticsController {
         return statsService.getLifetimeCanchaEarnings(ownerId);
     }
 
+    @GetMapping("/lifetime/all")
+    public List<Map<String, Object>> getAllCanchaLifetimeEarnings(@PathVariable Long ownerId) {
+        return statsService.getAllLifetimeCanchaEarnings();
+    }
+
+
 }
 

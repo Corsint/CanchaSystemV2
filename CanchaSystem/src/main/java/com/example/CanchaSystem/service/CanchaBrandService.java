@@ -84,7 +84,7 @@ public class CanchaBrandService {
             throw new OwnerNotFoundException("Dueño no encontrado");
 
         Owner owner = optowner.get();
-        List<CanchaBrand> canchaBrands = canchaBrandRepository.findByOwnerId(owner.getId());
+        List<CanchaBrand> canchaBrands = canchaBrandRepository.findByOwnerIdAndActive(owner.getId(),true);
         if (canchaBrands.isEmpty())
             throw new CanchaBrandNotFoundException("El dueño no tiene marcas registradas");
         return canchaBrands;

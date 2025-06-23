@@ -10,8 +10,13 @@ async function cargarMarcas() {
   lista.innerHTML = "<li>Cargando...</li>";
 
   try {
-    const res = await fetch("http://localhost:8080/canchaBrand/findall");
-    const marcas = await res.json();
+    const [marcasRes, earningsRes] = await Promise.all([
+      fetch("http://localhost:8080/canchaBrand/findall"),
+      fetch("http://localhost:8080/stats/owner/0/brand/lifetime/all")
+    ]);
+
+    const marcas = await marcasRes.json();
+    const allEarnings = await earningsRes.json();
 
     const nombre = document.getElementById("filtroNombre").value.toLowerCase();
     const estado = document.getElementById("filtroEstado").value;
@@ -29,14 +34,32 @@ async function cargarMarcas() {
     }
 
     lista.innerHTML = "";
+
     filtradas.forEach(m => {
+      const stat = allEarnings.find(e => e.brandId === m.id);
+      const total = (stat?.totalEarnings || 0).toFixed(2);
+
       const li = document.createElement("li");
       li.innerHTML = `
         <input type="text" value="${m.brandName}" id="brandName-${m.id}">
         <label><input type="checkbox" id="active-${m.id}" ${m.active ? "checked" : ""}> Activa</label>
-        <br>
-        <button onclick="guardarMarca(${m.id})">Guardar</button>
-        <button onclick="eliminarMarca(${m.id})">Eliminar</button>
+
+        <div class="actions-bar">
+          <div class="left-buttons">
+            <button onclick="guardarMarca(${m.id})">Guardar</button>
+            <button onclick="eliminarMarca(${m.id})">Eliminar</button>
+          </div>
+          <div class="right-earnings">
+            <span class="earnings-label" id="earnings-${m.id}">$${total} (Total)</span>
+            <div class="earnings-buttons">
+              <button onclick="updateEarnings(${m.id}, ${m.owner.id}, 'daily')">Diario</button>
+              <button onclick="updateEarnings(${m.id}, ${m.owner.id}, 'weekly')">Semanal</button>
+              <button onclick="updateEarnings(${m.id}, ${m.owner.id}, 'monthly')">Mensual</button>
+              <button onclick="updateEarnings(${m.id}, ${m.owner.id}, 'yearly')">Anual</button>
+            </div>
+          </div>
+        </div>
+
         <hr>
       `;
       lista.appendChild(li);
@@ -44,6 +67,28 @@ async function cargarMarcas() {
   } catch (err) {
     console.error(err);
     lista.innerHTML = "<li>Error al cargar marcas.</li>";
+  }
+}
+
+async function updateEarnings(brandId, ownerId, timeframe) {
+  try {
+    const res = await fetch(`http://localhost:8080/stats/owner/${ownerId}/brand/${timeframe}`);
+    const data = await res.json();
+
+    const brandEntries = data.filter(e => e.brandId === brandId);
+    const total = brandEntries.reduce((sum, e) => sum + (e.totalEarnings || 0), 0);
+
+    const label = document.getElementById(`earnings-${brandId}`);
+    const timeframeMap = {
+      daily: "Hoy",
+      weekly: "Semana",
+      monthly: "Mes",
+      yearly: "Año"
+    };
+
+    label.textContent = `$${total.toFixed(2)} (${timeframeMap[timeframe]})`;
+  } catch (error) {
+    console.error("Error al obtener estadísticas:", error);
   }
 }
 
@@ -57,9 +102,7 @@ async function guardarMarca(id) {
   try {
     const res = await fetch("http://localhost:8080/canchaBrand/update", {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(marcaEditada)
     });
 
@@ -87,7 +130,7 @@ async function eliminarMarca(id) {
     const data = await res.json();
 
     if (res.ok) {
-      alert(data.message); // ← muestra "Marca eliminada"
+      alert(data.message);
       cargarMarcas();
     } else {
       alert("Error al eliminar la marca: " + data.message);
@@ -96,5 +139,4 @@ async function eliminarMarca(id) {
     console.error(e);
     alert("Error de red");
   }
-
 }

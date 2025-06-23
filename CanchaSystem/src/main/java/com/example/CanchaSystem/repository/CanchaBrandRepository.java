@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CanchaBrandRepository extends JpaRepository<CanchaBrand, Long> {
     boolean existsByBrandName(String name);
-    List<CanchaBrand> findByOwnerId(Long ownerId);
+    List<CanchaBrand> findByOwnerIdAndActive(Long ownerId,boolean active);
 
 }
