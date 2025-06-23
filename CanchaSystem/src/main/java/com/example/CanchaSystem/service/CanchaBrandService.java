@@ -66,7 +66,9 @@ public class CanchaBrandService {
         List<Cancha> canchas = canchaRepository.findByBrandId(canchaBrandId);
 
         for (Cancha cancha : canchas) {
-            canchaService.deleteCancha(cancha.getId());
+            if (cancha.isActive()) {
+                canchaService.deleteCancha(cancha.getId());
+            }
         }
 
         canchaBrand.setActive(false);
@@ -77,18 +79,18 @@ public class CanchaBrandService {
         return canchaBrandRepository.findById(id).orElseThrow(()-> new CanchaBrandNotFoundException("Marca no encontrada"));
     }
 
-    public List<CanchaBrand> findCanchaBrandsByOwnerUsername(String usernamme) throws CanchaBrandNotFoundException,OwnerNotFoundException {
-        Optional<Owner> optowner = ownerRepository.findByUsernameAndActive(usernamme, true);
+    public List<CanchaBrand> findCanchaBrandsByOwnerUsername(String username) throws OwnerNotFoundException {
+        Optional<Owner> optOwner = ownerRepository.findByUsernameAndActive(username, true);
 
-        if(optowner.isEmpty())
+        if (optOwner.isEmpty())
             throw new OwnerNotFoundException("Dueño no encontrado");
 
-        Owner owner = optowner.get();
-        List<CanchaBrand> canchaBrands = canchaBrandRepository.findByOwnerIdAndActive(owner.getId(),true);
-        if (canchaBrands.isEmpty())
-            throw new CanchaBrandNotFoundException("El dueño no tiene marcas registradas");
+        Owner owner = optOwner.get();
+        List<CanchaBrand> canchaBrands = canchaBrandRepository.findByOwnerIdAndActive(owner.getId(), true);
+
         return canchaBrands;
     }
+
 
     public List<Cancha> getCanchasByBrandId(Long brandId) {
         return canchaRepository.findByBrandId(brandId);

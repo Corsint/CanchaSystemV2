@@ -46,17 +46,16 @@ public class OwnerRequestService {
         return ownerRequestRepository.save(ownerRequest);
     }
 
-    public List<OwnerRequest> getAllRequests(){
+    public List<OwnerRequest> getAllRequests() {
         List<OwnerRequest> requests = ownerRequestRepository.findAll();
-        if (requests.isEmpty())
-            throw new NoRequestsException("Todavia no hay solicitudes registradas");
+
         return requests;
     }
 
+
     public List<OwnerRequest> getAllPendingRequests(){
         List<OwnerRequest> requests = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.PENDING, true);
-        if (requests.isEmpty())
-            throw new NoRequestsException("Todavia no hay solicitudes registradas");
+;
         return requests;
     }
 

@@ -6,7 +6,7 @@ async function fetchRequests() {
     const tbody = document.querySelector('#requestTable tbody');
     tbody.innerHTML = '';
 
-    if (requests.length === 0) {
+    if (requests.length == 0) {
       document.getElementById("message").textContent = "No hay solicitudes pendientes.";
       return;
     } else {

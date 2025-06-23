@@ -20,6 +20,12 @@
 
     const brandsRes = await fetch("/canchaBrand/findAllOwnerBrands");
     const brands = await brandsRes.json();
+    console.log("brands:", brands);
+
+    if (!brands || brands.length == 0) {
+      document.getElementById("brand-list").innerText = "No hay marcas para mostrar.";
+      return;
+    }
 
     const earningsRes = await fetch(`/stats/owner/${ownerId}/brand/lifetime`);
     const earnings = await earningsRes.json();

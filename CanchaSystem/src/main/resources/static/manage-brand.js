@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch(`/cancha/getCanchasByBrandId/${brandId}`);
     const canchas = await res.json();
 
-    if (canchas.length === 0) {
+    if (canchas.length == 0) {
       canchaContainer.innerHTML = "<p>Esta marca aún no tiene canchas.</p>";
       return;
     }

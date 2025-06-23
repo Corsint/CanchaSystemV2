@@ -73,6 +73,7 @@ public class CanchaBrandController {
         return ResponseEntity.ok(canchaBrandService.findCanchaBrandsByOwnerUsername(username));
     }
 
+
     @GetMapping("/{brandId}/canchas")
     public ResponseEntity<List<Cancha>> getCanchasByBrand(@PathVariable Long brandId) {
         return ResponseEntity.ok(canchaService.getCanchasByBrandId(brandId));
