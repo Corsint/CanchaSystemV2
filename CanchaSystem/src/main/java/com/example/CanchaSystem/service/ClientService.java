@@ -166,4 +166,8 @@ public class ClientService {
     public Client findClientById(Long id) throws ClientNotFoundException {
         return clientRepository.findById(id).orElseThrow(()-> new ClientNotFoundException("Cliente no encontrado"));
     }
+
+    public boolean verifyUsername(String username) {
+        return clientRepository.existsByUsernameAndActive(username, true) || adminRepository.existsByUsername(username) || ownerRepository.existsByUsernameAndActive(username, true);
+    }
 }

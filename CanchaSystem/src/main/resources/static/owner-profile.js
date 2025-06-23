@@ -34,11 +34,23 @@ function habilitarEdicion() {
 }
 
 async function guardarCambios() {
+    const usernameIngresado = document.getElementById("username").value;
+
+    const usernameOriginal = (await (await fetch(`http://localhost:8080/owner/${ownerId}`)).json()).username;
+
+    if (usernameIngresado !== usernameOriginal) {
+        const usernameDisponible = await verificarUsernameDisponible(usernameIngresado);
+        if (usernameDisponible) {
+            alert("El nombre de usuario ya está en uso. Por favor, elegí otro.");
+            return;
+        }
+    }
+
     const ownerActualizado = {
         id: ownerId,
         name: document.getElementById("name").value,
         lastName: document.getElementById("lastName").value,
-        username: document.getElementById("username").value,
+        username: usernameIngresado,
         mail: document.getElementById("mail").value,
         cellNumber: document.getElementById("cellNumber").value
     };
@@ -75,6 +87,7 @@ async function guardarCambios() {
     }
 }
 
+
 function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -91,6 +104,16 @@ async function validarEmailConAPI(email) {
         return data.deliverability === "DELIVERABLE" && data.is_valid_format.value === true;
     } catch (error) {
         console.error("Error al validar el correo con AbstractAPI:", error);
+        return false;
+    }
+}
+
+async function verificarUsernameDisponible(username) {
+    try {
+        const res = await fetch(`http://localhost:8080/owner/verifyUsername?username=${encodeURIComponent(username)}`);
+        return await res.json();
+    } catch (error) {
+        console.error("Error al verificar username:", error);
         return false;
     }
 }

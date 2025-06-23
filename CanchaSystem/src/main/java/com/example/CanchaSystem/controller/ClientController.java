@@ -97,4 +97,9 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ownerRequestService.insertRequest(ownerRequest));
     }
 
+    @GetMapping("/verifyUsername")
+    public boolean verifyUsername(@PathVariable String username) {
+        return clientService.verifyUsername(username);
+    }
+
 }

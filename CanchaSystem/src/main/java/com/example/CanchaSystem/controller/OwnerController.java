@@ -78,4 +78,9 @@ public class OwnerController {
                 "bankOwner", owner.getBankOwner()
         ));
     }
+
+    @GetMapping("/verifyUsername")
+    public boolean verifyUsername(@PathVariable String username) {
+        return ownerService.verifyUsername(username);
+    }
 }

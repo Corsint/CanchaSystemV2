@@ -9,6 +9,8 @@ import com.example.CanchaSystem.exception.owner.OwnerNotFoundException;
 import com.example.CanchaSystem.exception.owner.UnactiveOwnerException;
 import com.example.CanchaSystem.exception.review.ReviewNotFoundException;
 import com.example.CanchaSystem.model.*;
+import com.example.CanchaSystem.repository.AdminRepository;
+import com.example.CanchaSystem.repository.ClientRepository;
 import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.hibernate.annotations.OnDelete;
@@ -29,6 +31,12 @@ public class OwnerService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Autowired
     private CanchaBrandService canchaBrandService;
@@ -128,6 +136,10 @@ public class OwnerService {
 
     public Optional<Owner> getOwnerByCanchaId(Long canchaId) {
         return ownerRepository.findOwnerByCanchaIdAndActive(canchaId, true);
+    }
+
+    public boolean verifyUsername(String username) {
+        return clientRepository.existsByUsernameAndActive(username, true) || adminRepository.existsByUsername(username) || ownerRepository.existsByUsernameAndActive(username, true);
     }
 
 }
