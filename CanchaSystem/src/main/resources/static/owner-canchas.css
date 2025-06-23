@@ -1,58 +1,113 @@
+
 body {
-  font-family: 'Segoe UI', sans-serif;
   background-color: #121212;
-  color: #f0f0f0;
-  padding: 30px;
-  max-width: 800px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  margin: 0;
+  padding: 40px;
+  max-width: 1000px;
   margin: auto;
 }
 
 h1 {
+  color: #00ff77;
   text-align: center;
-  color: #00ff77; /* verde cambiado */
-  text-shadow: 0 0 4px #00ff77; /* verde cambiado */
+  margin-bottom: 30px;
+  text-shadow: 0 0 5px #00ff77aa;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 255, 119, 0.2);
+  border: 1px solid #2a2a2a;
   margin-bottom: 30px;
 }
 
-ul {
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.filtro-item label {
+  color: #00ff77;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.filtro-item input[type="text"],
+.filtro-item select {
+  width: 100%;
+  padding: 8px 10px;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  border: 1px solid #00ff77;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.filtro-item input[type="text"]:focus,
+.filtro-item select:focus {
+  outline: none;
+  border-color: #00cc6e;
+  box-shadow: 0 0 6px #00ff77;
+}
+
+.filtro-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.filtro-check input[type="checkbox"] {
+  accent-color: #00ff77;
+  width: 18px;
+  height: 18px;
+}
+
+ul#listaCanchas {
   list-style: none;
   padding: 0;
 }
 
-li {
-  background-color: #1e1e1e;
+ul#listaCanchas li {
+  background-color: #1a1a1a;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  border: 1px solid #00ff77;
   border-radius: 10px;
-  box-shadow: 0 0 8px #00ff7744; /* verde cambiado */
-}
-
-li strong {
-  font-size: 18px;
-  color: #00ff77; /* verde cambiado */
+  box-shadow: 0 0 10px rgba(0, 255, 119, 0.15);
 }
 
 button {
   margin-top: 10px;
-  padding: 8px 15px;
+  margin-right: 10px;
+  padding: 10px 16px;
+  background-color: #00ff77;
+  color: #121212;
   border: none;
   border-radius: 6px;
-  background-color: #00ff77; /* verde cambiado */
-  color: #000; /* letras negras */
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  font-size: 15px;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
 button:hover {
-  background-color: #00cc66; /* un verde más oscuro, manteniendo el estilo */
+  background-color: #00cc6e;
+  transform: scale(1.05);
 }
 
-hr {
-  border: none;
-  height: 1px;
-  background-color: #444;
-  margin-top: 15px;
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
 .btn-cancelar,
@@ -75,4 +130,34 @@ hr {
 
 .btn-volver:hover {
   background-color: #666666;
+}
+
+.stars {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.star {
+  font-size: 22px;
+  color: gray;
+  cursor: pointer;
+}
+
+.star.selected {
+  color: gold;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+  background-color: #1f1f1f;
+  color: white;
+  border: 1px solid #00ff77;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+input[type="hidden"] {
+  display: none;
 }

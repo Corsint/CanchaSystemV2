@@ -12,7 +12,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* === FILTROS === */
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -90,7 +89,6 @@ ul#listaCanchas li {
   box-shadow: 0 0 10px rgba(0, 255, 119, 0.2);
 }
 
-/* === BOTONES === */
 button {
   margin-right: 10px;
   margin-top: 10px;
@@ -113,7 +111,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* === ESTRELLAS === */
 .stars {
   display: flex;
   gap: 5px;
@@ -130,7 +127,6 @@ button:disabled {
   color: gold;
 }
 
-/* === TEXTAREA === */
 textarea {
   width: 100%;
   padding: 8px;
@@ -141,7 +137,6 @@ textarea {
   resize: vertical;
 }
 
-/* === OCULTOS === */
 input[type="hidden"] {
   display: none;
 }
