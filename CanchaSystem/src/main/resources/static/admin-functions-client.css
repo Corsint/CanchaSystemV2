@@ -1,6 +1,6 @@
 body {
   background-color: #121212;
-  color: #f0f0f0;
+  color: #ffffff;
   font-family: 'Segoe UI', sans-serif;
   padding: 40px;
   max-width: 800px;
@@ -8,7 +8,7 @@ body {
 }
 
 h1, h2 {
-  color: #00e676;
+  color: #00ff77;
   text-align: center;
 }
 
@@ -22,16 +22,17 @@ input[type="hidden"] {
   border: 1px solid #333;
   border-radius: 6px;
   background-color: #1e1e1e;
-  color: #fff;
+  color: #ffffff;
 }
 
 input::placeholder {
-  color: #aaa;
+  color: #aaaaaa;
 }
 
+/* Botón base */
 button {
-  background-color: #00c853;
-  color: white;
+  background-color: #00ff77;
+  color: #121212;  /* texto negro */
   border: none;
   padding: 10px 20px;
   margin: 8px 4px;
@@ -42,7 +43,30 @@ button {
 }
 
 button:hover {
-  background-color: #009624;
+  background-color: #00cc66;
+}
+
+/* Botones específicos */
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }
 
 form {
@@ -50,7 +74,7 @@ form {
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 30px;
-  box-shadow: 0 0 10px #00e67655;
+  box-shadow: 0 0 10px rgba(0, 255, 119, 0.3);
 }
 
 #listaClientes li {
@@ -64,11 +88,10 @@ form {
 
 #listaClientes li button {
   margin-left: 8px;
-  background-color: #444;
 }
 
 #listaClientes li button:hover {
-  background-color: #666;
+  background-color: #00cc66;
 }
 
 input#filtroNombre {
@@ -79,4 +102,17 @@ input#filtroNombre {
 button[onclick*="mostrarTodos"] {
   display: inline-block;
   margin-top: 0;
+}
+
+ul li .btn-cancelar,
+ul li .btn-eliminar,
+ul li .btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+ul li .btn-cancelar:hover,
+ul li .btn-eliminar:hover,
+ul li .btn-logout:hover {
+  background-color: #cc0000;
 }

@@ -48,7 +48,7 @@ async function cargarResenas() {
 
       const estado = r.active ? "Activa" : "<span style='color: red;'>ELIMINADA</span>";
       const puedeEliminar = r.active
-        ? `<button onclick="eliminarResena(${r.id})">Eliminar</button>`
+        ? `<button onclick="eliminarResena(${r.id})" class="btn-eliminar">Eliminar</button>`
         : "";
 
       li.innerHTML = `
@@ -122,9 +122,9 @@ async function cargarReservas() {
 
       // Estado formateado
       const estadoReserva = r.status == "CANCELED"
-        ? `<span style="color:red;">CANCELADA</span>`
+        ? `<span style="color:#cc0000;">CANCELADA</span>`
         : r.status == "COMPLETED"
-          ? `<span style="color:green;">CONFIRMADA</span>`
+          ? `<span style="color:#00ff77;">CONFIRMADA</span>`
           : `<span style="color:blue;">PENDIENTE</span>`;
 
       // Botón cancelar solo si no está cancelada

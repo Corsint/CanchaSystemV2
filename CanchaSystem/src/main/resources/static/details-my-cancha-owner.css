@@ -9,15 +9,15 @@ body {
 
 h1 {
   text-align: center;
-  color: #00ff55;
+  color: #00ff77; /* verde cambiado */
   margin-bottom: 30px;
-  text-shadow: 0 0 6px #00ff55;
+  text-shadow: 0 0 6px #00ff77; /* verde cambiado */
 }
 
 h2 {
-  color: #00cc44;
+  color: #00cc66; /* lo dejo así, más oscuro */
   margin-top: 40px;
-  border-bottom: 2px solid #00cc44;
+  border-bottom: 2px solid #00cc66;
   padding-bottom: 6px;
 }
 
@@ -26,7 +26,7 @@ h2 {
   border: 1px solid #333;
   border-radius: 8px;
   padding: 15px 20px;
-  box-shadow: 0 0 6px rgba(0, 255, 85, 0.2);
+  box-shadow: 0 0 6px rgba(0, 255, 119, 0.2); /* verde cambiado */
   margin-bottom: 30px;
   line-height: 1.6;
 }
@@ -42,23 +42,37 @@ li {
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 0 8px rgba(0, 255, 85, 0.1);
+  box-shadow: 0 0 8px rgba(0, 255, 119, 0.1); /* verde cambiado */
+  color: #e0e0e0;
 }
 
 li strong {
-  color: #00ff88;
+  color: #00ff77; /* verde cambiado */
   font-size: 1.1em;
 }
 
-.volverbutton{
-    background-color: #00cc66;
-     box-shadow: 0 0 8px rgba(116, 255, 155, 0.8);
+/* Botón Volver verde */
+.volverbutton {
+  background-color: #00ff77; /* verde cambiado */
+  color: #000; /* letras negras */
+  box-shadow: 0 0 8px rgba(116, 255, 155, 0.8);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
 }
 
 .volverbutton:hover {
-  background-color: #009944;
+  background-color: #00cc66; /* verde oscuro ajustado */
 }
 
+/* Botones rojos para cancelar, eliminar, cerrar sesión */
 button {
   background-color: #ff4d4d;
   color: white;
@@ -70,6 +84,8 @@ button {
   cursor: pointer;
   box-shadow: 0 0 8px rgba(255, 77, 77, 0.4);
   transition: background-color 0.3s ease;
+  display: inline-block;
+  user-select: none;
 }
 
 button:hover {
@@ -80,9 +96,31 @@ button:hover {
   font-size: 22px;
   color: gray;
   cursor: default;
+  user-select: none;
 }
 
 .star.selected {
   color: gold;
 }
 
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
+}

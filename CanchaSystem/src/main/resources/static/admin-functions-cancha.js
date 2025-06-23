@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="cancha-action-row">
                     <div class="left-buttons">
                       <button onclick="guardarCambios(${c.id})">Guardar</button>
-                      <button onclick="eliminarCancha(${c.id})">Eliminar</button>
+                      <button onclick="eliminarCancha(${c.id})" class="btn-eliminar">Eliminar</button>
                       <button onclick="location.href='details-cancha-admin.html?canchaId=${c.id}'">Ver Detalles</button>
                     </div>
                     <div class="right-earnings">

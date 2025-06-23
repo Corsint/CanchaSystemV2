@@ -9,8 +9,8 @@ body {
 
 h1 {
   text-align: center;
-  color: #00e676;
-  text-shadow: 0 0 4px #00e676;
+  color: #00ff77; /* verde cambiado */
+  text-shadow: 0 0 4px #00ff77; /* verde cambiado */
   margin-bottom: 30px;
 }
 
@@ -24,12 +24,12 @@ li {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 8px #00e67644;
+  box-shadow: 0 0 8px #00ff7744; /* verde cambiado */
 }
 
 li strong {
   font-size: 18px;
-  color: #00ff88;
+  color: #00ff77; /* verde cambiado */
 }
 
 button {
@@ -37,15 +37,15 @@ button {
   padding: 8px 15px;
   border: none;
   border-radius: 6px;
-  background-color: #00c853;
-  color: white;
+  background-color: #00ff77; /* verde cambiado */
+  color: #000; /* letras negras */
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #009624;
+  background-color: #00cc66; /* un verde más oscuro, manteniendo el estilo */
 }
 
 hr {
@@ -53,4 +53,26 @@ hr {
   height: 1px;
   background-color: #444;
   margin-top: 15px;
+}
+
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }

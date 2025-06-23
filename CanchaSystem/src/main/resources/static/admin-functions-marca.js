@@ -47,7 +47,7 @@ async function cargarMarcas() {
         <div class="actions-bar">
           <div class="left-buttons">
             <button onclick="guardarMarca(${m.id})">Guardar</button>
-            <button onclick="eliminarMarca(${m.id})">Eliminar</button>
+            <button onclick="eliminarMarca(${m.id})" class="btn-eliminar">Eliminar</button>
           </div>
           <div class="right-earnings">
             <span class="earnings-label" id="earnings-${m.id}">$${total} (Total)</span>

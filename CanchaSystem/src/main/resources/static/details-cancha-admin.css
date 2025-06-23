@@ -2,19 +2,19 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 20px;
   background-color: #121212; /* fondo negro */
-  color: #b0f2b6; /* verde claro para texto */
+  color: #e0f8e0; /* verde claro/neón para texto */
 }
 
 h1, h2 {
-  color: #39b54a; /* verde cancha intenso */
-  text-shadow: 0 0 5px #0f620f;
+  color: #00ff77; /* verde neón cambiado */
+  text-shadow: 0 0 6px #007733; /* ajusté sombra para mejor contraste */
 }
 
 #detalleCancha {
   background-color: #1e1e1e; /* gris oscuro */
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 12px #39b54a;
+  box-shadow: 0 0 12px #00ff77; /* verde neón cambiado */
   font-size: 1.1em;
   line-height: 1.5;
   margin-bottom: 30px;
@@ -30,21 +30,21 @@ ul li {
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 8px #237a0a;
+  box-shadow: 0 0 8px #00ff77; /* verde cambiado */
   font-size: 0.95em;
   line-height: 1.4;
-  color: #b0f2b6;
+  color: #e0f8e0;
 }
 
 hr {
   border: none;
-  border-top: 1px solid #39b54a;
+  border-top: 1px solid #00ff77; /* verde cambiado */
   margin: 10px 0 0 0;
 }
 
 button {
-  background-color: #39b54a;
-  color: #121212;
+  background-color: #00ff77; /* verde cambiado */
+  color: #121212; /* texto negro */
   border: none;
   padding: 8px 14px;
   margin-top: 10px;
@@ -53,25 +53,23 @@ button {
   cursor: pointer;
   font-weight: bold;
   font-size: 0.95em;
-  box-shadow: 0 0 6px #237a0a;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
-  background-color: #2e8b35;
-  box-shadow: 0 0 12px #39b54a;
+  background-color: #009944;
 }
 
 .star {
   font-size: 24px;
-  color: #4caf50; /* verde para estrellas */
+  color: #00ff77; /* verde cambiado */
   cursor: default;
   user-select: none;
-  text-shadow: 0 0 4px #0f620f;
+  text-shadow: 0 0 4px #007733;
 }
 
 .star.selected {
-  color: #a5d6a7; /* verde claro brillante */
+  color: #a0f0a0; /* verde claro brillante */
 }
 
 span {
@@ -86,15 +84,15 @@ li span[style*="color:red"] {
 }
 
 li span[style*="color:green"] {
-  color: #39b54a;
+  color: #00ff77; /* verde cambiado */
   font-weight: bold;
-  text-shadow: 0 0 5px #1e4d1e;
+  text-shadow: 0 0 5px #007722;
 }
 
 li span[style*="color:blue"] {
-  color: #2a9df4;
+  color: #3399ff;
   font-weight: bold;
-  text-shadow: 0 0 5px #164e7a;
+  text-shadow: 0 0 5px #004477;
 }
 
 /* Responsive */
@@ -109,4 +107,26 @@ li span[style*="color:blue"] {
   #detalleCancha {
     font-size: 1em;
   }
+}
+
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }

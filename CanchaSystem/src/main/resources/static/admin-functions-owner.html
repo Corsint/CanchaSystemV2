@@ -12,6 +12,8 @@
 <button onclick="mostrarTodos()">Mostrar todos</button>
 <br><br>
 
+<button onclick="location.href='home-admin.html'" class="btn-volver">Volver al menú principal</button>
+
 <h2 id="formTitulo">Agregar dueño</h2>
 <form id="formOwner">
   <input type="hidden" name="id">
@@ -22,7 +24,7 @@
   <input type="text" name="cellNumber" placeholder="Celular"><br>
   <input type="password" name="password" placeholder="Contraseña"><br>
   <button type="submit" id="btnGuardar">Guardar</button>
-  <button type="button" onclick="cancelarEdicion()">Cancelar</button>
+  <button type="button" onclick="cancelarEdicion()" class="btn-cancelar">Cancelar</button>
 </form>
 
 <hr>
@@ -58,7 +60,7 @@
       li.innerHTML = `
         <strong>${o.name}</strong> ${o.lastName} - (${o.username}) - ${o.mail ?? "-"}
         <button onclick='cargarFormulario(${JSON.stringify(o)})'>Modificar</button>
-        <button onclick="eliminarOwner(${o.id})">Eliminar</button>
+        <button onclick="eliminarOwner(${o.id})" class="btn-eliminar">Eliminar</button>
       `;
       ul.appendChild(li);
     });
@@ -149,7 +151,5 @@
 
   document.addEventListener("DOMContentLoaded", cargarOwners);
 </script>
-
-<button onclick="location.href='home-admin.html'">Volver al menú principal</button>
 </body>
 </html>

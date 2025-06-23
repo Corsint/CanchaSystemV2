@@ -1,12 +1,12 @@
 body {
-  background-color: #0a0a0a;
-  color: #e0e0e0;
+  background-color: #121212;
+  color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 20px;
 }
 
 h1 {
-  color: #00ff55;
+  color: #00ff77;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -19,19 +19,20 @@ ul#listaReseñas {
 }
 
 ul#listaReseñas li {
-  background-color: #111;
-  border: 1px solid #1f1f1f;
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
   border-radius: 10px;
   padding: 15px 20px;
   margin-bottom: 15px;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 255, 119, 0.2);
 }
 
 ul#listaReseñas strong {
   font-size: 1.2em;
-  color: #00ff55;
+  color: #00ff77;
 }
 
+/* === ESTRELLAS === */
 div[id^="stars-"] {
   margin: 8px 0;
 }
@@ -50,9 +51,10 @@ div[id^="stars-"] {
 
 .star:hover,
 .star:hover ~ .star {
-  color: #00ff55;
+  color: #00ff77;
 }
 
+/* === TEXTAREA === */
 textarea {
   width: 100%;
   resize: vertical;
@@ -66,26 +68,27 @@ textarea {
 
 textarea.readonly {
   background-color: #222;
-  color: #ccc;
+  color: #cccccc;
   border: none;
   cursor: default;
 }
 
 textarea.editable {
   background-color: #1a1a1a;
-  border: 1px solid #00ff55;
-  color: #e0e0e0;
+  border: 1px solid #00ff77;
+  color: #ffffff;
 }
 
 textarea.editable:focus {
   outline: none;
-  border-color: #00cc44;
-  box-shadow: 0 0 5px #00cc44;
+  border-color: #00cc6e;
+  box-shadow: 0 0 5px #00cc6e;
 }
 
+/* === BOTONES === */
 button {
-  background-color: #00ff55;
-  color: #000;
+  background-color: #00ff77;
+  color: #121212;
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
@@ -98,7 +101,7 @@ button {
 }
 
 button:hover {
-  background-color: #00cc44;
+  background-color: #00cc6e;
 }
 
 button:disabled,
@@ -108,12 +111,37 @@ button[disabled] {
   color: #999;
 }
 
+/* Botones específicos */
+button.btn-cancelar,
+button.btn-eliminar,
+button.btn-logout {
+  background-color: #ff4d4d;
+  color: #ffffff;
+}
+
+button.btn-cancelar:hover,
+button.btn-eliminar:hover,
+button.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+button.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+button.btn-volver:hover {
+  background-color: #666666;
+}
+
+/* === HR === */
 hr {
   border: 0;
   border-top: 1px solid #333;
   margin: 15px 0;
 }
 
+/* === RESPONSIVE === */
 @media (max-width: 600px) {
   ul#listaReseñas li {
     padding: 10px 15px;
@@ -123,4 +151,26 @@ hr {
     width: 100%;
     margin-bottom: 10px;
   }
+}
+
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }

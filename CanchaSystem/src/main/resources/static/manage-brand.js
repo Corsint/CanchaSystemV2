@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="cancha-actions">
           <button onclick="window.location.href='/details-my-cancha-owner.html?canchaId=${cancha.id}'">Ver</button>
           <button onclick="window.location.href='edit-cancha.html?canchaId=${cancha.id}'">Modificar</button>
-          <button onclick="eliminarCancha(${cancha.id})">Eliminar</button>
+          <button onclick="eliminarCancha(${cancha.id})" class="btn-eliminar">Eliminar</button>
         </div>
       `;
 

@@ -7,8 +7,8 @@ body {
 }
 
 h1#salute {
-  color: #00ff77;
-  text-shadow: 0 0 5px #00ff77;
+  color: #00ff77; /* verde cambiado */
+  text-shadow: 0 0 5px #00ff77; /* verde cambiado */
   margin-bottom: 30px;
   font-size: 28px;
 }
@@ -21,23 +21,34 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  background-color: #00cc66;
-  color: white;
+  background-color: #00ff77; /* verde cambiado */
+  color: #000; /* letras negras */
   font-weight: bold;
-  box-shadow: 0 0 5px rgba(0, 255, 100, 0.3);
   transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
-  background-color: #009944;
-  transform: scale(1.05);
+  background-color: #00cc66; /* verde oscuro ajustado */
 }
 
-button#logoutBtn {
-  background-color: crimson;
-  margin-top: 40px;
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
 }
 
-button#logoutBtn:hover {
-  background-color: #a10028;
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }

@@ -20,7 +20,7 @@ async function fetchRequests() {
         <td>${new Date(req.requestDate).toLocaleString()}</td>
         <td>
           <button class="accept" onclick="handleAction(${req.id}, 'approve')">Aceptar</button>
-          <button class="reject" onclick="handleAction(${req.id}, 'deny')">Rechazar</button>
+          <button class="reject" onclick="handleAction(${req.id}, 'deny')" class="btn-eliminar">Rechazar</button>
         </td>
       `;
       tbody.appendChild(row);

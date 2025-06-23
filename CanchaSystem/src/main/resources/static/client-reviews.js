@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <textarea id="msg-${r.id}" class="readonly" readonly rows="3" cols="40">${r.message || ""}</textarea><br>
                     <button id="btn-edit-${r.id}" onclick="activarEdicion(${r.id})">Editar</button>
                     <button id="btn-save-${r.id}" onclick="guardarCambios(${r.id})" style="display:none;">Guardar</button>
-                    <button onclick="eliminarResena(${r.id})">Eliminar</button>
+                    <button onclick="eliminarResena(${r.id})" class="btn-eliminar">Eliminar</button>
                     <hr>
                 `;
                 lista.appendChild(li);

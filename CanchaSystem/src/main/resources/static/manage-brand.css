@@ -8,30 +8,30 @@ body {
 }
 
 h1, h2 {
-  color: #00ff55;
-  text-shadow: 0 0 5px #00ff55;
+  color: #00ff77; /* verde cambiado */
+  text-shadow: 0 0 5px #00ff77; /* verde cambiado */
   margin-bottom: 20px;
 }
 
 button {
-  background-color: #00cc66;
-  color: white;
+  background-color: #00ff77; /* verde cambiado */
+  color: #000; /* letras negras */
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
   margin: 5px 10px 10px 0;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(0, 255, 85, 0.4);
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #009944;
+  background-color: #00cc66; /* verde oscuro ajustado */
 }
 
 button[type="submit"] {
   background-color: #008CBA;
+  color: white; /* mantenemos blanco para contraste */
 }
 
 button[type="submit"]:hover {
@@ -40,6 +40,7 @@ button[type="submit"]:hover {
 
 button#btn-eliminar-marca {
   background-color: #cc3333;
+  color: white; /* mantenemos blanco para contraste */
 }
 
 button#btn-eliminar-marca:hover {
@@ -51,6 +52,7 @@ button#btn-eliminar-marca:hover {
   justify-content: flex-start;
   gap: 10px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 form {
@@ -59,12 +61,14 @@ form {
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
-  box-shadow: 0 0 6px rgba(0, 255, 85, 0.15);
+  box-shadow: 0 0 6px rgba(0, 255, 119, 0.15); /* verde cambiado */
 }
 
 form label {
   display: block;
-  margin: 10px 0;
+  margin: 10px 0 6px 0;
+  font-weight: 600;
+  color: #b0f2b0;
 }
 
 form input,
@@ -76,11 +80,19 @@ form select {
   background-color: #222;
   color: #eee;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #00ff77; /* verde cambiado */
+  outline: none;
 }
 
 form input[type="checkbox"] {
   width: auto;
   margin-left: 5px;
+  cursor: pointer;
 }
 
 .cancha-item {
@@ -89,7 +101,12 @@ form input[type="checkbox"] {
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 20px;
-  box-shadow: 0 0 8px rgba(0, 255, 85, 0.15);
+  box-shadow: 0 0 8px rgba(0, 255, 119, 0.15); /* verde cambiado */
+  transition: background-color 0.3s ease;
+}
+
+.cancha-item:hover {
+  background-color: #222;
 }
 
 .cancha-header {
@@ -112,7 +129,8 @@ form input[type="checkbox"] {
 .earnings-label {
   font-size: 16px;
   font-weight: bold;
-  color: #00ff88;
+  color: #00ff77; /* verde cambiado */
+  user-select: none;
 }
 
 .earnings-buttons {
@@ -126,7 +144,8 @@ form input[type="checkbox"] {
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 13px;
-  border: 1px solid #00ff55;
+  border: 1px solid #00ff77; /* verde cambiado */
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -140,4 +159,26 @@ form input[type="checkbox"] {
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 10px;
+}
+
+.btn-cancelar,
+.btn-eliminar,
+.btn-logout {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-cancelar:hover,
+.btn-eliminar:hover,
+.btn-logout:hover {
+  background-color: #cc0000;
+}
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
 }
