@@ -57,7 +57,7 @@ button {
   width: 100%;
   padding: 10px;
   background-color: #00ff77;
-  color: #000; /* letras negras en botones */
+  color: #000;
   font-weight: bold;
   border: none;
   border-radius: 6px;
@@ -98,5 +98,5 @@ button[type="button"]:hover {
 }
 
 #message.exito {
-  color: red !important;
+  color: green !important;
 }
