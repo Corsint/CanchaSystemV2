@@ -87,3 +87,12 @@ button[type="button"]:hover {
   color: #ff4d4d;
   text-align: center;
 }
+
+.btn-volver {
+  background-color: #888888;
+  color: white;
+}
+
+.btn-volver:hover {
+  background-color: #666666;
+}

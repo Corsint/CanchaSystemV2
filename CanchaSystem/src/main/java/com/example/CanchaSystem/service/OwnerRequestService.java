@@ -10,6 +10,7 @@ import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.repository.OwnerRequestRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,7 @@ public class OwnerRequestService {
         return requests;
     }
 
-    public OwnerRequest updateRequest(Long id,OwnerRequestStatus status){
+    public ResponseEntity<String> updateRequest(Long id, OwnerRequestStatus status){
         OwnerRequest ownerRequest = ownerRequestRepository.findById(id)
                 .orElseThrow(()->new RequestNotFoundException("No se encontro la solicitud"));
 
@@ -73,41 +74,56 @@ public class OwnerRequestService {
         if (ownerRequest.getStatus()==OwnerRequestStatus.DENIED)
             mailService.sendRequestDeniedStatusUpdateToClient(sendTo.getMail(),ownerRequest);
 
-        return ownerRequestRepository.save(ownerRequest);
+        ownerRequestRepository.save(ownerRequest);
+        return ResponseEntity.ok("Solicitud rechazada correctamente.");
     }
 
     @Scheduled(fixedRate = 60000) // cada 1 minuto
     public void completeApprovedRequests() {
         List<OwnerRequest> approved = ownerRequestRepository.findByStatusAndActive(OwnerRequestStatus.APPROVED, true);
 
-        for (OwnerRequest request : approved){
-            Client approvedClient = clientRepository.findById(request.getClient().getId())
-                    .orElseThrow(()-> new ClientNotFoundException("Cliente no encontrado"));
+        for (OwnerRequest request : approved) {
+            try {
+                Client approvedClient = clientRepository.findById(request.getClient().getId())
+                        .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
-            Owner newOwner = new Owner();
+                if (ownerRepository.existsByUsername(approvedClient.getUsername())) {
+                    // Ya existe un owner con ese username, se desactiva el request para no seguir reintentando
+                    request.setActive(false);
+                    ownerRequestRepository.save(request);
+                    continue;
+                }
 
-            newOwner.setName(approvedClient.getName());
-            newOwner.setLastName(approvedClient.getLastName());
-            newOwner.setUsername(approvedClient.getUsername());
-            newOwner.setPassword(approvedClient.getPassword());
-            newOwner.setMail(approvedClient.getMail());
-            newOwner.setCellNumber(approvedClient.getCellNumber());
-            newOwner.setBankOwner(approvedClient.getBankClient());
+                Owner newOwner = new Owner();
+                newOwner.setName(approvedClient.getName());
+                newOwner.setLastName(approvedClient.getLastName());
+                newOwner.setUsername(approvedClient.getUsername());
+                newOwner.setPassword(approvedClient.getPassword());
+                newOwner.setMail(approvedClient.getMail());
+                newOwner.setCellNumber(approvedClient.getCellNumber());
+                newOwner.setBankOwner(approvedClient.getBankClient());
 
-            Role ownerRole = roleRepository.findByName("OWNER")
-                    .orElseGet(() -> roleRepository.save(new Role("OWNER")));
+                Role ownerRole = roleRepository.findByName("OWNER")
+                        .orElseGet(() -> roleRepository.save(new Role("OWNER")));
 
-            if(!ownerRepository.existsByUsername(approvedClient.getUsername())) {
                 newOwner.setRole(ownerRole);
+                newOwner.setActive(true);
+                ownerRepository.save(newOwner);
+
+                // Desactivar el cliente y la solicitud
+                approvedClient.setActive(false);
+                request.setActive(false);
+
+                clientRepository.save(approvedClient);
+                ownerRequestRepository.save(request);
+
+            } catch (Exception e) {
+                // Logueás y seguís con la siguiente solicitud, no frena toda la tarea
+                System.err.println("Error procesando solicitud con id " + request.getId() + ": " + e.getMessage());
+                e.printStackTrace();
             }
-
-            approvedClient.setActive(false);
-            newOwner.setActive(true);
-            request.setActive(false);
-
-            clientRepository.save(approvedClient);
-            ownerRepository.save(newOwner);
-            ownerRequestRepository.save(request);
         }
     }
+
+
 }

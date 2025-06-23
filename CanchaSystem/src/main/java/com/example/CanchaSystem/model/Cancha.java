@@ -64,7 +64,8 @@ public class Cancha {
     private boolean working;
 
     public int getTotalPlayers() {
-        return this.canchaType.getTotalPlayers();
+        if (canchaType == null) return 0;
+        return canchaType.getTotalPlayers();
     }
 
 }

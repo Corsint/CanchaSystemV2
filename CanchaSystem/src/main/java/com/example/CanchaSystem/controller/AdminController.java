@@ -61,12 +61,14 @@ public class AdminController {
 
     @PutMapping("/denyRequest/{requestId}")
     public ResponseEntity<?> denyRequest(@PathVariable Long requestId){
-        return ResponseEntity.ok(ownerRequestService.updateRequest(requestId, OwnerRequestStatus.DENIED));
+        ownerRequestService.updateRequest(requestId, OwnerRequestStatus.DENIED);
+        return ResponseEntity.ok("Solicitud rechazada correctamente.");
     }
 
     @PutMapping("/approveRequest/{requestId}")
     public ResponseEntity<?> approveRequest(@PathVariable Long requestId){
-        return ResponseEntity.ok(ownerRequestService.updateRequest(requestId, OwnerRequestStatus.APPROVED));
+        ownerRequestService.updateRequest(requestId, OwnerRequestStatus.APPROVED);
+        return ResponseEntity.ok("Solicitud aceptada correctamente.");
     }
 
 }
