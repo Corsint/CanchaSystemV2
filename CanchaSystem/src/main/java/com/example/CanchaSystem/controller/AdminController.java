@@ -6,6 +6,7 @@ import com.example.CanchaSystem.exception.admin.NoAdminsException;
 import com.example.CanchaSystem.model.Admin;
 import com.example.CanchaSystem.model.OwnerRequestStatus;
 import com.example.CanchaSystem.service.AdminService;
+import com.example.CanchaSystem.service.MailService;
 import com.example.CanchaSystem.service.OwnerRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

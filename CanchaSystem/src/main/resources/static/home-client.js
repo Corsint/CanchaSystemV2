@@ -1,17 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    // Mostrar saludo con el nombre del cliente
     const nameResponse = await fetch("http://localhost:8080/client/name", { credentials: "include" });
     const nameData = await nameResponse.json();
     document.getElementById("salute").textContent = `¡Bienvenido ${nameData.name || "Cliente"}!`;
 
-    // Obtener ID del cliente
     const idResponse = await fetch("http://localhost:8080/client/me", { credentials: "include" });
     const idData = await idResponse.json();
     if (!idData.id) throw new Error("No se pudo obtener el ID del cliente.");
     window.clientId = idData.id;
 
-    // Obtener saldo del cliente
     const balanceResponse = await fetch(`http://localhost:8080/client/${window.clientId}`);
     const balanceData = await balanceResponse.json();
     const balanceElement = document.getElementById("currentBalance");
@@ -25,7 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error al cargar datos iniciales:", error);
   }
 
-  // Manejo del botón "Solicitar ser dueño"
   const requestBtn = document.getElementById("requestOwnerBtn");
   if (requestBtn) {
     requestBtn.addEventListener("click", async () => {
@@ -54,7 +50,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Evento para agregar saldo
   const addMoneyForm = document.getElementById("addMoneyForm");
   addMoneyForm.addEventListener("submit", async (e) => {
     e.preventDefault();

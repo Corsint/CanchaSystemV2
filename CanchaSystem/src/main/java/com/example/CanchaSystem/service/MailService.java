@@ -1,6 +1,10 @@
 package com.example.CanchaSystem.service;
 
+import com.example.CanchaSystem.exception.client.ClientNotFoundException;
+import com.example.CanchaSystem.model.Client;
+import com.example.CanchaSystem.model.OwnerRequest;
 import com.example.CanchaSystem.model.Reservation;
+import com.example.CanchaSystem.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,15 +17,10 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("canchasystem@gmail.com");
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
+    @Autowired
+    private ClientRepository clientRepository;
 
+    @Async
     public void sendReminder(String to, Reservation reservation) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -113,9 +112,112 @@ public class MailService {
         message.setTo(to);
         message.setSubject("Reserva confirmada en " + reservation.getCancha().getName());
         message.setText(body);
-        message.setFrom("canchasystem@gmail.com"); // solo si tu SMTP lo requiere explícitamente
+        message.setFrom("canchasystem@gmail.com");
 
-        // Envío
+        mailSender.send(message);
+    }
+
+    @Async
+    public void sendRequestNoticeToClient(String to, OwnerRequest request) {
+
+        if (request == null ||
+                request.getClient() == null ||
+                request.getRequestDate() == null ) {
+            throw new IllegalStateException("La solicitud no tiene datos completos para enviar el mail.");
+        }
+
+        Client sendTo = clientRepository.findByIdAndActive(request.getClient().getId(), true)
+                .orElseThrow(() -> new ClientNotFoundException("El cliente no se encontro"));
+
+        String body = String.format("""
+        Hola %s,
+
+        Te avisamos que se envió tu solicitud.
+
+        Fecha de creación de la solicitud: %s
+
+        Saludos,
+        CanchaSystem.
+        """,
+                sendTo.getName(),
+                request.getRequestDate()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Solicitud para ser dueño");
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com");
+
+        mailSender.send(message);
+    }
+
+    @Async
+    public void sendRequestApprovedStatusUpdateToClient(String to, OwnerRequest request) {
+
+        if (request == null ||
+                request.getClient() == null ||
+                request.getRequestDate() == null ||
+                request.getStatus() == null) {
+            throw new IllegalStateException("La solicitud no tiene datos completos para enviar el mail.");
+        }
+
+        Client sendTo = clientRepository.findByIdAndActive(request.getClient().getId(), true)
+                .orElseThrow(() -> new ClientNotFoundException("El cliente no se encontro"));
+
+        String body = String.format("""
+        Hola %s,
+
+        Te avisamos que tu solicitud fue aprobada.
+
+        Tu cuenta con poca antelación se va a habilitar.
+        Es un gusto contar con vos 
+        
+        Saludos,
+        CanchaSystem.
+        """,
+                sendTo.getName()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Solicitud aprobada");
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com");
+
+        mailSender.send(message);
+    }
+
+    @Async
+    public void sendRequestDeniedStatusUpdateToClient(String to, OwnerRequest request) {
+
+        if (request == null ||
+                request.getClient() == null ||
+                request.getRequestDate() == null ||
+                request.getStatus() == null) {
+            throw new IllegalStateException("La solicitud no tiene datos completos para enviar el mail.");
+        }
+
+        Client sendTo = clientRepository.findByIdAndActive(request.getClient().getId(), true)
+                .orElseThrow(() -> new ClientNotFoundException("El cliente no se encontro"));
+
+        String body = String.format("""
+        Hola %s,
+
+        Nos apena informar que tu solicitud fue denegada.
+
+        Saludos,
+        CanchaSystem.
+        """,
+                sendTo.getName()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Solicitud denegada");
+        message.setText(body);
+        message.setFrom("canchasystem@gmail.com");
+
         mailSender.send(message);
     }
 

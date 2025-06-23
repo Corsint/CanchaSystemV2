@@ -30,11 +30,18 @@ public class OwnerRequestService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private MailService mailService;
+
     public OwnerRequest insertRequest(OwnerRequest ownerRequest){
 
         if(ownerRequestRepository.existsByClientIdAndStatus(ownerRequest.getClient().getId(), OwnerRequestStatus.PENDING))
             throw new ClientAlreadyRequestedException("El usuario ya tiene una solicitud pendiente");
 
+        Client sendTo = clientRepository.findByIdAndActive(ownerRequest.getClient().getId(),true)
+                .orElseThrow(()->new ClientNotFoundException("El cliente no se encontro"));
+
+        mailService.sendRequestNoticeToClient(sendTo.getMail(),ownerRequest);
         return ownerRequestRepository.save(ownerRequest);
     }
 
@@ -56,7 +63,16 @@ public class OwnerRequestService {
         OwnerRequest ownerRequest = ownerRequestRepository.findById(id)
                 .orElseThrow(()->new RequestNotFoundException("No se encontro la solicitud"));
 
+        Client sendTo = clientRepository.findByIdAndActive(ownerRequest.getClient().getId(),true)
+                        .orElseThrow(()->new ClientNotFoundException("El cliente no se encontro"));
+
         ownerRequest.setStatus(status);
+        if (ownerRequest.getStatus()==OwnerRequestStatus.APPROVED)
+            mailService.sendRequestApprovedStatusUpdateToClient(sendTo.getMail(),ownerRequest);
+
+        if (ownerRequest.getStatus()==OwnerRequestStatus.DENIED)
+            mailService.sendRequestDeniedStatusUpdateToClient(sendTo.getMail(),ownerRequest);
+
         return ownerRequestRepository.save(ownerRequest);
     }
 
