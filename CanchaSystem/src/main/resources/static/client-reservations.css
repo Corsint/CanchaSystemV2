@@ -16,7 +16,7 @@ h1 {
 
 h2 {
   margin-top: 40px;
-  color: #00cc6e; /* lo dejo igual porque es un verde distinto y más oscuro */
+  color: #00cc6e;
   border-bottom: 2px solid #00cc6e;
   padding-bottom: 6px;
 }
@@ -45,7 +45,6 @@ li strong {
   font-size: 1.1em;
 }
 
-/* === Botón cancelar === */
 .cancel-btn,
 .btn-cancelar {
   margin-top: 12px;
@@ -66,7 +65,6 @@ li strong {
   background-color: #cc0000;
 }
 
-/* === Botón principal === */
 button {
   margin-top: 40px;
   display: block;

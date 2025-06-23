@@ -42,7 +42,7 @@ async function handleAction(requestId, action) {
     if (response.ok) {
       const message = action === 'approve' ? 'Solicitud aprobada' : 'Solicitud rechazada';
       alert(message);
-      fetchRequests(); // Recargar lista actualizada
+      fetchRequests();
     } else {
       const data = await response.json();
       alert("Error: " + (data.message || response.status));
@@ -52,5 +52,4 @@ async function handleAction(requestId, action) {
   }
 }
 
-// Cargar solicitudes al iniciar
 fetchRequests();

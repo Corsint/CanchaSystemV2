@@ -23,5 +23,4 @@ public class Role {
         this.name = name;
     }
 
-    // Getters y setters
 }

@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/docs/**"
-                        ).permitAll()  // Swagger requiere auth pero con HTTP Basic
+                        ).permitAll()
                         .requestMatchers(
                                 "/register.html", "/client/insert",
                                 "/css/**", "/register.js", "/login.js", "/images/**",
@@ -43,9 +43,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                // Configurá HTTP Basic SOLO para las rutas de Swagger
                 .httpBasic(httpBasic -> httpBasic.realmName("CanchaSystem API"))
-                // Para el resto, usá formLogin
                 .formLogin(form -> form
                         .loginPage("/login.html")
                         .loginProcessingUrl("/login")

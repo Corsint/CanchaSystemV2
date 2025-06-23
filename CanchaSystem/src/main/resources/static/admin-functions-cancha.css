@@ -50,10 +50,10 @@ ul {
   box-shadow: 0 0 5px rgba(0, 255, 119, 0.3);
 }
 
-/* Botón base */
+
 button {
   background-color: #00ff77;
-  color: #121212;  /* texto negro */
+  color: #121212;
   border: none;
   padding: 8px 14px;
   margin: 8px 6px 0 0;
@@ -66,7 +66,7 @@ button:hover {
   background-color: #00cc66;
 }
 
-/* Botones específicos */
+
 .btn-cancelar,
 .btn-eliminar,
 .btn-logout {
@@ -117,7 +117,6 @@ select#filtroTipo {
   }
 }
 
-/* Distribución horizontal para acciones */
 .cancha-action-row {
   display: flex;
   justify-content: space-between;

@@ -30,11 +30,10 @@ public class ReviewController {
             @Validated @RequestBody Review review,
             @AuthenticationPrincipal UserDetails userDetails) {
 
-        // Buscar el cliente por username del token autenticado
         Client client = clientRepository.findByUsernameAndActive(userDetails.getUsername(), true)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
-        review.setClient(client); // Sobrescribir al que vino en el JSON
+        review.setClient(client);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reviewService.insertReview(review));

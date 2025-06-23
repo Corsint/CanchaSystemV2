@@ -39,7 +39,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             }
         }
 
-        // Si no hay rol reconocido
         response.sendRedirect("/login.html?error=rol");
     }
 }

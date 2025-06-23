@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (reqCheck.ok && requestBtn) {
         requestBtn.disabled = true;
         requestBtn.textContent = "Solicitud enviada";
-        requestBtn.classList.add("disabled-btn"); // for greyed-out style
+        requestBtn.classList.add("disabled-btn");
       }
     } catch (error) {
       console.log("No hay solicitud previa (o error):", error);

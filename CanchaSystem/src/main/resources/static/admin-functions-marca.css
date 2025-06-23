@@ -65,10 +65,9 @@ ul {
   box-shadow: 0 0 5px rgba(0, 255, 119, 0.15);
 }
 
-/* Botón base */
 button {
   background-color: #00ff77;
-  color: #121212; /* texto negro */
+  color: #121212;
   border: none;
   padding: 10px 14px;
   margin: 6px 10px 0 0;
@@ -81,7 +80,6 @@ button:hover {
   background-color: #00cc66;
 }
 
-/* Botones específicos */
 .btn-cancelar,
 .btn-eliminar,
 .btn-logout {

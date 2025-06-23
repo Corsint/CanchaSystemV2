@@ -1,11 +1,10 @@
-/* === RESETEO GENERAL === */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* === BASE === */
 body {
   background-color: #121212;
   color: #ffffff;
@@ -22,7 +21,7 @@ h1 {
   font-size: 2.2rem;
 }
 
-/* === FORMULARIO === */
+
 form {
   background-color: #1e1e1e;
   padding: 30px;
@@ -68,7 +67,7 @@ input.editable {
   color: #ffffff;
 }
 
-/* === BOTONES === */
+
 button {
   padding: 10px 16px;
   margin-right: 10px;
@@ -110,7 +109,6 @@ button:hover {
 }
 
 
-/* Ocultar botón */
 button.hidden {
   display: none;
 }

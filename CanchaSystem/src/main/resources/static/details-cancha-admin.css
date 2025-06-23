@@ -1,20 +1,20 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 20px;
-  background-color: #121212; /* fondo negro */
-  color: #e0f8e0; /* verde claro/neón para texto */
+  background-color: #121212;
+  color: #e0f8e0;
 }
 
 h1, h2 {
-  color: #00ff77; /* verde neón cambiado */
-  text-shadow: 0 0 6px #007733; /* ajusté sombra para mejor contraste */
+  color: #00ff77;
+  text-shadow: 0 0 6px #007733;
 }
 
 #detalleCancha {
-  background-color: #1e1e1e; /* gris oscuro */
+  background-color: #1e1e1e;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 12px #00ff77; /* verde neón cambiado */
+  box-shadow: 0 0 12px #00ff77;
   font-size: 1.1em;
   line-height: 1.5;
   margin-bottom: 30px;
@@ -26,11 +26,11 @@ ul {
 }
 
 ul li {
-  background-color: #222; /* un poco más claro que fondo */
+  background-color: #222;
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 8px #00ff77; /* verde cambiado */
+  box-shadow: 0 0 8px #00ff77;
   font-size: 0.95em;
   line-height: 1.4;
   color: #e0f8e0;
@@ -38,13 +38,13 @@ ul li {
 
 hr {
   border: none;
-  border-top: 1px solid #00ff77; /* verde cambiado */
+  border-top: 1px solid #00ff77;
   margin: 10px 0 0 0;
 }
 
 button {
-  background-color: #00ff77; /* verde cambiado */
-  color: #121212; /* texto negro */
+  background-color: #00ff77;
+  color: #121212;
   border: none;
   padding: 8px 14px;
   margin-top: 10px;
@@ -62,21 +62,20 @@ button:hover {
 
 .star {
   font-size: 24px;
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   cursor: default;
   user-select: none;
   text-shadow: 0 0 4px #007733;
 }
 
 .star.selected {
-  color: #a0f0a0; /* verde claro brillante */
+  color: #a0f0a0;
 }
 
 span {
   user-select: none;
 }
 
-/* Estados con colores */
 li span[style*="color:red"] {
   color: #ff3b3b;
   font-weight: bold;
@@ -84,7 +83,7 @@ li span[style*="color:red"] {
 }
 
 li span[style*="color:green"] {
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   font-weight: bold;
   text-shadow: 0 0 5px #007722;
 }
@@ -95,7 +94,6 @@ li span[style*="color:blue"] {
   text-shadow: 0 0 5px #004477;
 }
 
-/* Responsive */
 @media (max-width: 480px) {
   body {
     margin: 10px;

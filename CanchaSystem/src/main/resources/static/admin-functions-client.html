@@ -126,13 +126,11 @@
       return;
     }
 
-    // 1. Validación por regex
     if (!validarEmail(data.mail)) {
       alert("El email no tiene un formato válido.");
       return;
     }
 
-    // 2. Validación externa con AbstractAPI
     const emailValido = await validarEmailConAPI(data.mail);
     if (!emailValido) {
       alert("El email ingresado no es válido");

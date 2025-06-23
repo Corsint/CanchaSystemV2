@@ -10,7 +10,7 @@ body {
 }
 
 h1 {
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   margin-bottom: 40px;
   text-align: center;
   user-select: none;
@@ -23,7 +23,7 @@ table {
   background-color: #1e1e1e;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 255, 119, 0.4); /* verde cambiado */
+  box-shadow: 0 0 10px rgba(0, 255, 119, 0.4);
 }
 
 th, td {
@@ -33,7 +33,7 @@ th, td {
 }
 
 th {
-  background-color: #00aa55; /* queda igual, es más oscuro */
+  background-color: #00aa55;
   color: white;
   user-select: none;
 }
@@ -41,8 +41,8 @@ th {
 button {
   width: 230px;
   padding: 10px;
-  background-color: #00ff77; /* verde cambiado */
-  color: #000; /* letras negras */
+  background-color: #00ff77;
+  color: #000;
   font-weight: bold;
   border: none;
   border-radius: 6px;
@@ -54,13 +54,13 @@ button {
 }
 
 button:hover {
-  background-color: #00cc66; /* verde oscuro ajustado */
+  background-color: #00cc66;
 }
 
 .accept {
   background-color: #00c853;
   box-shadow: 0 0 8px #00c853bb;
-  color: #000; /* letras negras en botón verde */
+  color: #000;
 }
 
 .accept:hover {
@@ -94,7 +94,7 @@ button:hover {
 .message {
   margin-top: 20px;
   font-weight: bold;
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   text-align: center;
   user-select: none;
 }
@@ -104,7 +104,7 @@ button:hover {
 .btn-logout {
   background-color: #ff4d4d;
   color: white;
-  box-shadow: 0 0 8px #ff4d4d; /* verde cambiado */
+  box-shadow: 0 0 8px #ff4d4d;
 }
 
 .btn-cancelar:hover,

@@ -9,7 +9,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #00ff77; /* verde cambiado */
+  color: #00ff77;
   margin-bottom: 30px;
 }
 
@@ -17,14 +17,14 @@ form {
   background-color: #1e1e1e;
   border-radius: 10px;
   padding: 25px;
-  box-shadow: 0 0 8px #00ff7733; /* verde cambiado */
+  box-shadow: 0 0 8px #00ff7733;
 }
 
 label {
   display: block;
   margin-bottom: 15px;
   font-weight: 500;
-  color: #a8d5a3; /* verde claro, lo dejé igual */
+  color: #a8d5a3;
 }
 
 input, select {
@@ -40,7 +40,7 @@ input, select {
 }
 
 input:focus, select:focus {
-  border-color: #00ff77; /* verde cambiado */
+  border-color: #00ff77;
   outline: none;
 }
 
@@ -53,9 +53,9 @@ input[type="checkbox"] {
 button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #00ff77; /* verde cambiado */
+  background-color: #00ff77;
   border: none;
-  color: #000; /* letras negras */
+  color: #000;
   border-radius: 6px;
   cursor: pointer;
   font-size: 15px;
@@ -63,7 +63,7 @@ button {
 }
 
 button:hover {
-  background-color: #00cc66; /* verde oscuro ajustado */
+  background-color: #00cc66;
 }
 
 button + button {

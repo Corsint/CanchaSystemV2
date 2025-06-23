@@ -120,14 +120,12 @@ async function cargarReservas() {
         minimumFractionDigits: 2,
       }).format(r.deposit);
 
-      // Estado formateado
       const estadoReserva = r.status == "CANCELED"
         ? `<span style="color:#cc0000;">CANCELADA</span>`
         : r.status == "COMPLETED"
           ? `<span style="color:#00ff77;">CONFIRMADA</span>`
           : `<span style="color:blue;">PENDIENTE</span>`;
 
-      // Botón cancelar solo si no está cancelada
       const puedeCancelar = r.status === "PENDING"
         ? `<button onclick="cancelarReserva(${r.id})">Cancelar</button>`
         : "";

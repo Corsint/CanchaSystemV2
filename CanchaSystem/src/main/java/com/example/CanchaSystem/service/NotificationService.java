@@ -20,7 +20,7 @@ public class NotificationService {
     @Autowired
     ReservationRepository reservationRepository;
 
-    @Scheduled(cron = "0 0 7 * * ?") // Todos los días a las 7am
+    @Scheduled(cron = "0 0 7 * * ?")
     public void notifyUpcomingMatches() throws MissingDataException {
         LocalDateTime tomorrowStart = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime tomorrowEnd = tomorrowStart.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
@@ -37,7 +37,7 @@ public class NotificationService {
         }
     }
 
-    @Scheduled(cron = "0 0 * * * ?") // Cada hora
+    @Scheduled(cron = "0 0 * * * ?")
     public void completePastReservations() {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> toComplete = reservationRepository.findByMatchDateBeforeAndStatus(now, ReservationStatus.PENDING);

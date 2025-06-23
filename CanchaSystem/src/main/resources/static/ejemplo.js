@@ -53,7 +53,7 @@ async function cargar(tipo, endpoint) {
 
   try {
     const res = await fetch('http://localhost:8080' + endpoint, {
-      credentials: 'include' // si estás usando autenticación por sesión/cookie
+      credentials: 'include'
     });
     const contentType = res.headers.get('content-type');
 

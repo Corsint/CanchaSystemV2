@@ -32,7 +32,6 @@ ul#listaReseñas strong {
   color: #00ff77;
 }
 
-/* === ESTRELLAS === */
 div[id^="stars-"] {
   margin: 8px 0;
 }
@@ -54,7 +53,6 @@ div[id^="stars-"] {
   color: #00ff77;
 }
 
-/* === TEXTAREA === */
 textarea {
   width: 100%;
   resize: vertical;
@@ -85,7 +83,6 @@ textarea.editable:focus {
   box-shadow: 0 0 5px #00cc6e;
 }
 
-/* === BOTONES === */
 button {
   background-color: #00ff77;
   color: #121212;
@@ -111,7 +108,6 @@ button[disabled] {
   color: #999;
 }
 
-/* Botones específicos */
 button.btn-cancelar,
 button.btn-eliminar,
 button.btn-logout {
@@ -134,14 +130,12 @@ button.btn-volver:hover {
   background-color: #666666;
 }
 
-/* === HR === */
 hr {
   border: 0;
   border-top: 1px solid #333;
   margin: 15px 0;
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 600px) {
   ul#listaReseñas li {
     padding: 10px 15px;

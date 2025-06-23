@@ -11,14 +11,12 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    // Endpoint para enviar recordatorios manualmente
     @GetMapping("/notifications/send-reminders")
     public String sendReminders() {
         notificationService.notifyUpcomingMatches();
         return "Recordatorios enviados.";
     }
 
-    // Endpoint para actualizar el estado de reservas manualmente
     @GetMapping("/notifications/complete-reservations")
     public String completeReservations() {
         notificationService.completePastReservations();

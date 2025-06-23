@@ -7,8 +7,8 @@ body {
 }
 
 h1#salute {
-  color: #00ff77; /* verde cambiado */
-  text-shadow: 0 0 5px #00ff77; /* verde cambiado */
+  color: #00ff77;
+  text-shadow: 0 0 5px #00ff77;
   margin-bottom: 30px;
   font-size: 28px;
 }
@@ -21,14 +21,14 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  background-color: #00ff77; /* verde cambiado */
-  color: #000; /* letras negras */
+  background-color: #00ff77;
+  color: #000;
   font-weight: bold;
   transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
-  background-color: #00cc66; /* verde oscuro ajustado */
+  background-color: #00cc66;
 }
 
 .btn-cancelar,

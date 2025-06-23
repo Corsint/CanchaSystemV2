@@ -29,10 +29,9 @@ input::placeholder {
   color: #aaaaaa;
 }
 
-/* Botón base */
 button {
   background-color: #00ff77;
-  color: #121212;  /* texto negro */
+  color: #121212;
   border: none;
   padding: 10px 20px;
   margin: 8px 4px;
@@ -46,7 +45,6 @@ button:hover {
   background-color: #00cc66;
 }
 
-/* Botones específicos */
 .btn-cancelar,
 .btn-eliminar,
 .btn-logout {

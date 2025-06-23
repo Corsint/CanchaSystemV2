@@ -10,7 +10,6 @@ h1 {
   color: #00ff77;
 }
 
-/* === TABLA === */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -32,7 +31,6 @@ th {
   color: #121212;
 }
 
-/* === BOTONES GENERALES === */
 button {
   padding: 8px 14px;
   border: none;
@@ -42,7 +40,6 @@ button {
   transition: background-color 0.3s ease;
 }
 
-/* Botón volver (gris) */
 .volver-btn,
 .btn-volver {
   margin-top: 20px;
@@ -55,7 +52,6 @@ button {
   background-color: #666666;
 }
 
-/* Aceptar / Rechazar */
 .accept {
   background-color: #00ff77;
   color: #121212;
@@ -80,7 +76,6 @@ button {
   background-color: #cc0000;
 }
 
-/* === MENSAJES === */
 .message {
   margin-top: 20px;
   font-weight: bold;

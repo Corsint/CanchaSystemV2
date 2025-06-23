@@ -36,12 +36,10 @@ public class Reservation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Cancha cancha;
 
-//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(nullable = false)
     @PastOrPresent
     private LocalDateTime reservationDate;
 
-//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     @Column(nullable = false)
     private LocalDateTime matchDate;
 
