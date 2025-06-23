@@ -37,7 +37,7 @@ public class OwnerService {
         Role ownerRole = roleRepository.findByName("OWNER")
                 .orElseGet(() -> roleRepository.save(new Role("OWNER")));
 
-        if(!ownerRepository.existsByUsername(owner.getUsername())) {
+        if(!ownerRepository.existsByUsernameAndActive(owner.getUsername(), true)) {
             owner.setRole(ownerRole);
 
             owner.setPassword(passwordEncoder.encode(owner.getPassword()));

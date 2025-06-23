@@ -87,7 +87,7 @@ public class OwnerRequestService {
                 Client approvedClient = clientRepository.findById(request.getClient().getId())
                         .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado"));
 
-                if (ownerRepository.existsByUsername(approvedClient.getUsername())) {
+                if (ownerRepository.existsByUsernameAndActive(approvedClient.getUsername(), true)) {
                     // Ya existe un owner con ese username, se desactiva el request para no seguir reintentando
                     request.setActive(false);
                     ownerRequestRepository.save(request);

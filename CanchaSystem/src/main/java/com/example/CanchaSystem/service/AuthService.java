@@ -30,11 +30,9 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("Intentando loguear con username: " + username);
 
-        // Buscar en CLIENT
         Optional<Client> clientOpt = clientRepository.findByUsernameAndActive(username, true);
         if (clientOpt.isPresent()) {
             Client client = clientOpt.get();
-            System.out.println("Usuario encontrado como CLIENT");
             return new org.springframework.security.core.userdetails.User(
                     client.getUsername(),
                     client.getPassword(),
@@ -42,7 +40,6 @@ public class AuthService implements UserDetailsService {
             );
         }
 
-        // Buscar en OWNER
         Optional<Owner> ownerOpt = ownerRepository.findByUsernameAndActive(username, true);
         if (ownerOpt.isPresent()) {
             Owner owner = ownerOpt.get();
@@ -55,7 +52,6 @@ public class AuthService implements UserDetailsService {
             );
         }
 
-        // Buscar en ADMIN
         Optional<Admin> adminOpt = adminRepository.findByUsername(username);
         if (adminOpt.isPresent()) {
             Admin admin = adminOpt.get();
@@ -66,8 +62,6 @@ public class AuthService implements UserDetailsService {
                     List.of(new SimpleGrantedAuthority("ROLE_" + admin.getRole().getName()))
             );
         }
-
-        // No encontrado en ninguna tabla
         throw new UsernameNotFoundException("Usuario no encontrado: " + username);
     }
 }

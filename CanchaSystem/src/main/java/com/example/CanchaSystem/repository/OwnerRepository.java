@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     boolean existsById(Long id);
-    boolean existsByUsername(String username);
+    boolean existsByUsernameAndActive(String username, boolean active);
     boolean existsByMail(String mail);
     boolean existsByCellNumber(String cellNumber);
 

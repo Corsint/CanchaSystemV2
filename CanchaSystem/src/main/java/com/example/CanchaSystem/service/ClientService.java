@@ -8,7 +8,9 @@ import com.example.CanchaSystem.model.Client;
 import com.example.CanchaSystem.model.Reservation;
 import com.example.CanchaSystem.model.Review;
 import com.example.CanchaSystem.model.Role;
+import com.example.CanchaSystem.repository.AdminRepository;
 import com.example.CanchaSystem.repository.ClientRepository;
+import com.example.CanchaSystem.repository.OwnerRepository;
 import com.example.CanchaSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,12 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     @Autowired
     private RoleRepository roleRepo;
@@ -36,7 +44,7 @@ public class ClientService {
 
 
     public Client insertClient(Client client) {
-        if (clientRepository.existsByUsername(client.getUsername())) {
+        if (clientRepository.existsByUsernameAndActive(client.getUsername(), true) || adminRepository.existsByUsername(client.getUsername()) || ownerRepository.existsByUsernameAndActive(client.getUsername(), true)) {
             throw new UsernameAlreadyExistsException("El nombre de usuario ya existe");
         }
 

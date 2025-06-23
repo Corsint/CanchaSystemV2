@@ -33,17 +33,19 @@
         });
 
         if (response.ok) {
-            document.getElementById("message").textContent = "¡Registro exitoso! Redirigiendo...";
+            const messageElem = document.getElementById("message");
+            messageElem.textContent = "¡Registro exitoso! Redirigiendo...";
+            messageElem.classList.add("exito");
             setTimeout(() => {
                 window.location.href = "/login.html";
             }, 2000);
         } else {
             const data = await response.json();
-            document.getElementById("message").textContent = "Error: " + (data.message || JSON.stringify(data));
+            console.log(data);
+            document.getElementById("message").textContent = data.error;
         }
 
     } catch (error) {
-        console.error("Error:", error);
         document.getElementById("message").textContent = "Error verificando el correo o en el servidor.";
     }
 });

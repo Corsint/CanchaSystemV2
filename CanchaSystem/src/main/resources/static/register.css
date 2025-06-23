@@ -96,3 +96,7 @@ button[type="button"]:hover {
 .btn-volver:hover {
   background-color: #666666;
 }
+
+#message.exito {
+  color: red !important;
+}
