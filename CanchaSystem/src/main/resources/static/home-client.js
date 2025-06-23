@@ -51,9 +51,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const addMoneyForm = document.getElementById("addMoneyForm");
+
   addMoneyForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const amount = document.getElementById("amount").value;
+    const amount = parseFloat(document.getElementById("amount").value);
 
     try {
       const response = await fetch(
@@ -68,6 +69,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       const responseMessage = document.getElementById("responseMessage");
       responseMessage.textContent = message;
       responseMessage.style.color = "green";
+
+      const newBalanceRes = await fetch(`http://localhost:8080/client/${window.clientId}`, {
+        credentials: "include",
+      });
+      const newBalanceData = await newBalanceRes.json();
+      if (typeof newBalanceData.bankClient === "number") {
+        document.getElementById("currentBalance").textContent = `Saldo actual: $${newBalanceData.bankClient.toFixed(2)}`;
+      }
+
+      document.getElementById("amount").value = "";
+
     } catch (error) {
       console.error("Error al agregar saldo:", error);
       const responseMessage = document.getElementById("responseMessage");
@@ -75,4 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       responseMessage.style.color = "red";
     }
   });
+
+
 });
