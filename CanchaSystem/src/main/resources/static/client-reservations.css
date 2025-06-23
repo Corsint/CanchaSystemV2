@@ -106,3 +106,16 @@ button:hover {
 .btn-volver:hover {
   background-color: #666666;
 }
+
+.status.canceled {
+  color: #cc0000;
+  font-weight: bold;
+}
+.status.completed {
+  color: #00ff77;
+  font-weight: bold;
+}
+.status.pending {
+  color: orange;
+  font-weight: bold;
+}

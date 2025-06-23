@@ -25,6 +25,7 @@ const canchaId = new URLSearchParams(window.location.search).get("canchaId");
 
             try {
               await cargarResenas();
+              prepararEstrellas();
             } catch (error) {
               console.error("Error en cargarResenas:", error);
             }
@@ -40,25 +41,13 @@ const canchaId = new URLSearchParams(window.location.search).get("canchaId");
     }
   }
 
-  function prepararEstrellas() {
-    const starsDiv = document.getElementById("stars");
-    for (let i = 1; i <= 5; i++) {
-      const span = document.createElement("span");
-      span.textContent = "★";
-      span.classList.add("star");
-      span.dataset.value = i;
-      span.onclick = () => seleccionarEstrellas(i);
-      starsDiv.appendChild(span);
-    }
-  }
-
   async function cargarResenas() {
     try {
       const res = await fetch(`http://localhost:8080/review/findReviewsByCanchaId/${canchaId}`);
       const resenas = await res.json();
       const lista = document.getElementById("listaResenas");
 
-      if (resenas.length === 0) {
+      if (resenas.length == 0) {
         lista.innerHTML = "<li>No hay reseñas aún.</li>";
         return;
       }
@@ -160,7 +149,7 @@ async function cancelarReserva(id) {
 
     if (res.ok) {
       alert("Reserva cancelada ✅");
-      await cargarReservas(); // recargar lista sin refrescar la página
+      await cargarReservas();
     } else {
       alert("No se pudo cancelar.");
     }
