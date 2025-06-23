@@ -63,4 +63,8 @@ public class Cancha {
     @Column(nullable = false)
     private boolean working;
 
+    public int getTotalPlayers() {
+        return this.canchaType.getTotalPlayers();
+    }
+
 }

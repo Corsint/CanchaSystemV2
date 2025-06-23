@@ -10,11 +10,16 @@ const urlParams = new URLSearchParams(window.location.search);
       const res = await fetch(`http://localhost:8080/cancha/findCanchaById/${canchaId}`);
       const cancha = await res.json();
 
+      const jugadores = cancha.totalPlayers;
+      const deposito = cancha.totalAmount / jugadores;
+
       detalleDiv.innerHTML = `
         <strong>Nombre:</strong> ${cancha.name}<br>
         <strong>Dirección:</strong> ${cancha.address}<br>
         <strong>Tipo:</strong> ${cancha.canchaType}<br>
-        <strong>Precio:</strong> $${cancha.totalAmount}<br>
+        <strong>Precio total:</strong> $${cancha.totalAmount}<br>
+        <strong>Jugadores:</strong> ${jugadores}<br>
+        <strong>Precio por jugador (depósito):</strong> $${deposito.toFixed(2)}<br>
         <strong>Abre:</strong> ${cancha.openingHour} - <strong>Cierra:</strong> ${cancha.closingHour}<br>
         <strong>Techo:</strong> ${cancha.hasRoof ? "Sí" : "No"} |
         <strong>Ducha:</strong> ${cancha.canShower ? "Sí" : "No"}<br><br>
@@ -24,6 +29,7 @@ const urlParams = new URLSearchParams(window.location.search);
       console.error(err);
     }
   }
+
 
   cargarDetallesCancha();
 

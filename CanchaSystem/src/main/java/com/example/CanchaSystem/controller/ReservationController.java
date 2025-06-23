@@ -65,9 +65,9 @@ public class ReservationController {
 
         reservation.setCancha(cancha);
 
-        double deposit = reservation.getCancha().getTotalAmount()/(double) reservation.getCancha().getCanchaType().getTotalPlayers();
+        double deposit = cancha.getTotalAmount() / (double) cancha.getCanchaType().getTotalPlayers();
 
-        if (client.getBankClient()<deposit)
+        if (client.getBankClient() < deposit)
             throw new NotEnoughMoneyException("No hay suficientes fondos");
 
         Owner owner = ownerService.getOwnerByCanchaId(cancha.getId())
