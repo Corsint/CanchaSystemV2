@@ -1,0 +1,22 @@
+Role
+Admin
+Owner
+Client
+Cancha (multiple) (patron Builder)
+    CanchaType
+CanchaBrand?
+Reservation
+    ReservationStatus	
+Review
+OwnerRequest
+    OwnerRequestStatus
+-fix mail
+-implement DAO
+-implement triggers (auditorias)
+-transactions 
+-improve security JWT
+-patrones a implementar
+ 1 Factory Method
+ 2 Obserever/Event Listener
+ 3 Strategy
+ 4 Template Method
