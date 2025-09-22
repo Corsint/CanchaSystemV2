@@ -11,7 +11,7 @@ Review
 OwnerRequest
     OwnerRequestStatus
 -fix mail
--implement DAO
+-implement DTOs
 -implement triggers (auditorias)
 -transactions 
 -improve security JWT
