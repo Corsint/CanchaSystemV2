@@ -6,6 +6,7 @@ Client
     Fix notifications
 Cancha (multiple) (patron Builder)
     CanchaType
+    Cancha can define refund policy
     If Cancha is under maintenance client can see
 CanchaBrand?
 Reservation
